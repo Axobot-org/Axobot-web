@@ -54,6 +54,10 @@
         "eqeqeq": "error",
         "func-call-spacing": "error",
         "guard-for-in": "error",
+        "indent": [
+            "error",
+            2
+        ],
         "key-spacing": "warn",
         "keyword-spacing": "error",
         "lines-between-class-members": "warn",
