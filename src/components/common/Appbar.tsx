@@ -4,8 +4,15 @@ import React from "react";
 
 import UserAvatar from "./UserAvatar";
 
-const pages = ["Dashboard", "Documentation"];
-const settings = ["Dashboard", "Support server", "Logout"];
+const pages: {[key: string]: string} = {
+  "Dashboard": "/dashboard",
+  "Documentation": "https://axobot.rtfd.io",
+};
+const settings: {[key: string]: string} = {
+  "Dashboard": "/dashboard",
+  "Support server": "https://discord.gg/N55zY88",
+  "Logout": "/logout",
+};
 
 export default function Appbar() {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
@@ -48,9 +55,9 @@ export default function Appbar() {
               open={Boolean(anchorElNav)}
               onClose={handleCloseNavMenu}
             >
-              {pages.map((page) => (
-                <MenuItem key={page} component={Link} href={`/${page.toLowerCase()}`}>
-                  <Typography textAlign="center">{page}</Typography>
+              {Object.keys(pages).map((key) => (
+                <MenuItem key={key} component={Link} href={pages[key]}>
+                  <Typography textAlign="center">{key}</Typography>
                 </MenuItem>
               ))}
             </Menu>
@@ -59,13 +66,13 @@ export default function Appbar() {
           <LogoAndTitle />
 
           <Box sx={{ flexGrow: 1, display: { xs: "none", sm: "flex" } }}>
-            {pages.map((page) => (
+            {Object.keys(pages).map((key) => (
               <Button
-                key={page}
-                href={`/${page.toLowerCase()}`}
+                key={key}
+                href={pages[key]}
                 sx={{ my: 2, color: "white", display: "block" }}
               >
-                {page}
+                {key}
               </Button>
             ))}
           </Box>
@@ -88,9 +95,9 @@ export default function Appbar() {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} component={Link} href={`/${setting.toLowerCase()}`}>
-                  <Typography textAlign="center">{setting}</Typography>
+              {Object.keys(settings).map((key) => (
+                <MenuItem key={key} component={Link} href={settings[key]}>
+                  <Typography textAlign="center">{key}</Typography>
                 </MenuItem>
               ))}
             </Menu>
