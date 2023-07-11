@@ -115,7 +115,7 @@ const LogoAndTitle = () => (
   >
     <Box sx={{ marginRight: "1rem", height: { xs: "2rem", sm: "3rem" } }}>
       <img
-        src="/assets/logo.png"
+        src="/assets/logo128.png"
         alt="logo"
         style={{ height: "100%" }}
       />
