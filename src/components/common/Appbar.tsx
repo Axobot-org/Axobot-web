@@ -1,6 +1,8 @@
 import MenuIcon from "@mui/icons-material/Menu";
-import { AppBar, Avatar, Box, Button, Container, IconButton, Menu, MenuItem, Stack, Toolbar, Tooltip, Typography } from "@mui/material";
+import { AppBar, Box, Button, Container, IconButton, Menu, MenuItem, Stack, Toolbar, Tooltip, Typography } from "@mui/material";
 import React from "react";
+
+import UserAvatar from "./UserAvatar";
 
 const pages = ["Dashboard", "Documentation"];
 const settings = ["Dashboard", "Support server", "Logout"];
@@ -97,7 +99,7 @@ export default function Appbar() {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar />
+                <UserAvatar />
               </IconButton>
             </Tooltip>
             <Menu
