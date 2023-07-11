@@ -1,6 +1,20 @@
-import { createTheme } from "@mui/material";
+import { createTheme, LinkProps } from "@mui/material";
+
+import LinkBehavior from "./LinkBehavior";
 
 export const AxoTheme = createTheme({
+  components: {
+    MuiLink: {
+      defaultProps: {
+        component: LinkBehavior,
+      } as LinkProps,
+    },
+    MuiButtonBase: {
+      defaultProps: {
+        LinkComponent: LinkBehavior,
+      },
+    },
+  },
   palette: {
     mode: "dark",
     primary: {

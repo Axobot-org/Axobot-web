@@ -1,16 +1,13 @@
-import { Stack } from "@mui/material";
+import { RouterProvider } from "react-router-dom";
 
-import Appbar from "./components/common/Appbar";
+import router from "./router/router";
 import { AppTheme } from "./styles/AppTheme";
 
 
 function App() {
   return (
     <AppTheme>
-      <Stack height="100%">
-        <Appbar />
-
-      </Stack>
+      <RouterProvider router={router} />
     </AppTheme>
   );
 }
