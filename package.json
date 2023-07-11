@@ -19,7 +19,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "lint": "eslint . --ext .ts",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "serve": "serve -s build -l 3001"
   },
   "browserslist": {
     "production": [
