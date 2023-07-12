@@ -5,7 +5,7 @@ import DiscordLoginCallback from "../pages/DiscordLoginCallback";
 import ErrorPage from "../pages/ErrorPage";
 import Home from "../pages/Home";
 import PublicLayout from "../pages/layouts/PublicLayout";
-import getDiscordAuthUrl from "../repository/api/getDiscordAuthUrl";
+import getDiscordAuthUrl from "../repository/getDiscordAuthUrl";
 
 
 export const ExternalRoutesURLs = {
