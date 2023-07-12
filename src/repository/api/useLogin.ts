@@ -1,5 +1,7 @@
 import { useState } from "react";
 
+import useSetToken from "../redux/dispatchs/useSetToken";
+import useSetUser from "../redux/dispatchs/useSetUser";
 import { isFetchError } from "../typesGuards";
 
 interface LoginJSONResponse {
@@ -11,6 +13,9 @@ export function useLogin() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<LoginJSONResponse | null>(null);
+
+  const { setTokenCommand } = useSetToken();
+  const { setUserCommand } = useSetUser();
 
   async function loginCommand(discordCode: string) {
     setLoading(true);
@@ -27,7 +32,10 @@ export function useLogin() {
           method: "POST",
         });
       if (response.status === 200) {
-        setData(await response.json());
+        const json = await response.json() as LoginJSONResponse;
+        setData(json);
+        setTokenCommand(json.token);
+        setUserCommand({ id: json.user_id });
       } else {
         setError("Invalid code");
       }
