@@ -28,7 +28,10 @@ export default function DiscordLoginCallback() {
   }, [error, loading, data, setTokenCommand, setUserCommand]);
 
   useEffect(() => {
-    if (code && !loading && !error && !data) {
+    if (data || loading || error) {
+      return;
+    }
+    if (code) {
       loginCommand(code);
     } else {
       window.location.href = ExternalRoutesURLs.discordAuth;
