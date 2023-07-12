@@ -7,7 +7,7 @@ import { ExternalRoutesURLs } from "../../router/router";
 import UserAvatar from "./UserAvatar";
 
 export default function Appbar() {
-  const { user } = useUserSelector();
+  const user = useUserSelector();
 
   const pages: {[key: string]: string} = useMemo(() => {
     const base = {

@@ -5,7 +5,7 @@ import { RootState } from "../store";
 
 const userSelector = createSelector(
   (state: RootState) => state.user,
-  (user) => user,
+  (user) => user.user,
 );
 
 export default function useUserSelector() {
