@@ -1,20 +1,49 @@
 import MenuIcon from "@mui/icons-material/Menu";
 import { AppBar, Box, Button, Container, IconButton, Link, Menu, MenuItem, Stack, Toolbar, Tooltip, Typography } from "@mui/material";
-import React from "react";
+import React, { useMemo } from "react";
 
+import useUserSelector from "../../repository/redux/selectors/useUserSelector";
+import { ExternalRoutesURLs } from "../../router/router";
 import UserAvatar from "./UserAvatar";
 
-const pages: {[key: string]: string} = {
-  "Dashboard": "/dashboard",
-  "Documentation": "https://axobot.rtfd.io",
-};
-const settings: {[key: string]: string} = {
-  "Dashboard": "/dashboard",
-  "Support server": "https://discord.gg/N55zY88",
-  "Logout": "/logout",
-};
-
 export default function Appbar() {
+  const { user } = useUserSelector();
+
+  const pages: {[key: string]: string} = useMemo(() => {
+    const base = {
+      "Documentation": ExternalRoutesURLs.documentation,
+    };
+    if (user) {
+      return {
+        "Dashboard": "/dashboard",
+        ...base,
+      };
+    } else {
+      return {
+        "Login": ExternalRoutesURLs.discordAuth,
+        ...base,
+      };
+    }
+  }, [user]);
+
+  const settings: {[key: string]: string} = useMemo(() => {
+    const base = {
+      "Support server": ExternalRoutesURLs.supportServer,
+    };
+    if (user) {
+      return {
+        "Dashboard": "/dashboard",
+        ...base,
+        "Logout": "/logout",
+      };
+    } else {
+      return {
+        "Login": ExternalRoutesURLs.discordAuth,
+        ...base,
+      };
+    }
+  }, [user]);
+
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
 
