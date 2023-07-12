@@ -2,25 +2,31 @@ import { useState } from "react";
 
 import { isFetchError } from "../typesGuards";
 
-export const useLogin = () => {
+interface LoginJSONResponse {
+  token: string;
+}
+
+export function useLogin() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [data, setData] = useState<LoginJSONResponse | null>(null);
 
   async function loginCommand(discordCode: string) {
     setLoading(true);
     setError(null);
 
+    const urlParams = new URLSearchParams({
+      code: discordCode,
+    });
+
     try {
-      const response = await fetch(process.env.REACT_APP_API_URL, {
-        method: "POST",
-        body: JSON.stringify({ code: discordCode }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await fetch(
+        process.env.REACT_APP_API_URL + "/auth/discord-callback?" + urlParams,
+        {
+          method: "POST",
+        });
       if (response.status === 200) {
-        const data = await response.json();
-        return data;
+        setData(await response.json());
       } else {
         setError("Invalid code");
       }
@@ -31,5 +37,5 @@ export const useLogin = () => {
     setLoading(false);
   }
 
-  return { loginCommand, error, loading };
-};
+  return { loginCommand, error, loading, data };
+}
