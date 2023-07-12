@@ -4,6 +4,7 @@ import { isFetchError } from "../typesGuards";
 
 interface LoginJSONResponse {
   token: string;
+  user_id: string;
 }
 
 export function useLogin() {
