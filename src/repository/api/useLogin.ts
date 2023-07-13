@@ -6,7 +6,10 @@ import { isFetchError } from "../typesGuards";
 
 interface LoginJSONResponse {
   token: string;
-  user_id: string;
+  id: string;
+  username: string;
+  global_name: string;
+  avatar: string;
 }
 
 export function useLogin() {
@@ -35,7 +38,12 @@ export function useLogin() {
         const json = await response.json() as LoginJSONResponse;
         setData(json);
         setTokenCommand(json.token);
-        setUserCommand({ id: json.user_id });
+        setUserCommand({
+          id: json.id,
+          username: json.username,
+          globalname: json.global_name,
+          avatar: json.avatar,
+        });
       } else {
         setError("Invalid code");
       }
