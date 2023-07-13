@@ -84,6 +84,7 @@ export default function Appbar() {
               anchorEl={anchorElNav}
               keepMounted
               open={Boolean(anchorElNav)}
+              onClick={handleCloseNavMenu}
               onClose={handleCloseNavMenu}
             >
               {Object.keys(pages).map((key) => (
@@ -124,6 +125,7 @@ export default function Appbar() {
               }}
               keepMounted
               open={Boolean(anchorElUser)}
+              onClick={handleCloseUserMenu}
               onClose={handleCloseUserMenu}
             >
               {Object.keys(settings).map((key) => (
