@@ -19,12 +19,11 @@ export default function DiscordLoginCallback() {
     } else if (loading) {
       return "Relax, we're taking care of your Discord connection...";
     } else if (data) {
-      navigate("/");
       return "You're logged in!";
     } else {
       return "Oops, something went wrong! You shouldn't be here, that's annoying.";
     }
-  }, [error, loading, data, navigate]);
+  }, [error, loading, data]);
 
   let usedCode: string | null = null;
   useEffect(() => {
@@ -39,6 +38,13 @@ export default function DiscordLoginCallback() {
       window.location.href = ExternalRoutesURLs.discordAuth;
     }
   }, [code, data, loading, error, loginCommand, user]);
+
+  // redirect to home if data is found
+  useEffect(() => {
+    if (data) {
+      navigate("/");
+    }
+  }, [data, navigate]);
 
   return (
     <div>
