@@ -1,13 +1,16 @@
 import MenuIcon from "@mui/icons-material/Menu";
-import { AppBar, Box, Button, Container, IconButton, Link, Menu, MenuItem, Stack, Toolbar, Tooltip, Typography } from "@mui/material";
+import { AppBar, Box, Button, Container, IconButton, Link, Menu, MenuItem, Toolbar, Tooltip, Typography } from "@mui/material";
 import React, { useMemo } from "react";
 
 import { useGetorFetchMe } from "../../repository/commands/useGetOrFetchMe";
+import useLogout from "../../repository/redux/dispatchs/useLogout";
 import { ExternalRoutesURLs } from "../../router/router";
+import LogoAndTitle from "./LogoAndTitle";
 import UserAvatar from "./UserAvatar";
 
 export default function Appbar() {
   const { user } = useGetorFetchMe();
+  const { logoutCommand } = useLogout();
 
   const pages: {[key: string]: string} = useMemo(() => {
     const base = {
@@ -34,7 +37,6 @@ export default function Appbar() {
       return {
         "Dashboard": "/dashboard",
         ...base,
-        "Logout": "/logout",
       };
     } else {
       return {
@@ -129,6 +131,11 @@ export default function Appbar() {
                   <Typography textAlign="center">{key}</Typography>
                 </MenuItem>
               ))}
+              {user && (
+                <MenuItem onClick={logoutCommand}>
+                  <Typography textAlign="center">Logout</Typography>
+                </MenuItem>
+              )}
             </Menu>
           </Box>
 
@@ -137,35 +144,3 @@ export default function Appbar() {
     </AppBar>
   );
 }
-
-const LogoAndTitle = () => (
-  <Stack
-    component={Link}
-    href="/"
-    direction="row"
-    alignItems="center"
-    color="inherit"
-    mr={2}
-    flexGrow={{ xs: 1, sm: 0 }}
-    sx={{ textDecoration: "none" }}
-  >
-    <Box sx={{ marginRight: "1rem", height: { xs: "2rem", sm: "3rem" } }}>
-      <img
-        src="/assets/logo128.png"
-        alt="logo"
-        style={{ height: "100%" }}
-      />
-    </Box>
-    <Typography
-      variant="h6"
-      noWrap
-      sx={{
-        fontFamily: "monospace",
-        fontWeight: 700,
-        letterSpacing: ".2rem",
-      }}
-    >
-            Axobot
-    </Typography>
-  </Stack>
-);
