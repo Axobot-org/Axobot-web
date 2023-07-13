@@ -2,12 +2,12 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { AppBar, Box, Button, Container, IconButton, Link, Menu, MenuItem, Stack, Toolbar, Tooltip, Typography } from "@mui/material";
 import React, { useMemo } from "react";
 
-import useUserSelector from "../../repository/redux/selectors/useUserSelector";
+import { useGetorFetchMe } from "../../repository/commands/useGetOrFetchMe";
 import { ExternalRoutesURLs } from "../../router/router";
 import UserAvatar from "./UserAvatar";
 
 export default function Appbar() {
-  const user = useUserSelector();
+  const { user } = useGetorFetchMe();
 
   const pages: {[key: string]: string} = useMemo(() => {
     const base = {
@@ -107,7 +107,7 @@ export default function Appbar() {
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
+            <Tooltip title={user?.globalName}>
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <UserAvatar />
               </IconButton>
