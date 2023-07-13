@@ -8,7 +8,7 @@ interface LoginJSONResponse {
   token: string;
   id: string;
   username: string;
-  global_name: string;
+  globalName: string;
   avatar: string;
 }
 
@@ -41,7 +41,7 @@ export function useLogin() {
         setUserCommand({
           id: json.id,
           username: json.username,
-          globalName: json.global_name,
+          globalName: json.globalName,
           avatar: json.avatar,
         });
       } else {
