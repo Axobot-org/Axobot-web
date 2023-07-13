@@ -1,6 +1,6 @@
 import { createListenerMiddleware } from "@reduxjs/toolkit";
 
-import { login, setToken, UserState } from "../slices/userSlice";
+import { setToken } from "../slices/userSlice";
 
 const localStorageMiddleware = createListenerMiddleware();
 
@@ -16,30 +16,10 @@ localStorageMiddleware.startListening({
   },
 });
 
-// register user_id
-localStorageMiddleware.startListening({
-  actionCreator: login,
-  effect: (action, listenerApi) => {
-    console.log("localStorageMiddleware", action.payload);
-    localStorage.setItem(
-      "user",
-      JSON.stringify(action.payload),
-    );
-  },
-});
-
 export function getTokenFromStorage(): string | null {
   const token = localStorage.getItem("token");
   if (token) {
     return JSON.parse(token);
-  }
-  return null;
-}
-
-export function getUserObjectFromStorage(): UserState["user"] | null {
-  const user = localStorage.getItem("user");
-  if (user) {
-    return JSON.parse(user);
   }
   return null;
 }

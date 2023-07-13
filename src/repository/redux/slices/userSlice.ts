@@ -1,16 +1,19 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import { getTokenFromStorage, getUserObjectFromStorage } from "../middlewares/localStorageMiddleware";
+import { getTokenFromStorage } from "../middlewares/localStorageMiddleware";
 
 export interface UserState {
   user: {
     id: string;
+    username: string;
+    globalname: string;
+    avatar: string;
   } | null;
   token: string | null;
 }
 
 const initialState: UserState = {
-  user: getUserObjectFromStorage(),
+  user: null,
   token: getTokenFromStorage(),
 };
 
