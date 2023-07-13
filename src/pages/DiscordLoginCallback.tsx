@@ -1,4 +1,5 @@
 import { useEffect, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 
 import { useLogin } from "../repository/api/useLogin";
 import useUserSelector from "../repository/redux/selectors/useUserSelector";
@@ -7,7 +8,7 @@ import useQuery from "../router/useQuery";
 
 export default function DiscordLoginCallback() {
   const code = useQuery().get("code");
-
+  const navigate = useNavigate();
 
   const { loginCommand, error, loading, data } = useLogin();
   const user = useUserSelector();
@@ -18,11 +19,12 @@ export default function DiscordLoginCallback() {
     } else if (loading) {
       return "Relax, we're taking care of your Discord connection...";
     } else if (data) {
+      navigate("/");
       return "You're logged in!";
     } else {
       return "Oops, something went wrong! You shouldn't be here, that's annoying.";
     }
-  }, [error, loading, data]);
+  }, [error, loading, data, navigate]);
 
   let usedCode: string | null = null;
   useEffect(() => {
