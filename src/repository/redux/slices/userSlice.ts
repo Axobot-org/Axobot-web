@@ -1,14 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
+import { AuthenticatedUserObject } from "../../types/users";
 import { getTokenFromStorage } from "../middlewares/localStorageMiddleware";
 
 export interface UserState {
-  user: {
-    id: string;
-    username: string;
-    globalname: string;
-    avatar: string;
-  } | null;
+  user: AuthenticatedUserObject | null;
   token: string | null;
 }
 

@@ -41,7 +41,7 @@ export function useLogin() {
         setUserCommand({
           id: json.id,
           username: json.username,
-          globalname: json.global_name,
+          globalName: json.global_name,
           avatar: json.avatar,
         });
       } else {
