@@ -11,7 +11,6 @@ const startAppListening = localStorageMiddleware.startListening as AppStartListe
 startAppListening({
   matcher: isAnyOf(setToken, logout),
   effect: (action, listenerApi) => {
-    console.log("localStorageMiddleware set token to", listenerApi.getState().user.token);
     localStorage.setItem(
       "token",
       JSON.stringify(listenerApi.getState().user.token),
