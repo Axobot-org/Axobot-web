@@ -1,17 +1,20 @@
-import { createListenerMiddleware } from "@reduxjs/toolkit";
+import { createListenerMiddleware, isAnyOf } from "@reduxjs/toolkit";
 
-import { setToken } from "../slices/userSlice";
+import { logout, setToken } from "../slices/userSlice";
+import { AppStartListening } from "../store";
 
 const localStorageMiddleware = createListenerMiddleware();
 
+const startAppListening = localStorageMiddleware.startListening as AppStartListening;
+
 // register token
-localStorageMiddleware.startListening({
-  actionCreator: setToken,
+startAppListening({
+  matcher: isAnyOf(setToken, logout),
   effect: (action, listenerApi) => {
-    console.log("localStorageMiddleware", action.payload);
+    console.log("localStorageMiddleware set token to", listenerApi.getState().user.token);
     localStorage.setItem(
       "token",
-      JSON.stringify(action.payload),
+      JSON.stringify(listenerApi.getState().user.token),
     );
   },
 });
@@ -19,7 +22,12 @@ localStorageMiddleware.startListening({
 export function getTokenFromStorage(): string | null {
   const token = localStorage.getItem("token");
   if (token) {
-    return JSON.parse(token);
+    try {
+      return JSON.parse(token);
+    } catch (e) {
+      console.error(e);
+      localStorage.removeItem("token");
+    }
   }
   return null;
 }

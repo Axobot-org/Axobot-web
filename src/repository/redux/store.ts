@@ -1,4 +1,4 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { configureStore, TypedStartListening } from "@reduxjs/toolkit";
 
 import localStorageMiddleware from "./middlewares/localStorageMiddleware";
 import userReducer from "./slices/userSlice";
@@ -15,5 +15,6 @@ const store = configureStore({
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
+export type AppStartListening = TypedStartListening<RootState, AppDispatch>
 
 export default store;

@@ -23,6 +23,7 @@ export const userSlice = createSlice({
     },
     logout: (state) => {
       state.user = null;
+      state.token = null;
     },
     setToken: (state, action: PayloadAction<UserState["token"]>) => {
       state.token = action.payload;
