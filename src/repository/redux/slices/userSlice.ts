@@ -1,5 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
+import { getTokenFromStorage, getUserObjectFromStorage } from "../middlewares/localStorageMiddleware";
+
 export interface UserState {
   user: {
     id: string;
@@ -8,8 +10,8 @@ export interface UserState {
 }
 
 const initialState: UserState = {
-  user: null,
-  token: null,
+  user: getUserObjectFromStorage(),
+  token: getTokenFromStorage(),
 };
 
 
