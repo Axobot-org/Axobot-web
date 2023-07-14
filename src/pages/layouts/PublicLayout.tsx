@@ -6,7 +6,7 @@ import Appbar from "../../components/common/Appbar";
 
 export default function PublicLayout() {
   return (
-    <Stack height="100%">
+    <Stack height="100%" alignItems="center">
       <Appbar />
       <Outlet />
     </Stack>
