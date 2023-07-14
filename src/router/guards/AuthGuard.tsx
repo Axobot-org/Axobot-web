@@ -5,13 +5,14 @@ import { ExternalRoutesURLs } from "../router";
 
 
 export default function AuthGuard({ children }: {children: JSX.Element}) {
-  const isAuthenticated = useIsAuthenticated();
+  const { isAuthenticated, loading } = useIsAuthenticated();
+
 
   useEffect(() => {
-    if (!isAuthenticated) {
+    if (!loading && !isAuthenticated) {
       window.location.href = ExternalRoutesURLs.discordAuth;
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, loading]);
   return children;
 
 }

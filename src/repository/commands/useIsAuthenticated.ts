@@ -2,6 +2,6 @@ import { useGetorFetchMe } from "./useGetOrFetchMe";
 
 
 export function useIsAuthenticated() {
-  const { user } = useGetorFetchMe();
-  return user !== null;
+  const { user, loading } = useGetorFetchMe();
+  return { isAuthenticated: user !== null, loading };
 }
