@@ -11,10 +11,12 @@ const startAppListening = localStorageMiddleware.startListening as AppStartListe
 startAppListening({
   matcher: isAnyOf(setToken, logout),
   effect: (action, listenerApi) => {
-    localStorage.setItem(
-      "token",
-      JSON.stringify(listenerApi.getState().user.token),
-    );
+    const token = listenerApi.getState().user.token;
+    if (token === null) {
+      localStorage.removeItem("token");
+    } else {
+      localStorage.setItem("token", JSON.stringify(token));
+    }
   },
 });
 
