@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+import useLogout from "../redux/dispatchs/useLogout";
 import useSetUser from "../redux/dispatchs/useSetUser";
 import useTokenSelector from "../redux/selectors/useTokenSelector";
 import { AuthenticatedUserObject } from "../types/users";
@@ -11,6 +12,7 @@ export function useFetchMe() {
 
   const token = useTokenSelector();
   const { setUserCommand } = useSetUser();
+  const { logoutCommand } = useLogout();
 
   async function getMeCommand() {
     setLoading(true);
@@ -33,6 +35,9 @@ export function useFetchMe() {
         const json = await response.json() as AuthenticatedUserObject;
         setData(json);
         setUserCommand(json);
+      } else if (response.status === 401) {
+        setError("Invalid token");
+        logoutCommand();
       } else {
         setError("Invalid token");
       }
