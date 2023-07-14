@@ -2,7 +2,7 @@ import { Typography } from "@mui/material";
 import { Fragment } from "react";
 import { isRouteErrorResponse, useRouteError } from "react-router-dom";
 
-import Appbar from "../components/common/Appbar";
+import Appbar from "../../components/common/Appbar";
 
 export default function ErrorPage() {
   const error = useRouteError();

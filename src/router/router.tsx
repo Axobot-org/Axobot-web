@@ -1,6 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 
-import ErrorPage from "../pages/ErrorPage";
+import ErrorPage from "../pages/genericPages/ErrorPage";
 import PublicLayout from "../pages/layouts/PublicLayout";
 import getDiscordAuthUrl from "../repository/getDiscordAuthUrl";
 import { privateRoutes as authenticatedRoutes } from "./routes/authenticatedRoutes";

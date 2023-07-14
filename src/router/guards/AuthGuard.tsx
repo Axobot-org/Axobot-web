@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-import LoadingPage from "../../pages/LoadingPage";
+import LoadingPage from "../../pages/genericPages/LoadingPage";
 import { useIsAuthenticated } from "../../repository/commands/useIsAuthenticated";
 import { ExternalRoutesURLs } from "../router";
 
