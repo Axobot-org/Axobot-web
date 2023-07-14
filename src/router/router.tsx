@@ -1,11 +1,11 @@
 import { createBrowserRouter } from "react-router-dom";
 
-import Dashboard from "../pages/Dashboard";
-import DiscordLoginCallback from "../pages/DiscordLoginCallback";
 import ErrorPage from "../pages/ErrorPage";
-import Home from "../pages/Home";
 import PublicLayout from "../pages/layouts/PublicLayout";
 import getDiscordAuthUrl from "../repository/getDiscordAuthUrl";
+import { privateRoutes as authenticatedRoutes } from "./routes/authenticatedRoutes";
+import { publicRoutes } from "./routes/publicRoutes";
+import { unauthenticatedRoutes } from "./routes/unauthenticatedRoutes";
 
 
 export const ExternalRoutesURLs = {
@@ -20,18 +20,9 @@ const router = createBrowserRouter([
     element: <PublicLayout />,
     errorElement: <ErrorPage />,
     children: [
-      {
-        path: "/",
-        Component: Home,
-      },
-      {
-        path: "/dashboard",
-        Component: Dashboard,
-      },
-      {
-        path: "/discord-callback",
-        Component: DiscordLoginCallback,
-      },
+      ...publicRoutes,
+      ...unauthenticatedRoutes,
+      ...authenticatedRoutes,
     ],
   },
 ]);
