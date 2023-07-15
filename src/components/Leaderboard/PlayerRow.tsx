@@ -1,4 +1,4 @@
-import { Avatar, ListItem, ListItemIcon, ListItemText, styled, Typography } from "@mui/material";
+import { Avatar, ListItem, ListItemIcon, ListItemText, styled, Tooltip, Typography } from "@mui/material";
 
 import useUserSelector from "../../repository/redux/selectors/useUserSelector";
 import { RankedPlayer } from "../../repository/types/users";
@@ -37,25 +37,23 @@ export default function PlayerRow({ player }: PlayerRowProps) {
           {player.ranking + 1}
         </RankBadge>
       </ListItemIcon>
+
       <UserAvatar alt={player.username ?? undefined} src={player.avatar} />
+
       <ListItemText>
         <UserName>{player.username}</UserName>
-        <NameXpSeparator />
-        <UserXp>{BigInt(player.xp).toLocaleString()} xp</UserXp>
       </ListItemText>
 
+      <UserXp>{BigInt(player.xp).toLocaleString()} xp</UserXp>
+
       <CircularProgressWithLabel thickness={3} value={levelProgress} label={
-        <UserLevel>{player.level.toString()}</UserLevel>
+        <Tooltip title={`${xpFromLastLevel.toLocaleString()} / ${xpToNextLevel.toLocaleString()} xp`}>
+          <UserLevel>{player.level.toString()}</UserLevel>
+        </Tooltip>
       } />
     </Container>
   );
 }
-
-const NameXpSeparator = () => (
-  <Typography component="span" color="text.secondary" mx={0.5} display={{ xs: "none", sm: "initial" }}>
-    {" – "}
-  </Typography>
-);
 
 const CustomListItem = styled(ListItem)(({ theme }) => ({
   borderRadius: 15,
@@ -91,7 +89,8 @@ const UserName = styled("span")(({ theme }) => ({
   fontWeight: 600,
 }));
 
-const UserXp = styled("span")(({ theme }) => ({
+const UserXp = styled(Typography)(({ theme }) => ({
+  marginRight: theme.spacing(2),
   color: theme.palette.text.secondary,
   fontSize: 14,
 }));
