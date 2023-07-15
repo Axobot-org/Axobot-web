@@ -4,7 +4,7 @@ import { RankedPlayer } from "../../types/users";
 
 export type LeaderboardState = {
   [key: "global" | string]: {
-    [key: number]: RankedPlayer
+    [key: string]: RankedPlayer
   },
 }
 

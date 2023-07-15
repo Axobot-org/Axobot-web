@@ -7,8 +7,8 @@ export interface AuthenticatedUserObject {
 
 export interface RankedPlayer {
     ranking: number;
-    user_id: bigint;
-    xp: bigint;
+    user_id: string;
+    xp: string;
     username: string | null;
     avatar: string;
 }

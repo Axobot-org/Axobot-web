@@ -18,7 +18,9 @@ function getSliceFromGuildLeaderboard(guildObject: GuildLeaderboard | undefined,
   const slice: GuildLeaderboard = {};
   for (let i = 0; i < PLAYERS_PER_PAGE; i++) {
     const index = i + page * PLAYERS_PER_PAGE;
-    slice[index] = guildObject[index];
+    if (guildObject[index]) {
+      slice[index] = guildObject[index];
+    }
   }
   return slice;
 }
