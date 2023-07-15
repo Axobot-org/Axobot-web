@@ -1,6 +1,7 @@
 import { Fragment } from "react";
 import { Navigate, useParams } from "react-router-dom";
 
+import GlobalHeader from "../components/Leaderboard/GlobalHeader";
 import { useGetLeaderboard } from "../repository/commands/useGetLeaderboard";
 
 const LeaderboardPage = ({ guildId }: {guildId: string}) => {
@@ -9,7 +10,7 @@ const LeaderboardPage = ({ guildId }: {guildId: string}) => {
 
   return (
     <Fragment>
-      <div>{guildId}</div>
+      <GlobalHeader />
       <p>{JSON.stringify(leaderboard)}</p>
     </Fragment>
   );
