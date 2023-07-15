@@ -2,6 +2,7 @@ import { Avatar, ListItem, ListItemIcon, ListItemText, styled, Typography } from
 
 import useUserSelector from "../../repository/redux/selectors/useUserSelector";
 import { RankedPlayer } from "../../repository/types/users";
+import CircularProgressWithLabel from "../common/CircularProgressWithLabel";
 
 interface PlayerRowProps {
   player: RankedPlayer;
@@ -25,6 +26,10 @@ export default function PlayerRow({ player }: PlayerRowProps) {
 
   const Container = user?.id === player.user_id ? UserCustomListItem : CustomListItem;
 
+  const xpFromLastLevel = player.xp - player.xp_to_current_level;
+  const xpToNextLevel = player.xp_to_next_level - player.xp_to_current_level;
+  const levelProgress = xpFromLastLevel / xpToNextLevel * 100;
+
   return (
     <Container key={player.user_id}>
       <ListItemIcon>
@@ -38,12 +43,16 @@ export default function PlayerRow({ player }: PlayerRowProps) {
         <NameXpSeparator />
         <UserXp>{BigInt(player.xp).toLocaleString()} xp</UserXp>
       </ListItemText>
+
+      <CircularProgressWithLabel thickness={3} value={levelProgress} label={
+        <UserLevel>{player.level.toString()}</UserLevel>
+      } />
     </Container>
   );
 }
 
 const NameXpSeparator = () => (
-  <Typography component="span" color="text.secondary" mx={0.5}>
+  <Typography component="span" color="text.secondary" mx={0.5} display={{ xs: "none", sm: "initial" }}>
     {" – "}
   </Typography>
 );
@@ -57,14 +66,14 @@ const CustomListItem = styled(ListItem)(({ theme }) => ({
 }));
 
 const UserCustomListItem = styled(CustomListItem)(({ theme }) => ({
-  backgroundColor: theme.palette.custom.background2,
+  backgroundColor: theme.palette.custom.background1,
   borderStyle: "solid",
   borderColor: theme.palette.primary.dark,
   borderWidth: 2,
 }));
 
 const RankBadge = styled(Avatar)(({ theme }) => ({
-  backgroundColor: theme.palette.custom.background3,
+  backgroundColor: theme.palette.custom.background2,
   color: theme.palette.text.primary,
   width: 32,
   height: 32,
@@ -86,3 +95,8 @@ const UserXp = styled("span")(({ theme }) => ({
   color: theme.palette.text.secondary,
   fontSize: 14,
 }));
+
+const UserLevel = styled(Typography)({
+  fontWeight: 700,
+  fontSize: 14,
+});

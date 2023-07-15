@@ -23,7 +23,12 @@ export default function PlayersList({ players, loading }: PlayersListProps) {
   });
 
   return (
-    <List>
+    <List sx={{
+      minWidth: {
+        xs: "95%",
+        sm: "min(80%, 40rem)",
+      },
+    }}>
       {players.map(player => <PlayerRow key={player.user_id} player={player} />)}
 
       {(loading || hasNextPage) && (
