@@ -17,12 +17,12 @@ export const leaderboardSlice = createSlice({
   initialState,
   reducers: {
     setLeaderboard: (state, action: PayloadAction<{ guildId: "global" | string, page: number, data: RankedPlayer[] }>) => {
-      const { guildId, page, data } = action.payload;
+      const { guildId, data } = action.payload;
       if (state[guildId] === undefined) {
         state[guildId] = {};
       }
-      data.forEach((player, index) => {
-        state[guildId][index + page * PLAYERS_PER_PAGE] = player;
+      data.forEach(player => {
+        state[guildId][player.ranking] = player;
       });
     },
   },
