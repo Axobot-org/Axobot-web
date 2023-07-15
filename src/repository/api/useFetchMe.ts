@@ -14,7 +14,7 @@ export function useFetchMe() {
   const { setUserCommand } = useSetUser();
   const { logoutCommand } = useLogout();
 
-  async function getMeCommand() {
+  async function fetchMeCommand() {
     setLoading(true);
     if (token === null) {
       setError("No token provided");
@@ -49,5 +49,5 @@ export function useFetchMe() {
     }
   }
 
-  return { getMeCommand, error, loading, data };
+  return { fetchMeCommand, error, loading, data };
 }

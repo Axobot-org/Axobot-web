@@ -4,12 +4,12 @@ import useUserSelector from "../redux/selectors/useUserSelector";
 
 
 export function useGetorFetchMe() {
-  const { getMeCommand, error, loading } = useFetchMe();
+  const { fetchMeCommand, error, loading } = useFetchMe();
   const token = useTokenSelector();
   const user = useUserSelector();
 
   if (user === null && token !== null && !loading && !error) {
-    getMeCommand();
+    fetchMeCommand();
   }
 
   return { user, error, loading };
