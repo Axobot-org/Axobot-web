@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react";
+import { Fragment, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { useLogin } from "../repository/api/useLogin";
@@ -47,9 +47,9 @@ export default function DiscordLoginCallback() {
   }, [data, navigate]);
 
   return (
-    <div>
+    <Fragment>
       <h1>Discord Login Callback</h1>
       <p>{message}</p>
-    </div>
+    </Fragment>
   );
 }
