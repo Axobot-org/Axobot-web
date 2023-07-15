@@ -36,7 +36,6 @@ export default function CircularProgressWithLabel(
       />
       <CircularProgress
         variant="determinate"
-        disableShrink
         {...props}
         sx={{
           position: "absolute",
