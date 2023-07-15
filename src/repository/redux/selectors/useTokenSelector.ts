@@ -1,6 +1,6 @@
 import { createSelector } from "@reduxjs/toolkit";
-import { useSelector } from "react-redux";
 
+import { useAppSelector } from "../hooks";
 import { RootState } from "../store";
 
 const tokenSelector = createSelector(
@@ -9,5 +9,5 @@ const tokenSelector = createSelector(
 );
 
 export default function useTokenSelector() {
-  return useSelector(tokenSelector);
+  return useAppSelector(tokenSelector);
 }
