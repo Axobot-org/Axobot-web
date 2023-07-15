@@ -12,16 +12,16 @@ export function useGetLeaderboard(guildId: "global" | string, page: number) {
   const leaderboard = useLeaderboardSelector(guildId, page);
   const dispatch = useAppDispatch();
 
-  if (leaderboard === null && data === null && token !== null && !loading && !error) {
-    fetchLeaderboardCommand();
-  }
+  useEffect(() => {
+    if (leaderboard === null && data === null && token !== null && !loading && !error) {
+      fetchLeaderboardCommand();
+    }
+  }, [data, error, fetchLeaderboardCommand, leaderboard, loading, token]);
 
   useEffect(() => {
     if (data !== null && error === null && !loading) {
       dispatch(setLeaderboard({ guildId, page, data: data }));
-      console.log("dispatched leaderboard");
-    } else {
-      console.log(`data=${data}, error=${error}, loading=${loading}`);
+      console.debug("Dispatched leaderboard");
     }
   }, [data, dispatch, error, guildId, loading, page]);
 
