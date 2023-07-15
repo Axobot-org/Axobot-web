@@ -1,5 +1,4 @@
-import { Typography } from "@mui/material";
-import { Fragment } from "react";
+import { Stack, Typography } from "@mui/material";
 import { isRouteErrorResponse, useRouteError } from "react-router-dom";
 
 import Appbar from "../../components/common/Appbar";
@@ -22,7 +21,7 @@ export default function ErrorPage() {
   }
 
   return (
-    <Fragment>
+    <Stack height="100%" alignItems="center">
       <Appbar />
       <h1>Oops!</h1>
       <Typography my={1}>
@@ -31,6 +30,6 @@ export default function ErrorPage() {
       <Typography variant="subtitle1" color="text.secondary" fontStyle="italic">
         {errorMessage}
       </Typography>
-    </Fragment>
+    </Stack>
   );
 }
