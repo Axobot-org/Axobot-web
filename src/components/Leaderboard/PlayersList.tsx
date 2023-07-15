@@ -33,7 +33,7 @@ export default function PlayersList({ players, loading }: PlayersListProps) {
 
       {(loading || hasNextPage) && (
         <ListItem ref={sentryRef} sx={{ justifyContent: "center" }}>
-          <CircularProgress color="secondary" />
+          <CircularProgress color="primary" />
         </ListItem>
       )}
     </List>
