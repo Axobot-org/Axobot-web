@@ -1,17 +1,28 @@
-import { Fragment } from "react";
+import { Fragment, useMemo } from "react";
 import { Navigate, useParams } from "react-router-dom";
 
 import GlobalHeader from "../components/Leaderboard/GlobalHeader";
+import PlayersList from "../components/Leaderboard/PlayersList";
 import { useGetLeaderboard } from "../repository/commands/useGetLeaderboard";
 
 const LeaderboardPage = ({ guildId }: {guildId: string}) => {
 
-  const { leaderboard } = useGetLeaderboard(guildId, 1);
+  const { leaderboard, loading } = useGetLeaderboard(guildId, 0);
+
+  const players = useMemo(() => {
+    if (leaderboard === null) {
+      return [];
+    }
+
+    return Object.entries(leaderboard)
+      .sort((a, b) => a[1].ranking - b[1].ranking)
+      .map(([id, points]) => points);
+  }, [leaderboard]);
 
   return (
     <Fragment>
       <GlobalHeader />
-      <p>{JSON.stringify(leaderboard)}</p>
+      <PlayersList players={players} loading={loading} />
     </Fragment>
   );
 };
