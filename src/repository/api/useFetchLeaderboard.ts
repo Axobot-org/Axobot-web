@@ -8,14 +8,14 @@ interface ApiResponse {
   players: RankedPlayer[],
 }
 
-export function useFetchLeaderboard(guildId: "global" | string, page: number, limit: number) {
+export function useFetchLeaderboard(guildId: "global" | string) {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<RankedPlayer[] | null>(null);
 
   const token = useTokenSelector();
 
-  async function fetchLeaderboardCommand() {
+  async function fetchLeaderboardCommand(page: number, limit: number) {
     setLoading(true);
     if (guildId !== "global" && token === null) {
       setError("No token provided");
