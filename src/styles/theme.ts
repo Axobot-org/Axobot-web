@@ -4,6 +4,7 @@ import LinkBehavior from "./LinkBehavior";
 
 declare module "@mui/material/styles" {
   interface Palette {
+    blurple: Palette["primary"];
     custom: {
       background1: string;
       background2: string;
@@ -12,11 +13,18 @@ declare module "@mui/material/styles" {
   }
 
   interface PaletteOptions {
+    blurple: Palette["primary"];
     custom: {
       background1: string;
       background2: string;
       background3: string;
     }
+  }
+}
+
+declare module "@mui/material/Button" {
+  interface ButtonPropsColorOverrides {
+    blurple: true;
   }
 }
 
@@ -40,6 +48,12 @@ export const AxoTheme = createTheme({
     },
     secondary: {
       main: "#26d2ea",
+    },
+    blurple: {
+      main: "#5865F2",
+      light: "#7289DA",
+      dark: "#454FBF",
+      contrastText: "#fff",
     },
     custom: {
       background1: "#1f1f1f",
