@@ -12,11 +12,13 @@ export function useGetLeaderboard(guildId: "global" | string, page: number) {
   const leaderboard = useLeaderboardSelector(guildId, page);
   const dispatch = useAppDispatch();
 
+  const isTokenValid = guildId === "global" || token !== null;
+
   useEffect(() => {
-    if (leaderboard === null && data === null && token !== null && !loading && !error) {
+    if (leaderboard === null && data === null && isTokenValid && !loading && !error) {
       fetchLeaderboardCommand();
     }
-  }, [data, error, fetchLeaderboardCommand, leaderboard, loading, token]);
+  }, [data, error, fetchLeaderboardCommand, leaderboard, loading, isTokenValid]);
 
   useEffect(() => {
     if (data !== null && error === null && !loading) {

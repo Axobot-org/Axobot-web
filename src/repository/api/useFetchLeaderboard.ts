@@ -17,7 +17,7 @@ export function useFetchLeaderboard(guildId: "global" | string, page: number, li
 
   async function fetchLeaderboardCommand() {
     setLoading(true);
-    if (token === null) {
+    if (guildId !== "global" && token === null) {
       setError("No token provided");
       setLoading(false);
       return;
@@ -32,22 +32,26 @@ export function useFetchLeaderboard(guildId: "global" | string, page: number, li
       limit: limit.toString(),
     });
 
+    const headers = token === null
+      ? undefined
+      : { "Authorization": token };
+
     try {
       const response = await fetch(
         URL + "?" + urlParams,
         {
           method: "GET",
-          headers: {
-            "Authorization": token,
-          },
+          headers: headers,
         });
       if (response.status === 200) {
         const json = await response.json() as ApiResponse;
         setData(json["players"]);
       } else if (response.status === 401) {
         setError("Invalid token");
+      } else if (response.status === 404) {
+        setError("Guild not found");
       } else {
-        setError("Invalid token");
+        setError(`Unknown error (code ${response.status})`);
       }
     } catch (err) {
       setError("Unknown error");
