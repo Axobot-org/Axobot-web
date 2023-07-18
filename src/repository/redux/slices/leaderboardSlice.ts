@@ -4,7 +4,8 @@ import { RankedPlayer } from "../../types/users";
 
 export type LeaderboardState = {
   [key: "global" | string]: {
-    [key: string]: RankedPlayer
+    totalCount: number,
+    players: {[key: string]: RankedPlayer}
   },
 }
 
@@ -16,13 +17,16 @@ export const leaderboardSlice = createSlice({
   name: "leaderboard",
   initialState,
   reducers: {
-    setLeaderboard: (state, action: PayloadAction<{ guildId: "global" | string, page: number, data: RankedPlayer[] }>) => {
-      const { guildId, data } = action.payload;
+    setLeaderboard: (state, action: PayloadAction<{ guildId: "global" | string, players: RankedPlayer[], totalCount: number }>) => {
+      const { guildId, players, totalCount } = action.payload;
       if (state[guildId] === undefined) {
-        state[guildId] = {};
+        state[guildId] = {
+          totalCount: totalCount,
+          players: {},
+        };
       }
-      data.forEach(player => {
-        state[guildId][player.ranking] = player;
+      players.forEach(player => {
+        state[guildId].players[player.ranking] = player;
       });
     },
   },

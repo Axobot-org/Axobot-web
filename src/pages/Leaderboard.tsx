@@ -26,7 +26,7 @@ const LeaderboardPage = ({ guildId }: {guildId: string}) => {
       return [];
     }
 
-    return Object.entries(leaderboard)
+    return Object.entries(leaderboard.players)
       .sort((a, b) => a[1].ranking - b[1].ranking)
       .map(([id, points]) => points);
   }, [leaderboard]);

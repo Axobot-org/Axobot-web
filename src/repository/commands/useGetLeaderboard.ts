@@ -17,7 +17,7 @@ export function useGetLeaderboard(guildId: "global" | string) {
   useEffect(() => {
     if (data !== null && data.length > 0 && error === null && !loading) {
       const page = Math.floor(data[0].ranking / PLAYERS_PER_PAGE);
-      dispatch(setLeaderboard({ guildId, page: page, data: data }));
+      dispatch(setLeaderboard({ guildId, players: data, totalCount: 0 })); // TODO: get totalCount from API response
       console.debug("Dispatched leaderboard for page " + page);
     }
   }, [data, dispatch, error, guildId, loading]);
