@@ -25,7 +25,7 @@ export function useFetchLeaderboard(guildId: "global" | string) {
 
     const URL = guildId === "global"
       ? process.env.REACT_APP_API_URL + "/discord/leaderboard/global"
-      : process.env.REACT_APP_API_URL + "/discord/guilds/" + guildId + "/leaderboard";
+      : process.env.REACT_APP_API_URL + "/discord/guild/" + guildId + "/leaderboard";
 
     const urlParams = new URLSearchParams({
       page: page.toString(),
