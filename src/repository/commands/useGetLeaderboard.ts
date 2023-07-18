@@ -9,13 +9,13 @@ import { PLAYERS_PER_PAGE, setLeaderboard } from "../redux/slices/leaderboardSli
 export function useGetLeaderboard(guildId: "global" | string) {
   const { fetchLeaderboardCommand, data, error, loading } = useFetchLeaderboard(guildId);
   const token = useTokenSelector();
-  const leaderboard = useLeaderboardSelector(guildId, 0);
+  const leaderboard = useLeaderboardSelector(guildId);
   const dispatch = useAppDispatch();
 
   const isTokenValid = guildId === "global" || token !== null;
 
   useEffect(() => {
-    if (data !== null && error === null && !loading) {
+    if (data !== null && data.length > 0 && error === null && !loading) {
       const page = Math.floor(data[0].ranking / PLAYERS_PER_PAGE);
       dispatch(setLeaderboard({ guildId, page: page, data: data }));
       console.debug("Dispatched leaderboard for page " + page);

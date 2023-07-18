@@ -16,6 +16,6 @@ const leaderboardSelector = createSelector(
   (state, guildId): GuildLeaderboard | null => state[guildId] ?? null,
 );
 
-export default function useLeaderboardSelector(guildId: "global" | string, page: number) {
+export default function useLeaderboardSelector(guildId: "global" | string) {
   return useAppSelector(state => leaderboardSelector(state, guildId));
 }
