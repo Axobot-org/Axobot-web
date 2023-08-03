@@ -8,7 +8,7 @@ interface LoginJSONResponse {
   token: string;
   id: string;
   username: string;
-  globalName: string;
+  globalName: string | null;
   avatar: string;
 }
 

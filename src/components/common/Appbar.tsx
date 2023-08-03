@@ -110,7 +110,7 @@ export default function Appbar() {
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title={user?.globalName}>
+            <Tooltip title={user?.globalName ?? user?.username}>
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <UserAvatar />
               </IconButton>

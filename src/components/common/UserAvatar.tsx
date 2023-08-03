@@ -11,5 +11,5 @@ export default function UserAvatar() {
     return <PersonOutlineOutlined fontSize="large" />;
   }
 
-  return <Avatar alt={user.globalName} src={user.avatar} />;
+  return <Avatar alt={user.globalName ?? user.username} src={user.avatar} />;
 }
