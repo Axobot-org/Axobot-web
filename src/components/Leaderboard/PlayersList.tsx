@@ -7,11 +7,11 @@ import PlayerRow from "./PlayerRow";
 interface PlayersListProps {
   players: RankedPlayer[];
   loading: boolean;
+  hasNextPage: boolean;
   loadMore: () => void;
 }
 
-export default function PlayersList({ players, loading, loadMore }: PlayersListProps) {
-  const hasNextPage = true;
+export default function PlayersList({ players, loading, hasNextPage, loadMore }: PlayersListProps) {
 
   const [sentryRef] = useInfiniteScroll({
     loading,

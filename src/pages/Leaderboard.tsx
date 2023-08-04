@@ -3,6 +3,7 @@ import { Fragment, useEffect, useMemo, useState } from "react";
 import { Navigate, useParams } from "react-router-dom";
 
 import GlobalHeader from "../components/Leaderboard/GlobalHeader";
+import GuildHeader from "../components/Leaderboard/GuildHeader";
 import PlayersList from "../components/Leaderboard/PlayersList";
 import { useGetLeaderboard } from "../repository/commands/useGetLeaderboard";
 import { PLAYERS_PER_PAGE } from "../repository/redux/slices/leaderboardSlice";
@@ -31,7 +32,26 @@ const LeaderboardPage = ({ guildId }: {guildId: string}) => {
       .map(([id, points]) => points);
   }, [leaderboard]);
 
+  const guildData = useMemo(() => {
+    if (guildId === "global") {
+      return null;
+    }
+    if (leaderboard?.guildData) {
+      return leaderboard.guildData;
+    }
+    return {
+      id: guildId,
+      name: "Loading...",
+      icon: null,
+    };
+  }, [guildId, leaderboard?.guildData]);
+
+  const hasNextPage = leaderboard?.totalCount ? leaderboard.totalCount > (page + 1) * PLAYERS_PER_PAGE : false;
+
   function loadMore() {
+    if (!hasNextPage) {
+      return;
+    }
     setPage(page + 1);
   }
 
@@ -39,7 +59,7 @@ const LeaderboardPage = ({ guildId }: {guildId: string}) => {
     console.error(error);
     return (
       <Fragment>
-        <GlobalHeader />
+        {guildData ? <GuildHeader guildData={guildData} /> : <GlobalHeader />}
         <Typography my={1}>
         Sorry, an unexpected error has occurred
         </Typography>
@@ -52,8 +72,8 @@ const LeaderboardPage = ({ guildId }: {guildId: string}) => {
 
   return (
     <Fragment>
-      <GlobalHeader />
-      <PlayersList players={players} loading={loading} loadMore={loadMore} />
+      {guildData ? <GuildHeader guildData={guildData} /> : <GlobalHeader />}
+      <PlayersList players={players} loading={loading} hasNextPage={hasNextPage} loadMore={loadMore} />
     </Fragment>
   );
 };
