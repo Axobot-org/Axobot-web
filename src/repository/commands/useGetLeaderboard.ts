@@ -15,9 +15,15 @@ export function useGetLeaderboard(guildId: "global" | string) {
   const isTokenValid = guildId === "global" || token !== null;
 
   useEffect(() => {
-    if (data !== null && data.length > 0 && error === null && !loading) {
-      const page = Math.floor(data[0].ranking / PLAYERS_PER_PAGE);
-      dispatch(setLeaderboard({ guildId, players: data, totalCount: 0 })); // TODO: get totalCount from API response
+    if (data !== null && data.players.length > 0 && error === null && !loading) {
+      const page = Math.floor(data.players[0].ranking / PLAYERS_PER_PAGE);
+      dispatch(setLeaderboard({
+        guildId,
+        guildData: data.guild,
+        players: data.players,
+        totalCount: data.players_count,
+        xpType: data.xp_type,
+      }));
       console.debug("Dispatched leaderboard for page " + page);
     }
   }, [data, dispatch, error, guildId, loading]);

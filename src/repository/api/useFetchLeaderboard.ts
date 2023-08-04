@@ -4,14 +4,20 @@ import useTokenSelector from "../redux/selectors/useTokenSelector";
 import { RankedPlayer } from "../types/users";
 
 interface ApiResponse {
-  guild: null,
+  guild: {
+    id: string;
+    name: string;
+    icon: string | null;
+  } | null,
   players: RankedPlayer[],
+  players_count: number,
+  xp_type: string,
 }
 
 export function useFetchLeaderboard(guildId: "global" | string) {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  const [data, setData] = useState<RankedPlayer[] | null>(null);
+  const [data, setData] = useState<ApiResponse | null>(null);
 
   const token = useTokenSelector();
 
@@ -45,7 +51,7 @@ export function useFetchLeaderboard(guildId: "global" | string) {
         });
       if (response.status === 200) {
         const json = await response.json() as ApiResponse;
-        setData(json["players"]);
+        setData(json);
       } else if (response.status === 401) {
         setError("Invalid token");
       } else if (response.status === 404) {
