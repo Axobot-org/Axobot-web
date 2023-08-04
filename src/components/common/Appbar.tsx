@@ -15,6 +15,7 @@ export default function Appbar() {
   const pages: {[key: string]: string} = useMemo(() => {
     const base = {
       "Documentation": ExternalRoutesURLs.documentation,
+      "Make a donation": ExternalRoutesURLs.donate,
     };
     if (user) {
       return {

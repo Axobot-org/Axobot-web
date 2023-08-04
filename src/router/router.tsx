@@ -10,6 +10,7 @@ import { unauthenticatedRoutes } from "./routes/unauthenticatedRoutes";
 
 export const ExternalRoutesURLs = {
   documentation: "https://axobot.rtfd.io",
+  donate: "https://github.com/sponsors/ZRunner",
   supportServer: "https://discord.gg/N55zY88",
   discordAuth: getDiscordAuthUrl(),
 };
