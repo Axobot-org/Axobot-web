@@ -58,6 +58,8 @@ export default function PlayerRow({ player }: PlayerRowProps) {
 const CustomListItem = styled(ListItem)(({ theme }) => ({
   borderRadius: 15,
   marginBottom: theme.spacing(0.5),
+  transitionProperty: "background-color",
+  transitionDuration: "150ms",
   "&:hover": {
     backgroundColor: theme.palette.custom.background1,
   },
