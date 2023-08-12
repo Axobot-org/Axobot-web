@@ -98,12 +98,12 @@ export default function Appbar() {
 
           <LogoAndTitle />
 
-          <Box sx={{ flexGrow: 1, display: { xs: "none", sm: "flex" } }}>
+          <Box sx={{ flexGrow: 1, display: { xs: "none", sm: "flex" }, gap: 1 }}>
             {Object.keys(pages).map((key) => (
               <Button
                 key={key}
                 href={pages[key]}
-                sx={{ my: 2, color: "white", display: "block" }}
+                sx={{ color: "white", display: "block" }}
               >
                 {key}
               </Button>
