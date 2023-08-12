@@ -8,7 +8,7 @@ export default function UserAvatar() {
   const { user } = useGetorFetchMe();
 
   if (user === null) {
-    return <PersonOutlineOutlined fontSize="large" />;
+    return <PersonOutlineOutlined />;
   }
 
   return <Avatar alt={user.globalName ?? user.username} src={user.avatar} />;
