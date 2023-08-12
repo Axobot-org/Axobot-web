@@ -98,7 +98,7 @@ export default function Appbar() {
 
           <LogoAndTitle />
 
-          <Box sx={{ flexGrow: 1, display: { xs: "none", sm: "flex" }, gap: 1 }}>
+          <Box sx={{ flexGrow: 1, display: { xs: "none", sm: "flex" }, gap: 1, marginInlineStart: 1 }}>
             {Object.keys(pages).map((key) => (
               <Button
                 key={key}

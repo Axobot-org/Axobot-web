@@ -1,15 +1,12 @@
-import { Box, Link, Stack, Typography } from "@mui/material";
+import { Box, Button, Link, Typography } from "@mui/material";
 
 const LogoAndTitle = () => (
-  <Stack
+  <Button
     component={Link}
     href="/"
-    direction="row"
-    alignItems="center"
     color="inherit"
     mr={2}
-    flexGrow={{ xs: 1, sm: 0 }}
-    sx={{ textDecoration: "none" }}
+    sx={{ display: "flex", flexDirection: "row", alignItems: "center", flexGrow: { xs: 1, sm: 0 }, textDecoration: "none", padding: "0px 8px" }}
   >
     <Box sx={{ marginRight: "1rem", height: { xs: "2rem", sm: "3rem" } }}>
       <img
@@ -29,7 +26,7 @@ const LogoAndTitle = () => (
     >
             Axobot
     </Typography>
-  </Stack>
+  </Button>
 );
 
 export default LogoAndTitle;
