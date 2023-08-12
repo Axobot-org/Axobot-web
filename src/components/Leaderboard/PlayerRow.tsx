@@ -59,7 +59,7 @@ const CustomListItem = styled(ListItem)(({ theme }) => ({
   borderRadius: 15,
   marginBottom: theme.spacing(0.5),
   "&:hover": {
-    backgroundImage: `linear-gradient(${theme.palette.custom.background1}, ${theme.palette.custom.background1})`,
+    backgroundColor: theme.palette.custom.background1,
   },
 }));
 
