@@ -14,11 +14,11 @@ export default function PlayerRow({ player }: PlayerRowProps) {
   const getBadgeStyle = (index: number) => {
     switch (index) {
     case 0:
-      return { backgroundColor: "#FFD700", color: "#cc9900" };
+      return { backgroundColor: "#FFD700", color: "#806000" };
     case 1:
-      return { backgroundColor: "#C0C0C0", color: "#737373" };
+      return { backgroundColor: "#C0C0C0", color: "#404040" };
     case 2:
-      return { backgroundColor: "#cd7f32", color: "#864d13" };
+      return { backgroundColor: "#cd7f32", color: "#3e260f" };
     default:
       return undefined;
     }
