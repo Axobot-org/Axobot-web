@@ -69,7 +69,7 @@ export default function Appbar() {
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
-        <Toolbar disableGutters>
+        <Toolbar disableGutters sx={{ justifyContent: "space-between" }}>
           <Box sx={{ display: { xs: "flex", sm: "none" } }}>
             <IconButton
               aria-controls="menu-appbar"
@@ -111,7 +111,9 @@ export default function Appbar() {
 
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title={user?.globalName ?? user?.username}>
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+              <IconButton
+                onClick={handleOpenUserMenu}
+              >
                 <UserAvatar />
               </IconButton>
             </Tooltip>

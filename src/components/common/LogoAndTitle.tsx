@@ -6,7 +6,7 @@ const LogoAndTitle = () => (
     href="/"
     color="inherit"
     mr={2}
-    sx={{ display: "flex", flexDirection: "row", alignItems: "center", flexGrow: { xs: 1, sm: 0 }, textDecoration: "none", padding: "0px 8px" }}
+    sx={{ display: "flex", flexDirection: "row", alignItems: "center", textDecoration: "none", padding: "0px 8px" }}
   >
     <Box sx={{ marginRight: "1rem", height: { xs: "2rem", sm: "3rem" } }}>
       <img
