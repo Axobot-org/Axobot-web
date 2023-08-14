@@ -1,3 +1,5 @@
+import PageTitle from "../components/common/PageTitle";
+
 export default function Home() {
-  return <h1>Home</h1>;
+  return <PageTitle text="Home" />;
 }

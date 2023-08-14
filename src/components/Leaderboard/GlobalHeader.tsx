@@ -1,7 +1,7 @@
 import PublicIcon from "@mui/icons-material/Public";
 
-import HeaderLayout from "./HeaderLayout";
+import PageTitle from "../common/PageTitle";
 
 export default function GlobalHeader() {
-  return <HeaderLayout icon={<PublicIcon fontSize="large"/>} name="Global Leaderboard" />;
+  return <PageTitle text="Global Leaderboard" icon={<PublicIcon fontSize="large"/>} />;
 }

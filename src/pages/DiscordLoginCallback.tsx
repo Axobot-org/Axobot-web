@@ -1,6 +1,7 @@
 import { Fragment, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 
+import PageTitle from "../components/common/PageTitle";
 import { useLogin } from "../repository/api/useLogin";
 import useUserSelector from "../repository/redux/selectors/useUserSelector";
 import { ExternalRoutesURLs } from "../router/router";
@@ -48,7 +49,7 @@ export default function DiscordLoginCallback() {
 
   return (
     <Fragment>
-      <h1>Discord Login Callback</h1>
+      <PageTitle text="Discord Login Callback" />
       <p>{message}</p>
     </Fragment>
   );

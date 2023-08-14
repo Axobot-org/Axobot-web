@@ -1,3 +1,5 @@
+import PageTitle from "../components/common/PageTitle";
+
 export default function Dashboard() {
-  return <h1>Dashboard</h1>;
+  return <PageTitle text="Dashboard" />;
 }
