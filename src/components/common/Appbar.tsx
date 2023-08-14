@@ -70,9 +70,8 @@ export default function Appbar() {
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <Box sx={{ flexGrow: 1, display: { xs: "flex", sm: "none" } }}>
+          <Box sx={{ display: { xs: "flex", sm: "none" } }}>
             <IconButton
-              size="large"
               aria-controls="menu-appbar"
               aria-haspopup="true"
               onClick={handleOpenNavMenu}
