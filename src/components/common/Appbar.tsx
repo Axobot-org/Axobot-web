@@ -65,6 +65,7 @@ export default function Appbar() {
     setAnchorElUser(null);
   };
 
+  const getExternalParams = (url: string) => (url.startsWith("http") ? { target: "_blank", rel: "noopener" } : {});
 
   return (
     <AppBar position="static">
@@ -88,7 +89,7 @@ export default function Appbar() {
               onClose={handleCloseNavMenu}
             >
               {Object.keys(pages).map((key) => (
-                <MenuItem key={key} component={Link} href={pages[key]}>
+                <MenuItem key={key} component={Link} href={pages[key]} {...getExternalParams(pages[key])}>
                   <Typography textAlign="center">{key}</Typography>
                 </MenuItem>
               ))}
@@ -103,6 +104,7 @@ export default function Appbar() {
                 key={key}
                 href={pages[key]}
                 sx={{ color: "white", display: "block" }}
+                {...getExternalParams(pages[key])}
               >
                 {key}
               </Button>
@@ -131,7 +133,7 @@ export default function Appbar() {
               onClose={handleCloseUserMenu}
             >
               {Object.keys(settings).map((key) => (
-                <MenuItem key={key} component={Link} href={settings[key]}>
+                <MenuItem key={key} component={Link} href={settings[key]} {...getExternalParams(settings[key])}>
                   <Typography textAlign="center">{key}</Typography>
                 </MenuItem>
               ))}
