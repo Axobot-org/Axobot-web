@@ -8,18 +8,20 @@ interface PageTitleProps {
 export default function PageTitle({ text, icon }: PageTitleProps) {
   if (icon === undefined) {
     return (
-      <Typography my={2} variant="h4" noWrap>
+      <Title my={2}>
         {text}
-      </Typography>
+      </Title>
     );
   }
 
   return (
     <Stack direction="row" alignItems="center" textAlign="center" my={2}>
       {icon}
-      <Typography ml={2} variant="h4" noWrap>
+      <Title ml={2}>
         {text}
-      </Typography>
+      </Title>
     </Stack>
   );
 }
+
+const Title = (props: React.ComponentProps<typeof Typography>) => <Typography variant="h4" fontSize={{ xs: "1.75rem", sm: "2.125rem" }} noWrap {...props} />;
