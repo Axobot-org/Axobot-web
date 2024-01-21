@@ -42,9 +42,10 @@ export default function PlayerRow({ player }: PlayerRowProps) {
 
       <ListItemText>
         <UserName>{player.username}</UserName>
+        <SubtitleUserXp>{BigInt(player.xp).toLocaleString()} xp</SubtitleUserXp>
       </ListItemText>
 
-      <UserXp>{BigInt(player.xp).toLocaleString()} xp</UserXp>
+      <RightUserXp>{BigInt(player.xp).toLocaleString()} xp</RightUserXp>
 
       <CircularProgressWithLabel thickness={3} value={levelProgress} label={
         <Tooltip title={`${xpFromLastLevel.toLocaleString()} / ${xpToNextLevel.toLocaleString()} xp`}>
@@ -75,9 +76,9 @@ const UserCustomListItem = styled(CustomListItem)(({ theme }) => ({
 const RankBadge = styled(Avatar)(({ theme }) => ({
   backgroundColor: theme.palette.custom.background2,
   color: theme.palette.text.primary,
-  width: 32,
-  height: 32,
-  fontSize: 16,
+  width: 28,
+  height: 28,
+  fontSize: 14,
   fontWeight: 700,
 }));
 
@@ -91,10 +92,22 @@ const UserName = styled("span")(({ theme }) => ({
   fontWeight: 600,
 }));
 
-const UserXp = styled(Typography)(({ theme }) => ({
+const SubtitleUserXp = styled(Typography)(({ theme }) => ({
+  marginRight: theme.spacing(2),
+  color: theme.palette.text.secondary,
+  fontSize: 12,
+  [theme.breakpoints.up("sm")]: {
+    display: "none",
+  },
+}));
+
+const RightUserXp = styled(Typography)(({ theme }) => ({
   marginRight: theme.spacing(2),
   color: theme.palette.text.secondary,
   fontSize: 14,
+  [theme.breakpoints.down("sm")]: {
+    display: "none",
+  },
 }));
 
 const UserLevel = styled(Typography)({
