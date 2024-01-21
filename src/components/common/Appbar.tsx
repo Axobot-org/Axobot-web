@@ -71,7 +71,7 @@ export default function Appbar() {
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters sx={{ justifyContent: "space-between" }}>
-          <Box sx={{ display: { xs: "flex", sm: "none" } }}>
+          <Box sx={{ display: { xs: "flex", md: "none" } }}>
             <IconButton
               aria-controls="menu-appbar"
               aria-haspopup="true"
@@ -98,7 +98,7 @@ export default function Appbar() {
 
           <LogoAndTitle />
 
-          <Box sx={{ flexGrow: 1, display: { xs: "none", sm: "flex" }, gap: 1, marginInlineStart: 1 }}>
+          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" }, gap: 1, marginInlineStart: 1 }}>
             {Object.keys(pages).map((key) => (
               <Button
                 key={key}
