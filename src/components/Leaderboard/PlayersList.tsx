@@ -23,8 +23,8 @@ export default function PlayersList({ players, loading, hasNextPage, loadMore }:
   return (
     <List sx={{
       minWidth: {
-        xs: "95%",
-        sm: "min(80%, 40rem)",
+        xs: "95vw",
+        sm: "min(80vw, 40rem)",
       },
     }}>
       {players.map(player => <PlayerRow key={player.user_id} player={player} />)}
