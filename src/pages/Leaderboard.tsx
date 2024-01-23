@@ -8,6 +8,21 @@ import PlayersList from "../components/Leaderboard/PlayersList";
 import { useGetLeaderboard } from "../repository/commands/useGetLeaderboard";
 import { PLAYERS_PER_PAGE } from "../repository/redux/slices/leaderboardSlice";
 
+function getErrorText(error: string) {
+  switch (error) {
+  case "Invalid token":
+    return "Authentication failed, please refresh the page and try again.";
+  case "XP is not enabled for this guild":
+    return "XP is not enabled for this guild.";
+  case "User is not a member of this guild":
+    return "You do not have permission to view this guild's leaderboard.";
+  case "Guild not found":
+    return "This guild does not exist.";
+  default:
+    return "Sorry, an unexpected error has occurred.";
+  }
+}
+
 const LeaderboardPage = ({ guildId }: {guildId: string}) => {
   const { fetchLeaderboardPage, leaderboard, error, loading } = useGetLeaderboard(guildId);
   const [page, setPage] = useState(0);
@@ -61,10 +76,10 @@ const LeaderboardPage = ({ guildId }: {guildId: string}) => {
       <Fragment>
         {guildData ? <GuildHeader guildData={guildData} /> : <GlobalHeader />}
         <Typography my={1}>
-        Sorry, an unexpected error has occurred
+        Oops, something went wrong!
         </Typography>
         <Typography variant="subtitle1" color="text.secondary" fontStyle="italic">
-          {error}
+          {getErrorText(error)}
         </Typography>
       </Fragment>
     );

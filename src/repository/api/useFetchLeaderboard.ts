@@ -52,10 +52,13 @@ export function useFetchLeaderboard(guildId: "global" | string) {
       if (response.status === 200) {
         const json = await response.json() as ApiResponse;
         setData(json);
-      } else if (response.status === 401) {
-        setError("Invalid token");
-      } else if (response.status === 404) {
-        setError("Guild not found");
+      } else if ([400, 401, 404].includes(response.status)) {
+        try {
+          const body = await response.text();
+          setError(body);
+        } catch {
+          setError("Invalid token");
+        }
       } else {
         setError(`Unknown error (code ${response.status})`);
       }
