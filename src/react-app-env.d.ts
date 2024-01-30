@@ -5,6 +5,7 @@ declare namespace NodeJS {
     REACT_APP_DISCORD_AUTH_REDIRECT: string;
     REACT_APP_API_URL: string;
     REACT_APP_DISCORD_CLIENT_ID: string;
+    REACT_APP_MATOMO_URL: string;
   }
 }
 
