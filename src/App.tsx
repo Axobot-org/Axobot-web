@@ -8,7 +8,7 @@ import { AppTheme } from "./styles/AppTheme";
 
 declare global {
   interface Window {
-    _mtm?: Record<string, string | number | boolean>[];
+    _mtm?: Record<string, string | number | boolean | null | undefined>[];
   }
 }
 

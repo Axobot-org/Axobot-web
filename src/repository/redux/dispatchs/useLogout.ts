@@ -6,6 +6,9 @@ export default function useLogout() {
 
   async function logoutCommand() {
     dispatch(logout());
+    if (window._mtm) {
+      window._mtm.push({ event: "logout", userId: undefined });
+    }
   }
 
   return { logoutCommand };

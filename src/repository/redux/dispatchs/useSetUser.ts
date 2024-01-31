@@ -6,6 +6,9 @@ export default function useSetUser() {
 
   async function setUserCommand(user: Exclude<UserState["user"], null>) {
     dispatch(login(user));
+    if (window._mtm) {
+      window._mtm.push({ event: "login", userId: user.id });
+    }
   }
 
   return { setUserCommand };
