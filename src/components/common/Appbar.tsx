@@ -32,6 +32,7 @@ export default function Appbar() {
 
   const settings: {[key: string]: string} = useMemo(() => {
     const base = {
+      "Global leaderboard": "/leaderboard/global",
       "Support server": ExternalRoutesURLs.supportServer,
     };
     if (user) {
