@@ -13,4 +13,8 @@ export const publicRoutes: RouteObject[] = [
     path: "/leaderboard/global",
     Component: Leaderboard,
   },
+  {
+    path: "/leaderboard/:id",
+    Component: Leaderboard,
+  },
 ];

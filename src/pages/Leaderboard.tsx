@@ -7,16 +7,25 @@ import GuildHeader from "../components/Leaderboard/GuildHeader";
 import PlayersList from "../components/Leaderboard/PlayersList";
 import { useGetLeaderboard } from "../repository/commands/useGetLeaderboard";
 import { PLAYERS_PER_PAGE } from "../repository/redux/slices/leaderboardSlice";
+import NeedsLoginErrorPage from "./genericPages/NeedsLoginErrorPage";
+
+enum ErrorMessage {
+  InvalidToken = "Invalid token",
+  XpNotEnabled = "XP is not enabled for this guild",
+  UserNotMember = "User is not a member of this guild",
+  GuildNotFound = "Guild not found",
+  UserNotAuthenticated = "No authentication token found in request headers",
+}
 
 function getErrorText(error: string) {
   switch (error) {
-  case "Invalid token":
+  case ErrorMessage.InvalidToken:
     return "Authentication failed, please refresh the page and try again.";
-  case "XP is not enabled for this guild":
+  case ErrorMessage.XpNotEnabled:
     return "XP is not enabled for this guild.";
-  case "User is not a member of this guild":
+  case ErrorMessage.UserNotMember:
     return "You do not have permission to view this guild's leaderboard.";
-  case "Guild not found":
+  case ErrorMessage.GuildNotFound:
     return "This guild does not exist.";
   default:
     return "Sorry, an unexpected error has occurred.";
@@ -62,6 +71,11 @@ const LeaderboardPage = ({ guildId }: {guildId: string}) => {
   }, [guildId, leaderboard?.guildData]);
 
   const hasNextPage = leaderboard?.totalCount ? leaderboard.totalCount > (page + 1) * PLAYERS_PER_PAGE : false;
+
+  // check if the guild is in private mode and user is not registered
+  if (error === ErrorMessage.UserNotAuthenticated) {
+    return <NeedsLoginErrorPage />;
+  }
 
   function loadMore() {
     if (!hasNextPage) {

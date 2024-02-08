@@ -23,11 +23,6 @@ export function useFetchLeaderboard(guildId: "global" | string) {
 
   async function fetchLeaderboardCommand(page: number, limit: number) {
     setLoading(true);
-    if (guildId !== "global" && token === null) {
-      setError("No token provided");
-      setLoading(false);
-      return;
-    }
 
     const URL = guildId === "global"
       ? process.env.REACT_APP_API_URL + "/discord/leaderboard/global"
