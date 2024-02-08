@@ -92,16 +92,8 @@
         "no-return-assign": "error",
         "no-unneeded-ternary": "warn",
         "no-useless-return": "error",
-        "no-shadow": [
-            "error",
-            {
-                "allow": [
-                    "err",
-                    "resolve",
-                    "reject"
-                ]
-            }
-        ],
+        "no-shadow": "off",
+        "@typescript-eslint/no-shadow": "error",
         "no-trailing-spaces": [
             "error"
         ],
