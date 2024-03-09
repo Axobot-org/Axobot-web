@@ -23,7 +23,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "vite",
+    "start": "vite dev",
     "build": "vite build",
     "lint": "eslint . --ext .ts",
     "serve": "serve -s build -l 3001"
@@ -49,6 +49,7 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "@types/jest": "^27.5.2",
+    "@types/node": "^20.11.25",
     "@types/react": "^18.2.14",
     "@types/react-dom": "^18.2.6",
     "eslint-plugin-simple-import-sort": "^10.0.0"
