@@ -1,6 +1,7 @@
 {
   "name": "axobot-web",
-  "version": "0.1.2",
+  "version": "0.2.0",
+  "type": "module",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.11.1",
@@ -9,20 +10,22 @@
     "@mui/icons-material": "^5.13.7",
     "@mui/material": "^5.13.7",
     "@reduxjs/toolkit": "^1.9.5",
+    "@vitejs/plugin-react-swc": "^3.6.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-infinite-scroll-hook": "^4.1.1",
     "react-redux": "^8.1.1",
     "react-router-dom": "^6.14.1",
     "typescript": "^4.9.5",
+    "vite": "^5.1.5",
+    "vite-plugin-svgr": "^4.2.0",
+    "vite-tsconfig-paths": "^4.3.1",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
+    "start": "vite",
+    "build": "vite build",
     "lint": "eslint . --ext .ts",
-    "eject": "react-scripts eject",
     "serve": "serve -s build -l 3001"
   },
   "browserslist": {
@@ -46,10 +49,8 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "@types/jest": "^27.5.2",
-    "@types/node": "^16.18.38",
     "@types/react": "^18.2.14",
     "@types/react-dom": "^18.2.6",
-    "eslint-plugin-simple-import-sort": "^10.0.0",
-    "react-scripts": "5.0.1"
+    "eslint-plugin-simple-import-sort": "^10.0.0"
   }
 }
