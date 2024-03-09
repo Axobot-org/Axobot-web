@@ -20,7 +20,7 @@ function App() {
     const g = d.createElement("script");
     const s = d.getElementsByTagName("script")[0];
     g.async = true;
-    g.src = process.env.REACT_APP_MATOMO_URL;
+    g.src = import.meta.env.VITE_MATOMO_URL;
     if (s.parentNode) {
       s.parentNode.insertBefore(g, s);
     }

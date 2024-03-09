@@ -1,11 +1,16 @@
+/// <reference types="vite/client" />
+/// <reference types="vite-plugin-svgr/client" />
+
 declare namespace NodeJS {
-  interface ProcessEnv {
-    NODE_ENV: "development" | "production" | "test";
-    PUBLIC_URL: string;
-    REACT_APP_DISCORD_AUTH_REDIRECT: string;
-    REACT_APP_API_URL: string;
-    REACT_APP_DISCORD_CLIENT_ID: string;
-    REACT_APP_MATOMO_URL: string;
+  interface ImportMeta {
+    env: {
+      NODE_ENV: "development" | "production" | "test";
+      PUBLIC_URL: string;
+      VITE_DISCORD_AUTH_REDIRECT: string;
+      VITE_API_URL: string;
+      VITE_DISCORD_CLIENT_ID: string;
+      VITE_MATOMO_URL: string;
+    }
   }
 }
 

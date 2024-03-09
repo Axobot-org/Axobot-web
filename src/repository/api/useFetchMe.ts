@@ -24,7 +24,7 @@ export function useFetchMe() {
 
     try {
       const response = await fetch(
-        process.env.REACT_APP_API_URL + "/auth/me",
+        import.meta.env.VITE_API_URL + "/auth/me",
         {
           method: "GET",
           headers: {

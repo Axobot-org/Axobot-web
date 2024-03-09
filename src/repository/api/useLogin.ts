@@ -30,7 +30,7 @@ export function useLogin() {
 
     try {
       const response = await fetch(
-        process.env.REACT_APP_API_URL + "/auth/discord-callback?" + urlParams,
+        import.meta.env.VITE_API_URL + "/auth/discord-callback?" + urlParams,
         {
           method: "POST",
         });
