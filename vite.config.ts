@@ -10,6 +10,9 @@ export default defineConfig(({ command, mode }) => {
     server: {
       port: env.PORT ? Number(env.PORT) : undefined,
     },
+    build: {
+      outDir: "build"
+    },
     plugins: [
       react(),
       svgr(),
