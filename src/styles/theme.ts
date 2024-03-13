@@ -52,39 +52,46 @@ export const AxoTheme = createTheme({
         @font-face {
           font-family: 'M PLUS 2';
           src: local('M PLUS 2'), url(${MPlus2}) format('truetype');
+          font-display: swap;
         }
         @font-face {
           font-family: 'Poppins';
           font-weight: 500;
           src: local('Poppins'), local('Poppins-bold'), url(${PoppinsBold}) format('truetype');
+          font-display: swap;
         }
         @font-face {
           font-family: 'Poppins';
           font-weight: 500;
           font-style: italic;
           src: local('Poppins'), local('Poppins-bold-italic'), url(${PoppinsBoldItalic}) format('truetype');
+          font-display: swap;
         }
         @font-face {
           font-family: 'Poppins';
           font-weight: 300;
           src: local('Poppins'), local('Poppins-regular'), url(${PoppinsRegular}) format('truetype');
+          font-display: swap;
         }
         @font-face {
           font-family: 'Poppins';
           font-weight: 300;
           font-style: italic;
           src: local('Poppins'), local('Poppins-regular'), url(${PoppinsRegularItalic}) format('truetype');
+          font-display: swap;
         }
         @font-face {
           font-family: 'Poppins';
           font-weight: 200;
           src: local('Poppins'), local('Poppins-thin'), url(${PoppinsThin}) format('truetype');
+          font-display: swap;
         }
         @font-face {
           font-family: 'Poppins';
           font-weight: 200;
           font-style: italic;
           src: local('Poppins'), local('Poppins-thin'), url(${PoppinsThinItalic}) format('truetype');
+          font-display: swap;
         }
       `,
     },
