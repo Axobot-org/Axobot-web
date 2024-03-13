@@ -1,7 +1,6 @@
 import { RouteObject } from "react-router-dom";
 
 import Home from "../../pages/Home";
-import Leaderboard from "../../pages/Leaderboard";
 
 
 export const publicRoutes: RouteObject[] = [
@@ -11,10 +10,10 @@ export const publicRoutes: RouteObject[] = [
   },
   {
     path: "/leaderboard/global",
-    Component: Leaderboard,
+    lazy: () => import("../../pages/Leaderboard"),
   },
   {
     path: "/leaderboard/:id",
-    Component: Leaderboard,
+    lazy: () => import("../../pages/Leaderboard"),
   },
 ];

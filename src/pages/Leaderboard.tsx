@@ -19,20 +19,20 @@ enum ErrorMessage {
 
 function getErrorText(error: string) {
   switch (error) {
-  case ErrorMessage.InvalidToken:
-    return "Authentication failed, please refresh the page and try again.";
-  case ErrorMessage.XpNotEnabled:
-    return "XP is not enabled for this guild.";
-  case ErrorMessage.UserNotMember:
-    return "You do not have permission to view this guild's leaderboard.";
-  case ErrorMessage.GuildNotFound:
-    return "This guild does not exist.";
-  default:
-    return "Sorry, an unexpected error has occurred.";
+    case ErrorMessage.InvalidToken:
+      return "Authentication failed, please refresh the page and try again.";
+    case ErrorMessage.XpNotEnabled:
+      return "XP is not enabled for this guild.";
+    case ErrorMessage.UserNotMember:
+      return "You do not have permission to view this guild's leaderboard.";
+    case ErrorMessage.GuildNotFound:
+      return "This guild does not exist.";
+    default:
+      return "Sorry, an unexpected error has occurred.";
   }
 }
 
-const LeaderboardPage = ({ guildId }: {guildId: string}) => {
+const LeaderboardPage = ({ guildId }: { guildId: string }) => {
   const { fetchLeaderboardPage, leaderboard, error, loading } = useGetLeaderboard(guildId);
   const [page, setPage] = useState(0);
   const [lastRequestedPage, setLastRequestedPage] = useState(-1);
@@ -90,7 +90,7 @@ const LeaderboardPage = ({ guildId }: {guildId: string}) => {
       <Fragment>
         {guildData ? <GuildHeader guildData={guildData} /> : <GlobalHeader />}
         <Typography my={1}>
-        Oops, something went wrong!
+          Oops, something went wrong!
         </Typography>
         <Typography variant="subtitle1" color="text.secondary" fontStyle="italic">
           {getErrorText(error)}
@@ -116,3 +116,5 @@ export default function Leaderboard() {
 
   return <LeaderboardPage guildId={id ?? "global"} />;
 }
+
+export const Component = Leaderboard;

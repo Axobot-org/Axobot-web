@@ -1,6 +1,5 @@
 import { Outlet, RouteObject } from "react-router-dom";
 
-import Dashboard from "../../pages/Dashboard";
 import AuthGuard from "../guards/AuthGuard";
 
 
@@ -14,7 +13,7 @@ export const privateRoutes: RouteObject[] = [
     children: [
       {
         path: "/dashboard",
-        Component: Dashboard,
+        lazy: () => import("../../pages/Dashboard"),
       },
     ],
   },
