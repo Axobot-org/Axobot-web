@@ -10,7 +10,7 @@ const LogoAndTitle = () => (
   >
     <Box sx={{ marginRight: "1rem", height: { xs: "2rem", sm: "3rem" } }}>
       <img
-        src="/assets/logo128.png"
+        src="/assets/logo64.webp"
         alt="logo"
         style={{ height: "100%" }}
       />
@@ -24,7 +24,7 @@ const LogoAndTitle = () => (
         letterSpacing: ".2rem",
       }}
     >
-            Axobot
+      Axobot
     </Typography>
   </Button>
 );
