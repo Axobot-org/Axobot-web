@@ -12,7 +12,7 @@ export default function Appbar() {
   const { user } = useGetorFetchMe();
   const { logoutCommand } = useLogout();
 
-  const pages: {[key: string]: string} = useMemo(() => {
+  const pages: { [key: string]: string } = useMemo(() => {
     const base = {
       "Documentation": ExternalRoutesURLs.documentation,
       "Make a donation": ExternalRoutesURLs.donate,
@@ -30,7 +30,7 @@ export default function Appbar() {
     }
   }, [user]);
 
-  const settings: {[key: string]: string} = useMemo(() => {
+  const settings: { [key: string]: string } = useMemo(() => {
     const base = {
       "Global leaderboard": "/leaderboard/global",
       "Support server": ExternalRoutesURLs.supportServer,
@@ -74,7 +74,8 @@ export default function Appbar() {
         <Toolbar disableGutters sx={{ justifyContent: "space-between" }}>
           <Box sx={{ display: { xs: "flex", md: "none" } }}>
             <IconButton
-              aria-controls="menu-appbar"
+              aria-controls="website-menu"
+              aria-label="Website menu"
               aria-haspopup="true"
               onClick={handleOpenNavMenu}
               color="inherit"
@@ -82,7 +83,7 @@ export default function Appbar() {
               <MenuIcon />
             </IconButton>
             <Menu
-              id="menu-appbar"
+              id="website-menu"
               anchorEl={anchorElNav}
               keepMounted
               open={Boolean(anchorElNav)}
@@ -116,13 +117,15 @@ export default function Appbar() {
             <Tooltip title={user?.globalName ?? user?.username}>
               <IconButton
                 onClick={handleOpenUserMenu}
+                aria-controls="user-menu"
+                aria-label="User menu"
               >
                 <UserAvatar />
               </IconButton>
             </Tooltip>
             <Menu
               sx={{ mt: "45px" }}
-              id="menu-appbar"
+              id="user-menu"
               anchorEl={anchorElUser}
               anchorOrigin={{
                 vertical: "top",
