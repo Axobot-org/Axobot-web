@@ -18,13 +18,18 @@
       "type": "image/png"
     },
     {
-      "src": "assets/logo128.png",
-      "type": "image/png",
+      "src": "assets/logo64.webp",
+      "type": "image/webp",
+      "sizes": "64x64"
+    },
+    {
+      "src": "assets/logo128.webp",
+      "type": "image/webp",
       "sizes": "128x128"
     },
     {
-      "src": "assets/logo512.png",
-      "type": "image/png",
+      "src": "assets/logo512.webp",
+      "type": "image/webp",
       "sizes": "512x512"
     }
   ],
