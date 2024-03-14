@@ -10,7 +10,8 @@ const LogoAndTitle = () => (
   >
     <Box sx={{ marginRight: "1rem", height: { xs: "2rem", sm: "3rem" } }}>
       <img
-        src="/assets/logo64.webp"
+        src="/assets/logo96.webp"
+        srcSet="/assets/logo96.webp 96w, /assets/logo64.webp 64w, /assets/logo128.webp 128w"
         alt="logo"
         style={{ height: "100%" }}
       />
