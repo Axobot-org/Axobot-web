@@ -8,7 +8,7 @@ export default function PublicLayout() {
   return (
     <Stack height="100%" alignItems="center">
       <Appbar />
-      <Stack mx={{ xs: 3, md: "5%" }} maxWidth={{ xl: "1536px" }} alignItems="center">
+      <Stack px={{ xs: 3, md: "5%" }} maxWidth={{ xs: "100%", xl: "1536px" }} alignItems="center">
         <Outlet />
       </Stack>
     </Stack>

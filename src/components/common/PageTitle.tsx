@@ -8,14 +8,14 @@ interface PageTitleProps {
 export default function PageTitle({ text, icon }: PageTitleProps) {
   if (icon === undefined) {
     return (
-      <Title my={2}>
+      <Title my={2} maxWidth="100%">
         {text}
       </Title>
     );
   }
 
   return (
-    <Stack direction="row" alignItems="center" textAlign="center" my={2}>
+    <Stack direction="row" alignItems="center" textAlign="center" my={2} maxWidth="100%">
       {icon}
       <Title ml={2}>
         {text}
