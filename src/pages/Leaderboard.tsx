@@ -8,6 +8,7 @@ import PlayersList from "../components/Leaderboard/PlayersList";
 import { useGetLeaderboard } from "../repository/commands/useGetLeaderboard";
 import { PLAYERS_PER_PAGE } from "../repository/redux/slices/leaderboardSlice";
 import NeedsLoginErrorPage from "./genericPages/NeedsLoginErrorPage";
+import { Helmet } from "react-helmet-async";
 
 enum ErrorMessage {
   InvalidToken = "Invalid token",
@@ -107,6 +108,15 @@ const LeaderboardPage = ({ guildId }: { guildId: string }) => {
   );
 };
 
+const MetaTags = ({ guildId }: { guildId: string }) => {
+  const pageTitle = guildId === "global" ? "Global Leaderboard" : "Server Leaderboard";
+  return (
+    <Helmet>
+      <title>Axobot: {pageTitle}</title>
+    </Helmet>
+  )
+}
+
 export default function Leaderboard() {
   const { id } = useParams();
 
@@ -114,7 +124,14 @@ export default function Leaderboard() {
     return <Navigate to="/" />;
   }
 
-  return <LeaderboardPage guildId={id ?? "global"} />;
+  const guildId = id ?? "global";
+
+  return (
+    <Fragment>
+      <MetaTags guildId={guildId} />
+      <LeaderboardPage guildId={guildId} />
+    </Fragment>
+  );
 }
 
 export const Component = Leaderboard;
