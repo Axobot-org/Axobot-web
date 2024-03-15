@@ -16,22 +16,26 @@ export default function PlayersList({ players, loading, hasNextPage, loadMore }:
   const [sentryRef] = useInfiniteScroll({
     loading,
     hasNextPage,
-    onLoadMore: loadMore,
+    onLoadMore: () => { }, //loadMore,
     delayInMs: 500,
   });
 
   return (
-    <List sx={{
-      minWidth: {
-        xs: "95vw",
-        sm: "min(80vw, 40rem)",
-      },
-    }}>
+    <List
+      id="players-list"
+      aria-busy={loading}
+      sx={{
+        minWidth: {
+          xs: "95vw",
+          sm: "min(80vw, 40rem)",
+        },
+      }}
+    >
       {players.map(player => <PlayerRow key={player.user_id} player={player} />)}
 
       {(loading || hasNextPage) && (
         <ListItem ref={sentryRef} sx={{ justifyContent: "center" }}>
-          <CircularProgress color="primary" />
+          <CircularProgress color="primary" aria-label="Loading players" aria-describedby="players-list" />
         </ListItem>
       )}
     </List>
