@@ -30,6 +30,8 @@ export default function PlayerRow({ player }: PlayerRowProps) {
   const xpToNextLevel = player.xp_to_next_level - player.xp_to_current_level;
   const levelProgress = xpFromLastLevel / xpToNextLevel * 100;
 
+  const xpText = `${xpFromLastLevel.toLocaleString()} / ${xpToNextLevel.toLocaleString()} xp`;
+
   return (
     <Container key={player.user_id}>
       <ListItemIcon>
@@ -47,8 +49,8 @@ export default function PlayerRow({ player }: PlayerRowProps) {
 
       <RightUserXp>{BigInt(player.xp).toLocaleString()} xp</RightUserXp>
 
-      <CircularProgressWithLabel thickness={3} value={levelProgress} label={
-        <Tooltip title={`${xpFromLastLevel.toLocaleString()} / ${xpToNextLevel.toLocaleString()} xp`}>
+      <CircularProgressWithLabel thickness={3} value={levelProgress} aria-label={xpText} label={
+        <Tooltip title={xpText}>
           <UserLevel>{player.level.toString()}</UserLevel>
         </Tooltip>
       } />

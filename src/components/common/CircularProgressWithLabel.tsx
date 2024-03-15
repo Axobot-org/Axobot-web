@@ -8,7 +8,7 @@ interface CircularProgressWithLabelProps extends CircularProgressProps {
 export default function CircularProgressWithLabel(
   props: CircularProgressWithLabelProps,
 ) {
-  const { label } = props;
+  const { label, "aria-label": ariaLabel, ...circularProgressProps } = props;
 
   const Label = useMemo(() => {
     if (label === undefined) {
@@ -31,12 +31,14 @@ export default function CircularProgressWithLabel(
         }}
         size={40}
         thickness={4}
-        {...props}
+        {...circularProgressProps}
         value={100}
+        aria-hidden
       />
       <CircularProgress
         variant="determinate"
-        {...props}
+        {...circularProgressProps}
+        aria-label={ariaLabel}
         sx={{
           position: "absolute",
           left: 0,
