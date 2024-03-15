@@ -13,14 +13,14 @@ export default function PlayerRow({ player }: PlayerRowProps) {
 
   const getBadgeStyle = (index: number) => {
     switch (index) {
-    case 0:
-      return { backgroundColor: "#FFD700", color: "#806000" };
-    case 1:
-      return { backgroundColor: "#C0C0C0", color: "#404040" };
-    case 2:
-      return { backgroundColor: "#cd7f32", color: "#3e260f" };
-    default:
-      return undefined;
+      case 0:
+        return { backgroundColor: "#FFD700", color: "#806000" };
+      case 1:
+        return { backgroundColor: "#C0C0C0", color: "#404040" };
+      case 2:
+        return { backgroundColor: "#cd7f32", color: "#3e260f" };
+      default:
+        return undefined;
     }
   };
 
@@ -38,7 +38,7 @@ export default function PlayerRow({ player }: PlayerRowProps) {
         </RankBadge>
       </ListItemIcon>
 
-      <UserAvatar alt={player.username ?? undefined} src={player.avatar} />
+      <UserAvatar alt={player.username ?? undefined} src={player.avatar + '?size=64'} />
 
       <ListItemText>
         <UserName>{player.username}</UserName>
