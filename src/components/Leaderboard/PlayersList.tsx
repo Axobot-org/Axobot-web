@@ -16,7 +16,7 @@ export default function PlayersList({ players, loading, hasNextPage, loadMore }:
   const [sentryRef] = useInfiniteScroll({
     loading,
     hasNextPage,
-    onLoadMore: () => { }, //loadMore,
+    onLoadMore: loadMore,
     delayInMs: 500,
   });
 
