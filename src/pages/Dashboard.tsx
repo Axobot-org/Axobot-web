@@ -3,10 +3,20 @@ import { Fragment } from "react";
 
 import BubblyButton from "../components/common/BubblyButton";
 import PageTitle from "../components/common/PageTitle";
+import { Helmet } from "react-helmet-async";
+
+const MetaTags = () => {
+  return (
+    <Helmet>
+      <title>Axobot: Server Dashboard</title>
+    </Helmet>
+  )
+}
 
 export default function Dashboard() {
   return (
     <Fragment>
+      <MetaTags />
       <PageTitle text="Dashboard" />
 
       <Typography>

@@ -5,12 +5,19 @@ import { RouterProvider } from "react-router-dom";
 import store from "./repository/redux/store";
 import router from "./router/router";
 import { AppTheme } from "./styles/AppTheme";
+import { Helmet, HelmetProvider } from "react-helmet-async";
 
 declare global {
   interface Window {
     _mtm?: Record<string, string | number | boolean | null | undefined>[];
   }
 }
+
+const DefaultMetaValues = () => (
+  <Helmet>
+    <title>Axobot</title>
+  </Helmet>
+);
 
 function App() {
   useEffect(() => {
@@ -27,11 +34,15 @@ function App() {
   }, []);
 
   return (
-    <Provider store={store}>
-      <AppTheme>
-        <RouterProvider router={router} />
-      </AppTheme>
-    </Provider>
+    <HelmetProvider>
+      <DefaultMetaValues />
+
+      <Provider store={store}>
+        <AppTheme>
+          <RouterProvider router={router} />
+        </AppTheme>
+      </Provider>
+    </HelmetProvider>
   );
 }
 
