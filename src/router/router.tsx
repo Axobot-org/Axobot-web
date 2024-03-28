@@ -6,6 +6,7 @@ import getDiscordAuthUrl from "../repository/getDiscordAuthUrl";
 import { privateRoutes as authenticatedRoutes } from "./routes/authenticatedRoutes";
 import { publicRoutes } from "./routes/publicRoutes";
 import { unauthenticatedRoutes } from "./routes/unauthenticatedRoutes";
+import getBotInviteUrl from "../repository/getBotInviteUrl";
 
 
 export const ExternalRoutesURLs = {
@@ -13,6 +14,7 @@ export const ExternalRoutesURLs = {
   donate: "https://github.com/sponsors/ZRunner",
   supportServer: "https://discord.gg/N55zY88",
   discordAuth: getDiscordAuthUrl(),
+  botInvite: getBotInviteUrl(),
 };
 
 

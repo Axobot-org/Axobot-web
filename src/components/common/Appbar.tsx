@@ -14,8 +14,9 @@ export default function Appbar() {
 
   const pages: { [key: string]: string } = useMemo(() => {
     const base = {
+      "Invite Axobot": ExternalRoutesURLs.botInvite,
       "Documentation": ExternalRoutesURLs.documentation,
-      "Make a donation": ExternalRoutesURLs.donate,
+      "Support us": ExternalRoutesURLs.donate,
     };
     if (user) {
       return {
