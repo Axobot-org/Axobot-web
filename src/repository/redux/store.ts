@@ -11,10 +11,9 @@ const store = configureStore({
     leaderboard: leaderboardReducer,
     user: userReducer,
   },
-  middleware: (getDefaultMiddleware) => [
-    ...getDefaultMiddleware(),
-    localStorageMiddleware.middleware,
-  ],
+  middleware: (getDefaultMiddleware) => (
+    getDefaultMiddleware().concat(localStorageMiddleware.middleware)
+  ),
 });
 
 export type RootState = ReturnType<typeof store.getState>;
