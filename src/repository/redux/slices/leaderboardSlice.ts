@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 import { RankedPlayer } from "../../types/users";
 
-export interface LeaderboardGuildData {
+interface LeaderboardGuildData {
   id: string;
   name: string;
   icon: string | null;

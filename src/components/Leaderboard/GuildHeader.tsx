@@ -1,11 +1,14 @@
 import { Avatar } from "@mui/material";
 
-import { LeaderboardGuildData } from "../../repository/redux/slices/leaderboardSlice";
 import PageTitle from "../common/PageTitle";
 
 
 interface GuildHeaderProps {
-  guildData: LeaderboardGuildData;
+  guildData: {
+    id: string;
+    name: string;
+    icon: string | null;
+  };
 }
 
 export default function GuildHeader({ guildData }: GuildHeaderProps) {
