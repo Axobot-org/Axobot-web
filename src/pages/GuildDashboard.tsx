@@ -4,6 +4,7 @@ import { Fragment } from "react";
 import BubblyButton from "../components/common/BubblyButton";
 import PageTitle from "../components/common/PageTitle";
 import { Helmet } from "react-helmet-async";
+import { Navigate, useParams } from "react-router-dom";
 
 const MetaTags = () => {
   return (
@@ -13,7 +14,13 @@ const MetaTags = () => {
   )
 }
 
-export default function Dashboard() {
+export default function GuildDashboard() {
+  const { id } = useParams();
+
+  if (id === undefined || !/^\d{17,20}$/.test(id)) {
+    return <Navigate to="/" />;
+  }
+
   return (
     <Fragment>
       <MetaTags />
@@ -31,4 +38,4 @@ export default function Dashboard() {
   );
 }
 
-export const Component = Dashboard;
+export const Component = GuildDashboard;
