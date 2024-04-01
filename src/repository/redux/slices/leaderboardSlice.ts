@@ -33,6 +33,9 @@ export const leaderboardSlice = createSlice({
   name: "leaderboard",
   initialState,
   reducers: {
+    resetLeaderboards: () => {
+      return initialState;
+    },
     setLeaderboard: (state, action: PayloadAction<SetAction>) => {
       const { guildId, guildData, players, totalCount, xpType } = action.payload;
       if (state[guildId] === undefined) {
@@ -57,6 +60,6 @@ export const leaderboardSlice = createSlice({
   },
 });
 
-export const { setLeaderboard } = leaderboardSlice.actions;
+export const { resetLeaderboards, setLeaderboard } = leaderboardSlice.actions;
 
 export default leaderboardSlice.reducer;
