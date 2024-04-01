@@ -12,8 +12,8 @@ export const privateRoutes: RouteObject[] = [
     ),
     children: [
       {
-        path: "/dashboard",
-        lazy: () => import("../../pages/Dashboard"),
+        path: "/dashboard/:id",
+        lazy: () => import("../../pages/GuildDashboard"),
       },
     ],
   },
