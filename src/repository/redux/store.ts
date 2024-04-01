@@ -1,13 +1,15 @@
 import { configureStore, TypedStartListening } from "@reduxjs/toolkit";
 
 import localStorageMiddleware from "./middlewares/localStorageMiddleware";
+import guildReducer from "./slices/guildSlice";
 import leaderboardReducer from "./slices/leaderboardSlice";
 import userReducer from "./slices/userSlice";
 
 const store = configureStore({
   reducer: {
-    user: userReducer,
+    guild: guildReducer,
     leaderboard: leaderboardReducer,
+    user: userReducer,
   },
   middleware: (getDefaultMiddleware) => [
     ...getDefaultMiddleware(),
