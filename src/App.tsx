@@ -1,11 +1,11 @@
 import { useEffect } from "react";
+import { Helmet, HelmetProvider } from "react-helmet-async";
 import { Provider } from "react-redux";
 import { RouterProvider } from "react-router-dom";
 
 import store from "./repository/redux/store";
 import router from "./router/router";
 import { AppTheme } from "./styles/AppTheme";
-import { Helmet, HelmetProvider } from "react-helmet-async";
 
 declare global {
   interface Window {
