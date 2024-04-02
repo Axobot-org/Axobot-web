@@ -1,18 +1,16 @@
 import { Typography } from "@mui/material";
 import { Fragment } from "react";
-
-import BubblyButton from "../components/common/BubblyButton";
-import PageTitle from "../components/common/PageTitle";
 import { Helmet } from "react-helmet-async";
 import { Navigate, useParams } from "react-router-dom";
 
-const MetaTags = () => {
-  return (
-    <Helmet>
-      <title>Axobot: Server Dashboard</title>
-    </Helmet>
-  )
-}
+import BubblyButton from "../components/common/BubblyButton";
+import PageTitle from "../components/common/PageTitle";
+
+const MetaTags = () => (
+  <Helmet>
+    <title>Axobot: Server Dashboard</title>
+  </Helmet>
+);
 
 export default function GuildDashboard() {
   const { id } = useParams();

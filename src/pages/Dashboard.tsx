@@ -1,23 +1,22 @@
-import { Helmet } from "react-helmet-async";
+import { CircularProgress, Typography } from "@mui/material";
 import { Fragment } from "react/jsx-runtime";
+import { Helmet } from "react-helmet-async";
+
 import PageTitle from "../components/common/PageTitle";
 import { useGetOrFetchGuilds } from "../repository/commands/useGetOrFetchGuilds";
-import { CircularProgress, Typography } from "@mui/material";
 
 
-const MetaTags = () => {
-  return (
-    <Helmet>
-      <title>Axobot: Server Dashboard</title>
-    </Helmet>
-  )
-}
+const MetaTags = () => (
+  <Helmet>
+    <title>Axobot: Server Dashboard</title>
+  </Helmet>
+);
 
 function GuildsGrid() {
   const { guilds, error, loading } = useGetOrFetchGuilds();
 
-  if (loading || guilds === null) {
-    return <CircularProgress color="primary" aria-label="Loading guilds" />
+  if (loading || guilds === undefined) {
+    return <CircularProgress color="primary" aria-label="Loading guilds" />;
   }
 
   if (error) {
@@ -42,7 +41,7 @@ function GuildsGrid() {
         </Typography>
       ))}
     </>
-  )
+  );
 
 }
 
