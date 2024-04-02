@@ -7,31 +7,32 @@ import GlobalHeader from "../components/Leaderboard/GlobalHeader";
 import GuildHeader from "../components/Leaderboard/GuildHeader";
 import PlayersList from "../components/Leaderboard/PlayersList";
 import { useFetchLeaderboardQuery } from "../repository/redux/api";
+import NeedsLoginErrorPage from "./genericPages/NeedsLoginErrorPage";
 
 const PLAYERS_PER_PAGE = 30;
 
-// enum ErrorMessage {
-//   InvalidToken = "Invalid token",
-//   XpNotEnabled = "XP is not enabled for this guild",
-//   UserNotMember = "User is not a member of this guild",
-//   GuildNotFound = "Guild not found",
-//   UserNotAuthenticated = "No authentication token found in request headers",
-// }
+enum ErrorMessage {
+  InvalidToken = "Invalid token",
+  XpNotEnabled = "XP is not enabled for this guild",
+  UserNotMember = "User is not a member of this guild",
+  GuildNotFound = "Guild not found",
+  UserNotAuthenticated = "No authentication token found in request headers",
+}
 
-// function getErrorText(error: string) {
-//   switch (error) {
-//   case ErrorMessage.InvalidToken:
-//     return "Authentication failed, please refresh the page and try again.";
-//   case ErrorMessage.XpNotEnabled:
-//     return "XP is not enabled for this guild.";
-//   case ErrorMessage.UserNotMember:
-//     return "You do not have permission to view this guild's leaderboard.";
-//   case ErrorMessage.GuildNotFound:
-//     return "This guild does not exist.";
-//   default:
-//     return "Sorry, an unexpected error has occurred.";
-//   }
-// }
+function getErrorText(errorMessage: string) {
+  switch (errorMessage) {
+  case ErrorMessage.InvalidToken:
+    return "Authentication failed, please refresh the page and try again.";
+  case ErrorMessage.XpNotEnabled:
+    return "XP is not enabled for this guild.";
+  case ErrorMessage.UserNotMember:
+    return "You do not have permission to view this guild's leaderboard.";
+  case ErrorMessage.GuildNotFound:
+    return "This guild does not exist.";
+  default:
+    return "Sorry, an unexpected error has occurred.";
+  }
+}
 
 const LeaderboardPage = ({ guildId }: { guildId: string }) => {
   const [requestedPage, setRequestedPage] = useState(0);
@@ -66,10 +67,10 @@ const LeaderboardPage = ({ guildId }: { guildId: string }) => {
 
   const hasNextPage = leaderboard?.totalCount ? leaderboard.totalCount > (requestedPage + 1) * PLAYERS_PER_PAGE : false;
 
-  // TODO: check if the guild is in private mode and user is not registered
-  // if (error === ErrorMessage.UserNotAuthenticated) {
-  //   return <NeedsLoginErrorPage />;
-  // }
+  const isParsingError = error && "status" in error && error.status === "PARSING_ERROR";
+  if (isParsingError && error.data === ErrorMessage.UserNotAuthenticated) {
+    return <NeedsLoginErrorPage />;
+  }
 
   function loadMore() {
     const lastLoadedPage = Math.ceil(Object.keys(leaderboard?.players ?? {}).length / PLAYERS_PER_PAGE) - 1;
@@ -86,11 +87,13 @@ const LeaderboardPage = ({ guildId }: { guildId: string }) => {
       <Fragment>
         {guildData ? <GuildHeader guildData={guildData} /> : <GlobalHeader />}
         <Typography my={1}>
-          Oops, something went wrong!
+          {isParsingError ? getErrorText(error.data) : ""}
         </Typography>
-        <Typography variant="subtitle1" color="text.secondary" fontStyle="italic">
-          {`${error}`}
-        </Typography>
+        {isParsingError && (
+          <Typography variant="subtitle1" color="text.secondary" fontStyle="italic">
+            {error.data}
+          </Typography>
+        )}
       </Fragment>
     );
   }
