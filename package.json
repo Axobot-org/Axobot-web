@@ -53,6 +53,9 @@
     "@types/node": "^20.11.25",
     "@types/react": "^18.2.14",
     "@types/react-dom": "^18.2.6",
-    "eslint-plugin-simple-import-sort": "^10.0.0"
+    "@typescript-eslint/eslint-plugin": "^7.5.0",
+    "@typescript-eslint/parser": "^7.5.0",
+    "eslint-plugin-simple-import-sort": "^10.0.0",
+    "eslint-plugin-unused-imports": "^3.1.0"
   }
 }
