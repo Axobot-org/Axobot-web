@@ -124,7 +124,7 @@ export default function Leaderboard() {
   return (
     <Fragment>
       <MetaTags guildId={guildId} />
-      <LeaderboardPage guildId={guildId} />
+      <LeaderboardPage guildId={guildId} key={guildId} />
     </Fragment>
   );
 }
