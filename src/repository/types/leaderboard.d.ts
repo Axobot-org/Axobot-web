@@ -3,6 +3,7 @@ export interface LeaderboardData {
   players: {[key: string]: RankedPlayer}
   totalCount: number,
   xpType: string,
+  xpRate: number,
 }
 
 export interface RankedPlayer {
