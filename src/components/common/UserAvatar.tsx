@@ -7,7 +7,7 @@ import { useGetorFetchMe } from "../../repository/commands/useGetOrFetchMe";
 export default function UserAvatar() {
   const { user } = useGetorFetchMe();
 
-  if (user === null) {
+  if (user === undefined) {
     return <PersonOutlineOutlined />;
   }
 
