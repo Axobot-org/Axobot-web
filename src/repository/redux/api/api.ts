@@ -37,6 +37,7 @@ export const axoApi = createApi({
         guild: response.guild,
         totalCount: response.players_count,
         xpType: response.xp_type,
+        xpRate: response.xp_rate,
         players: response.players.reduce((acc, curr) => {
           acc[curr.ranking] = curr;
           return acc;
@@ -46,6 +47,7 @@ export const axoApi = createApi({
         guild: newItems.guild,
         totalCount: newItems.totalCount,
         xpType: newItems.xpType,
+        xpRate: newItems.xpRate,
         players: { ...currentCache.players, ...newItems.players },
       }),
       forceRefetch({ currentArg, previousArg }) {

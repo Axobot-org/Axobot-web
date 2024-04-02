@@ -15,4 +15,5 @@ export interface LeaderboardResponse {
   players: RankedPlayer[],
   players_count: number,
   xp_type: string,
+  xp_rate: number,
 }
