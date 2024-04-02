@@ -1,18 +1,18 @@
 import { configureStore, TypedStartListening } from "@reduxjs/toolkit";
 
+import { axoApi } from "./api";
 import localStorageMiddleware from "./middlewares/localStorageMiddleware";
-import guildReducer from "./slices/guildSlice";
-import leaderboardReducer from "./slices/leaderboardSlice";
 import userReducer from "./slices/userSlice";
 
 const store = configureStore({
   reducer: {
-    guild: guildReducer,
-    leaderboard: leaderboardReducer,
+    [axoApi.reducerPath]: axoApi.reducer,
     user: userReducer,
   },
   middleware: (getDefaultMiddleware) => (
-    getDefaultMiddleware().concat(localStorageMiddleware.middleware)
+    getDefaultMiddleware()
+      .concat(localStorageMiddleware.middleware)
+      .concat(axoApi.middleware)
   ),
 });
 
