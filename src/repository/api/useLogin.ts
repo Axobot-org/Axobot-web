@@ -1,58 +1,21 @@
-import { useState } from "react";
+import { axoApi, useLoginMutation } from "../redux/api";
+import { useAppDispatch } from "../redux/hooks";
+import { setToken } from "../redux/slices/userSlice";
 
-import useSetToken from "../redux/dispatchs/useSetToken";
-import useSetUser from "../redux/dispatchs/useSetUser";
-import { isFetchError } from "../typesGuards";
-
-interface LoginJSONResponse {
-  token: string;
-  id: string;
-  username: string;
-  globalName: string | null;
-  avatar: string;
-}
 
 export function useLogin() {
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [data, setData] = useState<LoginJSONResponse | null>(null);
+  const [loginMutation, { error, isLoading, data }] = useLoginMutation();
 
-  const { setTokenCommand } = useSetToken();
-  const { setUserCommand } = useSetUser();
+  const dispatch = useAppDispatch();
 
   async function loginCommand(discordCode: string) {
-    setLoading(true);
-    setError(null);
-
-    const urlParams = new URLSearchParams({
-      code: discordCode,
-    });
-
-    try {
-      const response = await fetch(
-        import.meta.env.VITE_API_URL + "/auth/discord-callback?" + urlParams,
-        {
-          method: "POST",
-        });
-      if (response.status === 200) {
-        const json = await response.json() as LoginJSONResponse;
-        setData(json);
-        setTokenCommand(json.token);
-        setUserCommand({
-          id: json.id,
-          username: json.username,
-          globalName: json.globalName,
-          avatar: json.avatar,
-        });
-      } else {
-        setError("Invalid code");
-      }
-    } catch (err) {
-      setError(isFetchError(err) ? err.message : "Unknown error");
-      console.error(err);
+    const response = await loginMutation(discordCode).unwrap();
+    dispatch(setToken(response.token));
+    if (window._mtm) {
+      window._mtm.push({ event: "login", userId: response.id });
     }
-    setLoading(false);
+    dispatch(axoApi.util.resetApiState());
   }
 
-  return { loginCommand, error, loading, data };
+  return { loginCommand, error, loading: isLoading, data };
 }
