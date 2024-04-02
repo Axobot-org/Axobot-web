@@ -1,7 +1,7 @@
 import { createListenerMiddleware, isAnyOf } from "@reduxjs/toolkit";
 
-import { logout, setToken } from "../slices/userSlice";
 import { AppStartListening } from "../store";
+import { logout, setToken } from "./tokenSlice";
 
 const localStorageMiddleware = createListenerMiddleware();
 

@@ -6,7 +6,7 @@ import { Navigate, useParams } from "react-router-dom";
 import GlobalHeader from "../components/Leaderboard/GlobalHeader";
 import GuildHeader from "../components/Leaderboard/GuildHeader";
 import PlayersList from "../components/Leaderboard/PlayersList";
-import { useFetchLeaderboardQuery } from "../repository/redux/api";
+import { useFetchLeaderboardQuery } from "../repository/redux/api/api";
 import NeedsLoginErrorPage from "./genericPages/NeedsLoginErrorPage";
 
 const PLAYERS_PER_PAGE = 30;
