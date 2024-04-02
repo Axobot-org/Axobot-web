@@ -1,16 +1,7 @@
-import { useFetchMe } from "../api/useFetchMe";
-import useTokenSelector from "../redux/selectors/useTokenSelector";
-import useUserSelector from "../redux/selectors/useUserSelector";
-
+import { useFetchMeQuery } from "../redux/api";
 
 export function useGetorFetchMe() {
-  const { fetchMeCommand, error, loading } = useFetchMe();
-  const token = useTokenSelector();
-  const user = useUserSelector();
+  const { data, error, isLoading } = useFetchMeQuery();
 
-  if (user === null && token !== null && !loading && !error) {
-    fetchMeCommand();
-  }
-
-  return { user, error, loading };
+  return { user: data, error, loading: isLoading };
 }
