@@ -1,8 +1,8 @@
 import { configureStore, TypedStartListening } from "@reduxjs/toolkit";
 
-import { axoApi } from "./api";
-import localStorageMiddleware from "./middlewares/localStorageMiddleware";
-import userReducer from "./slices/userSlice";
+import { axoApi } from "./api/api";
+import localStorageMiddleware from "./tokenStorage/localStorageMiddleware";
+import userReducer from "./tokenStorage/tokenSlice";
 
 const store = configureStore({
   reducer: {

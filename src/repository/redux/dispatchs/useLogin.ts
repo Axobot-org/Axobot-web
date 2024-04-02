@@ -1,6 +1,6 @@
-import { axoApi, useLoginMutation } from "../redux/api";
-import { useAppDispatch } from "../redux/hooks";
-import { setToken } from "../redux/slices/userSlice";
+import { axoApi, useLoginMutation } from "../api/api";
+import { useAppDispatch } from "../hooks";
+import { setToken } from "../tokenStorage/tokenSlice";
 
 
 export function useLogin() {

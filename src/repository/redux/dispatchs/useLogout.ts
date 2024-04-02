@@ -1,6 +1,6 @@
-import { axoApi } from "../api";
+import { axoApi } from "../api/api";
 import { useAppDispatch } from "../hooks";
-import { logout } from "../slices/userSlice";
+import { logout } from "../tokenStorage/tokenSlice";
 
 export default function useLogout() {
   const dispatch = useAppDispatch();
