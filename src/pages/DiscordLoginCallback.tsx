@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 
 import PageTitle from "../components/common/PageTitle";
 import { useLogin } from "../repository/api/useLogin";
-import useUserSelector from "../repository/redux/selectors/useUserSelector";
 import { ExternalRoutesURLs } from "../router/router";
 import useQuery from "../router/useQuery";
 
@@ -12,11 +11,10 @@ export default function DiscordLoginCallback() {
   const navigate = useNavigate();
 
   const { loginCommand, error, loading, data } = useLogin();
-  const user = useUserSelector();
 
   const message = useMemo(() => {
     if (error) {
-      return error;
+      return `${error}`;
     } else if (loading) {
       return "Relax, we're taking care of your Discord connection...";
     } else if (data) {
@@ -38,7 +36,7 @@ export default function DiscordLoginCallback() {
     } else {
       window.location.href = ExternalRoutesURLs.discordAuth;
     }
-  }, [code, data, loading, error, loginCommand, user]);
+  }, [code, data, loading, error, loginCommand]);
 
   // redirect to home if data is found
   useEffect(() => {
