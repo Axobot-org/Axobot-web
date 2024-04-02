@@ -1,45 +1,11 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-import { AuthenticatedUserObject, RankedPlayer } from "../types/users";
-import { RootState } from "./store";
+import { LeaderboardResponse, LoginJSONResponse } from "../../types/api";
+import { GuildData } from "../../types/guild";
+import { LeaderboardData, RankedPlayer } from "../../types/leaderboard";
+import { AuthenticatedUserObject } from "../../types/users";
+import { RootState } from "../store";
 
-interface LoginJSONResponse {
-  token: string;
-  id: string;
-  username: string;
-  globalName: string | null;
-  avatar: string;
-}
-
-interface GuildData {
-  id: string;
-  name: string;
-  icon: string | null;
-  banner: string | null;
-  splash: string | null;
-  owner: boolean;
-  isAdmin: boolean;
-  permissions: string;
-  features: string[];
-}
-
-interface LeaderboardResponse {
-  guild: {
-    id: string;
-    name: string;
-    icon: string | null;
-  } | null,
-  players: RankedPlayer[],
-  players_count: number,
-  xp_type: string,
-}
-
-interface LeaderboardData {
-  guild: LeaderboardResponse["guild"]
-  players: {[key: string]: RankedPlayer}
-  totalCount: number,
-  xpType: string,
-}
 
 export const axoApi = createApi({
   reducerPath: "axoApi",
