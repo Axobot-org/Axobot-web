@@ -30,7 +30,7 @@ export default function GuildBox({ guild }: GuildBoxProps) {
 
   return (
     <Container>
-      <ActionArea {...{ component: Link, to: `/dashboard/${guild.id}` }}>
+      <ActionArea {...{ component: Link, to: `/dashboard/${guild.id}` }} disabled={!guild.isBotPresent}>
         {banner ? (
           <CardMedia component="img" height={BANNER_HEIGHT} image={banner} alt="guild banner" />
         ) : (
@@ -51,7 +51,6 @@ const Container = styled(Card)(({ theme }) => ({
   width: "13.75rem",
   height: "13.5rem",
 
-
   [theme.breakpoints.down("sm")]: {
     width: "calc(50% - 36px)",
   },
@@ -60,11 +59,22 @@ const Container = styled(Card)(({ theme }) => ({
   },
 }));
 
-const ActionArea = styled(CardActionArea)({
+const ActionArea = styled(CardActionArea)(({ disabled }) => ({
   height: "100%",
   display: "flex",
   flexDirection: "column",
-});
+  transition: "transform 0.3s",
+
+  ...(disabled
+    ? {
+      opacity: 0.5,
+    }
+    : {
+      "&:hover": {
+        transform: "scale(1.02)",
+      },
+    }),
+}));
 
 const GuildColoredBannedContainer = styled(Box)({
   width: "100%",
