@@ -1,7 +1,7 @@
 import { CircularProgress, List, ListItem } from "@mui/material";
 import useInfiniteScroll from "react-infinite-scroll-hook";
 
-import { RankedPlayer } from "../../repository/types/users";
+import { RankedPlayer } from "../../repository/types/leaderboard";
 import PlayerRow from "./PlayerRow";
 
 interface PlayersListProps {
@@ -29,6 +29,7 @@ export default function PlayersList({ players, loading, hasNextPage, loadMore }:
           xs: "95vw",
           sm: "min(80vw, 40rem)",
         },
+        maxWidth: "98vw",
       }}
     >
       {players.map(player => <PlayerRow key={player.user_id} player={player} />)}
