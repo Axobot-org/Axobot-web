@@ -47,10 +47,18 @@ export default function GuildBox({ guild }: GuildBoxProps) {
   );
 }
 
-const Container = styled(Card)({
+const Container = styled(Card)(({ theme }) => ({
   width: "13.75rem",
   height: "13.5rem",
-});
+
+
+  [theme.breakpoints.down("sm")]: {
+    width: "calc(50% - 36px)",
+  },
+  [theme.breakpoints.down(510)]: {
+    width: "75%",
+  },
+}));
 
 const ActionArea = styled(CardActionArea)({
   height: "100%",
