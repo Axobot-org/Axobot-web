@@ -3,7 +3,7 @@ import { Fragment } from "react/jsx-runtime";
 import { Helmet } from "react-helmet-async";
 
 import PageTitle from "../components/common/PageTitle";
-import { useGetOrFetchGuilds } from "../repository/commands/useGetOrFetchGuilds";
+import { useGetOrFetchAdminGuilds } from "../repository/commands/useGetOrFetchAdminGuilds";
 
 
 const MetaTags = () => (
@@ -13,7 +13,7 @@ const MetaTags = () => (
 );
 
 function GuildsGrid() {
-  const { guilds, error, loading } = useGetOrFetchGuilds();
+  const { guilds, error, loading } = useGetOrFetchAdminGuilds();
 
   if (loading || guilds === undefined) {
     return <CircularProgress color="primary" aria-label="Loading guilds" />;
