@@ -1,4 +1,5 @@
 import { Avatar, Box, Card, CardActionArea, CardContent, CardMedia, styled, Typography } from "@mui/material";
+import { useMemo } from "react";
 import { Link } from "react-router-dom";
 
 import { GuildData } from "../../repository/types/guild";
@@ -18,6 +19,15 @@ export default function GuildBox({ guild }: GuildBoxProps) {
       ? `https://cdn.discordapp.com/splashes/${guild.id}/${guild.splash}.webp`
       : undefined;
 
+  const avatarText = useMemo(() => {
+    if (guild.icon) return undefined;
+    // return first letter of each word in guild name
+    return guild.name
+      .split(" ")
+      .map((word) => word[0])
+      .join("");
+  }, [guild.icon, guild.name]);
+
   return (
     <Container>
       <ActionArea {...{ component: Link, to: `/dashboard/${guild.id}` }}>
@@ -28,7 +38,7 @@ export default function GuildBox({ guild }: GuildBoxProps) {
             <GuildColoredBanned url={icon} />
           </GuildColoredBannedContainer>
         )}
-        <GuildAvatar src={icon} />
+        <GuildAvatar src={icon}>{avatarText}</GuildAvatar>
         <CardContentCentered>
           <GuildName name={guild.name} />
         </CardContentCentered>
@@ -76,6 +86,7 @@ const GuildAvatar = styled(Avatar)(({ theme }) => ({
   transform: "translate(-50%, -50%)",
   width: theme.spacing(7),
   height: theme.spacing(7),
+  color: "white",
   backgroundColor: theme.palette.background.paper,
   backgroundImage: "linear-gradient(rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.05))",
 }));
