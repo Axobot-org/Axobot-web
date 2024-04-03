@@ -1,7 +1,8 @@
-import { Avatar, Box, Card, CardActionArea, CardContent, CardMedia, styled, Typography } from "@mui/material";
+import { Avatar, Box, Button, Card, CardActionArea, CardContent, CardMedia, styled, Typography } from "@mui/material";
 import { useMemo } from "react";
 import { Link } from "react-router-dom";
 
+import getBotInviteUrl from "../../repository/getBotInviteUrl";
 import { GuildData } from "../../repository/types/guild";
 
 interface GuildBoxProps {
@@ -43,13 +44,19 @@ export default function GuildBox({ guild }: GuildBoxProps) {
           <GuildName name={guild.name} />
         </CardContentCentered>
       </ActionArea>
+      {!guild.isBotPresent && <InviteButton guildId={guild.id} />}
     </Container>
   );
 }
 
 const Container = styled(Card)(({ theme }) => ({
+  position: "relative",
   width: "13.75rem",
   height: "13.5rem",
+
+  "&:hover .invite-button, &:active .invite-button": {
+    visibility: "visible",
+  },
 
   [theme.breakpoints.down("sm")]: {
     width: "calc(50% - 36px)",
@@ -122,4 +129,26 @@ function GuildName({ name }: {name: string}) {
       {name}
     </Typography>
   );
+}
+
+function InviteButton({ guildId }: {guildId: string}) {
+  const url = getBotInviteUrl(guildId);
+
+  return <Button
+    sx={{
+      visibility: "hidden",
+      position: "absolute",
+      top: "50%",
+      left: "50%",
+      transform: "translate(-50%, -50%)",
+      whiteSpace: "nowrap",
+    }}
+    className="invite-button"
+    variant="contained"
+    color="primary"
+    href={url}
+    target="_blank"
+  >
+    Invite Axobot
+  </Button>;
 }
