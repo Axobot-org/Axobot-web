@@ -1,8 +1,9 @@
-import { CircularProgress, Typography } from "@mui/material";
+import { CircularProgress, Stack, Typography } from "@mui/material";
 import { Fragment } from "react/jsx-runtime";
 import { Helmet } from "react-helmet-async";
 
 import PageTitle from "../components/common/PageTitle";
+import GuildBox from "../components/Dashboard/GuildBox";
 import { useGetOrFetchAdminGuilds } from "../repository/commands/useGetOrFetchAdminGuilds";
 
 
@@ -34,13 +35,11 @@ function GuildsGrid() {
   }
 
   return (
-    <>
+    <Stack direction="row" flexWrap="wrap" gap={3} my={4} justifyContent="center">
       {Object.entries(guilds).map(([guildId, guild]) => (
-        <Typography key={guildId}>
-          {guild.name}
-        </Typography>
+        <GuildBox guild={guild} key={guildId} />
       ))}
-    </>
+    </Stack>
   );
 
 }
