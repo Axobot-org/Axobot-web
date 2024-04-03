@@ -24,7 +24,9 @@ export default function GuildBox({ guild }: GuildBoxProps) {
         {banner ? (
           <CardMedia component="img" height={BANNER_HEIGHT} image={banner} alt="guild banner" />
         ) : (
-          <GuildColoredBanned />
+          <GuildColoredBannedContainer>
+            <GuildColoredBanned url={icon} />
+          </GuildColoredBannedContainer>
         )}
         <GuildAvatar src={icon} />
         <CardContentCentered>
@@ -46,10 +48,25 @@ const ActionArea = styled(CardActionArea)({
   flexDirection: "column",
 });
 
-const GuildColoredBanned = styled(Box)(({ theme }) => ({
+const GuildColoredBannedContainer = styled(Box)({
   width: "100%",
-  minHeight: BANNER_HEIGHT,
-  backgroundColor: theme.palette.custom.background3,
+  overflow: "hidden",
+});
+
+const GuildColoredBanned = styled(Box, {
+  shouldForwardProp: (prop) => prop !== "url",
+})<{url: string | undefined}>(({ theme, url }) => ({
+  height: BANNER_HEIGHT,
+  ...(url
+    ? {
+      backgroundImage: `url("${url}");`,
+      backgroundSize: "cover",
+      filter: "blur(50px)",
+      transform: "scale(4)",
+    }
+    : {
+      backgroundColor: theme.palette.custom.background3,
+    }),
 }));
 
 const GuildAvatar = styled(Avatar)(({ theme }) => ({
