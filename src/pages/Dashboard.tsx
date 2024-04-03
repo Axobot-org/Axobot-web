@@ -1,4 +1,5 @@
 import { CircularProgress, Stack, Typography } from "@mui/material";
+import { useMemo } from "react";
 import { Fragment } from "react/jsx-runtime";
 import { Helmet } from "react-helmet-async";
 
@@ -16,7 +17,17 @@ const MetaTags = () => (
 function GuildsGrid() {
   const { guilds, error, loading } = useGetOrFetchAdminGuilds();
 
-  if (loading || guilds === undefined) {
+  // sort guilds per isBotPresent first, then by name
+  const sortedGuilds = useMemo(() => (
+    guilds?.sort((a, b) => {
+      if (a.isBotPresent === b.isBotPresent) {
+        return a.name.localeCompare(b.name);
+      }
+      return a.isBotPresent ? -1 : 1;
+    })
+  ), [guilds]);
+
+  if (loading || sortedGuilds === undefined) {
     return <CircularProgress color="primary" aria-label="Loading guilds" />;
   }
 
@@ -36,8 +47,8 @@ function GuildsGrid() {
 
   return (
     <Stack direction="row" flexWrap="wrap" gap={3} my={4} justifyContent="center">
-      {Object.entries(guilds).map(([guildId, guild]) => (
-        <GuildBox guild={guild} key={guildId} />
+      {sortedGuilds.map((guild) => (
+        <GuildBox guild={guild} key={guild.id} />
       ))}
     </Stack>
   );

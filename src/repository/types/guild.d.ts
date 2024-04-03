@@ -6,6 +6,7 @@ export interface GuildData {
   splash: string | null;
   owner: boolean;
   isAdmin: boolean;
+  isBotPresent: boolean;
   permissions: string;
   features: string[];
 }
