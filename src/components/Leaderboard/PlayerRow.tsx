@@ -1,7 +1,7 @@
 import { Avatar, ListItem, ListItemIcon, ListItemText, styled, Tooltip, Typography } from "@mui/material";
 
 import { useGetorFetchMe } from "../../repository/commands/useGetOrFetchMe";
-import { RankedPlayer } from "../../repository/types/users";
+import { RankedPlayer } from "../../repository/types/leaderboard";
 import CircularProgressWithLabel from "../common/CircularProgressWithLabel";
 
 interface PlayerRowProps {
