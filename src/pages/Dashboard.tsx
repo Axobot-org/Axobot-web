@@ -45,6 +45,14 @@ function GuildsGrid() {
     );
   }
 
+  if (sortedGuilds.length === 0) {
+    return (
+      <Typography my={4}>
+        You have no server to manage. The <b>Administrator</b> permission is required to manage Axobot in a server.
+      </Typography>
+    );
+  }
+
   return (
     <Stack direction="row" flexWrap="wrap" gap={3} my={4} justifyContent="center">
       {sortedGuilds.map((guild) => (
