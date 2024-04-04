@@ -56,6 +56,7 @@ const Container = styled(Card)(({ theme }) => ({
 
   "&:hover .invite-button, &:active .invite-button": {
     visibility: "visible",
+    opacity: 1,
   },
 
   [theme.breakpoints.down("sm")]: {
@@ -138,9 +139,11 @@ function InviteButton({ guildId }: {guildId: string}) {
     sx={{
       visibility: "hidden",
       position: "absolute",
+      opacity: 0,
       top: "50%",
       left: "50%",
       transform: "translate(-50%, -50%)",
+      transition: "opacity 0.3s",
       whiteSpace: "nowrap",
     }}
     className="invite-button"
