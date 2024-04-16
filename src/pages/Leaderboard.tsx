@@ -5,6 +5,7 @@ import { Navigate, useParams } from "react-router-dom";
 
 import GlobalHeader from "../components/Leaderboard/GlobalHeader";
 import GuildHeader from "../components/Leaderboard/GuildHeader";
+import LeaderboardConfigInfo from "../components/Leaderboard/LeaderboardConfigInfo";
 import PlayersList from "../components/Leaderboard/PlayersList";
 import { useFetchLeaderboardQuery } from "../repository/redux/api/api";
 import NeedsLoginErrorPage from "./genericPages/NeedsLoginErrorPage";
@@ -101,6 +102,7 @@ const LeaderboardPage = ({ guildId }: { guildId: string }) => {
   return (
     <Fragment>
       {guildData ? <GuildHeader guildData={guildData} /> : <GlobalHeader />}
+      {leaderboard && guildId !== "global" && <LeaderboardConfigInfo {...leaderboard} />}
       <PlayersList players={players} loading={loading} hasNextPage={hasNextPage} loadMore={loadMore} />
     </Fragment>
   );
