@@ -6,6 +6,7 @@ export interface LeaderboardData {
   totalCount: number,
   xpType: string,
   xpRate: number,
+  xpDecay: number,
 }
 
 export interface RankedPlayer {
