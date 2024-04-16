@@ -18,6 +18,7 @@ enum ErrorMessage {
   UserNotMember = "User is not a member of this guild",
   GuildNotFound = "Guild not found",
   UserNotAuthenticated = "No authentication token found in request headers",
+  InvalidAuthenticationToken = "Authentication token is invalid",
 }
 
 function getErrorText(errorMessage: string) {
@@ -69,7 +70,7 @@ const LeaderboardPage = ({ guildId }: { guildId: string }) => {
   const hasNextPage = leaderboard?.totalCount ? leaderboard.totalCount > (requestedPage + 1) * PLAYERS_PER_PAGE : false;
 
   const isParsingError = error && "status" in error && error.status === "PARSING_ERROR";
-  if (isParsingError && error.data === ErrorMessage.UserNotAuthenticated) {
+  if (isParsingError && (error.data === ErrorMessage.UserNotAuthenticated || error.data === ErrorMessage.InvalidAuthenticationToken)) {
     return <NeedsLoginErrorPage />;
   }
 
