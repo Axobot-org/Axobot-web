@@ -1,3 +1,5 @@
+import { LeaderboardResponse } from "./api";
+
 export interface LeaderboardData {
   guild: LeaderboardResponse["guild"]
   players: {[key: string]: RankedPlayer}

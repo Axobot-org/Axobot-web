@@ -16,4 +16,5 @@ export interface LeaderboardResponse {
   players_count: number,
   xp_type: string,
   xp_rate: number,
+  xp_decay: number,
 }
