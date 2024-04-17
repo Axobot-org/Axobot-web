@@ -69,6 +69,9 @@ function XpRateInfo({ xpType, xpRate }: {xpType: LeaderboardConfigInfoProps["xpT
 }
 
 function XpDecayInfo({ xpDecay }: {xpDecay: LeaderboardConfigInfoProps["xpDecay"]}) {
+  if (xpDecay === 0) {
+    return <>The XP decay is <b>disabled</b>: members will not lose XP over time.</>;
+  }
   const formatedValue = xpDecay.toLocaleString("en-US");
   return <>The XP decay is set to <b>{formatedValue} XP</b>: each member will lose {formatedValue} XP every day, no matter their activity.</>;
 }
