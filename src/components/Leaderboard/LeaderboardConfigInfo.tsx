@@ -44,7 +44,7 @@ export default function LeaderboardConfigInfo({ xpType, xpRate, xpDecay }: Leade
 function XpTypeInfo({ xpType }: {xpType: LeaderboardConfigInfoProps["xpType"]}) {
   switch (xpType) {
   case "global":
-    return <>This server uses the <b>global leaderboard</b>. Members can get XP from any other server that also uses the global leaderboard</>;
+    return <>This server uses the <b>global leaderboard</b>. Members can get XP from any other server that also uses the global leaderboard.</>;
   case "local":
     return <>This server uses the <b>local leaderboard</b>. Members can only get XP from this server, based on their chat activity.</>;
   case "mee6-like":
