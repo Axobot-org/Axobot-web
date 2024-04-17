@@ -1,5 +1,6 @@
 import { Avatar, ListItem, ListItemIcon, ListItemText, styled, Tooltip, Typography } from "@mui/material";
 
+import { formatNumber } from "../../i18n/formatFunctions";
 import { useGetorFetchMe } from "../../repository/commands/useGetOrFetchMe";
 import { RankedPlayer } from "../../repository/types/leaderboard";
 import CircularProgressWithLabel from "../common/CircularProgressWithLabel";
@@ -30,7 +31,7 @@ export default function PlayerRow({ player }: PlayerRowProps) {
   const xpToNextLevel = player.xp_to_next_level - player.xp_to_current_level;
   const levelProgress = xpFromLastLevel / xpToNextLevel * 100;
 
-  const xpText = `${xpFromLastLevel.toLocaleString()} / ${xpToNextLevel.toLocaleString()} xp`;
+  const xpText = `${formatNumber(xpFromLastLevel)} / ${formatNumber(xpToNextLevel)} xp`;
 
   return (
     <Container key={player.user_id}>
@@ -44,10 +45,10 @@ export default function PlayerRow({ player }: PlayerRowProps) {
 
       <ListItemText>
         <UserName>{player.username}</UserName>
-        <SubtitleUserXp>{BigInt(player.xp).toLocaleString()} xp</SubtitleUserXp>
+        <SubtitleUserXp>{formatNumber(BigInt(player.xp))} xp</SubtitleUserXp>
       </ListItemText>
 
-      <RightUserXp>{BigInt(player.xp).toLocaleString()} xp</RightUserXp>
+      <RightUserXp>{formatNumber(BigInt(player.xp))} xp</RightUserXp>
 
       <CircularProgressWithLabel thickness={3} value={levelProgress} aria-label={xpText} label={
         <Tooltip title={xpText}>

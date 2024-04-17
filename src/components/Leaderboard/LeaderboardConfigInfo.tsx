@@ -1,5 +1,6 @@
 import { List, ListItem } from "@mui/material";
 
+import { formatNumber } from "../../i18n/formatFunctions";
 import CollapsedInfoBox from "../common/CollapsedInfoBox";
 
 interface LeaderboardConfigInfoProps {
@@ -54,10 +55,10 @@ function XpTypeInfo({ xpType }: {xpType: LeaderboardConfigInfoProps["xpType"]}) 
 }
 
 function XpRateInfo({ xpType, xpRate }: {xpType: LeaderboardConfigInfoProps["xpType"], xpRate: LeaderboardConfigInfoProps["xpRate"]}) {
-  const formatedRate = xpRate.toLocaleString("en-US");
+  const formatedRate = formatNumber(xpRate);
   if (xpType === "mee6-like") {
-    const minValue = (xpRate * 15).toLocaleString("en-US");
-    const maxValue = (xpRate * 25).toLocaleString("en-US");
+    const minValue = formatNumber(xpRate * 15);
+    const maxValue = formatNumber(xpRate * 25);
     return <>The XP rate is <b>x{formatedRate}</b>: each message sent will randomly reward between {minValue} and {maxValue} XP.</>;
   } else if (xpType === "local") {
     if (xpRate > 1) {
@@ -72,6 +73,6 @@ function XpDecayInfo({ xpDecay }: {xpDecay: LeaderboardConfigInfoProps["xpDecay"
   if (xpDecay === 0) {
     return <>The XP decay is <b>disabled</b>: members will not lose XP over time.</>;
   }
-  const formatedValue = xpDecay.toLocaleString("en-US");
+  const formatedValue = formatNumber(xpDecay);
   return <>The XP decay is set to <b>{formatedValue} XP</b>: each member will lose {formatedValue} XP every day, no matter their activity.</>;
 }
