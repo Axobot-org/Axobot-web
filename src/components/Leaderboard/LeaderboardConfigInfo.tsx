@@ -31,9 +31,11 @@ export default function LeaderboardConfigInfo({ xpType, xpRate, xpDecay }: Leade
             <ListItem>
               <XpRateInfo xpType={xpType} xpRate={xpRate} />
             </ListItem>
-            <ListItem>
-              <XpDecayInfo xpDecay={xpDecay} />
-            </ListItem>
+            {xpDecay !== 0 && (
+              <ListItem>
+                <XpDecayInfo xpDecay={xpDecay} />
+              </ListItem>
+            )}
           </>
         )}
       </List>
