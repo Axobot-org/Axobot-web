@@ -3,6 +3,7 @@ import { List, ListItem } from "@mui/material";
 import { formatNumber } from "../../i18n/formatFunctions";
 import { RoleReward } from "../../repository/types/leaderboard";
 import CollapsedInfoBox from "../common/CollapsedInfoBox";
+import RoleMention from "../common/RoleMention";
 
 interface LeaderboardConfigInfoProps {
   xpType: string,
@@ -95,7 +96,7 @@ function RoleRewardsInfo({ roleRewards }: {roleRewards: RoleReward[]}) {
       <List dense sx={{ listStyleType: "circle", py: 0 }}>
         {sortedRoleRewars.map((roleReward) => (
           <ListItem key={roleReward.roleId} sx={{ py: 0.2 }}>
-            <b>{roleReward.role?.name ?? roleReward.roleId}</b>: level {formatNumber(roleReward.level)}
+            <RoleMention name={roleReward.role?.name ?? roleReward.roleId} color={roleReward.role?.color} /> at level {formatNumber(roleReward.level)}
           </ListItem>
         ))}
       </List>
