@@ -7,6 +7,7 @@ export interface LeaderboardData {
   xpType: string,
   xpRate: number,
   xpDecay: number,
+  roleRewards: RoleReward[] | undefined,
 }
 
 export interface RankedPlayer {
@@ -18,4 +19,16 @@ export interface RankedPlayer {
   xp_to_next_level: number;
   username: string | null;
   avatar: string;
+}
+
+export interface RoleReward {
+  id: string,
+  guildId: string,
+  roleId: string,
+  level: string,
+  addedAt: string,
+  role: {
+    name: string,
+    color: number,
+  } | null,
 }
