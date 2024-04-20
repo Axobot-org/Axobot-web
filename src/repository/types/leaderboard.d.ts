@@ -25,7 +25,7 @@ export interface RoleReward {
   id: string,
   guildId: string,
   roleId: string,
-  level: string,
+  level: bigint,
   addedAt: string,
   role: {
     name: string,

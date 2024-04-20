@@ -17,5 +17,15 @@ export interface LeaderboardResponse {
   xp_type: string,
   xp_rate: number,
   xp_decay: number,
-  role_rewards: RoleReward[] | undefined,
+  role_rewards: {
+    id: string,
+    guildId: string,
+    roleId: string,
+    level: string,
+    addedAt: string,
+    role: {
+      name: string,
+      color: number,
+    } | null,
+  }[] | undefined,
 }

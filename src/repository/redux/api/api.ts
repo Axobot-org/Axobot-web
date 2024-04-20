@@ -39,7 +39,12 @@ export const axoApi = createApi({
         xpType: response.xp_type,
         xpRate: response.xp_rate,
         xpDecay: response.xp_decay,
-        roleRewards: response.role_rewards,
+        roleRewards: response.role_rewards ? [
+          ...response.role_rewards.map((roleReward) => ({
+            ...roleReward,
+            level: BigInt(roleReward.level),
+          })),
+        ] : undefined,
         players: response.players.reduce((acc, curr) => {
           acc[curr.ranking] = curr;
           return acc;

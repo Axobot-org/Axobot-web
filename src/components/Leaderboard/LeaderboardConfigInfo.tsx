@@ -1,16 +1,19 @@
 import { List, ListItem } from "@mui/material";
 
 import { formatNumber } from "../../i18n/formatFunctions";
+import { RoleReward } from "../../repository/types/leaderboard";
 import CollapsedInfoBox from "../common/CollapsedInfoBox";
 
 interface LeaderboardConfigInfoProps {
   xpType: string,
   xpRate: number,
   xpDecay: number,
+  roleRewards: RoleReward[] | undefined,
 }
 
-export default function LeaderboardConfigInfo({ xpType, xpRate, xpDecay }: LeaderboardConfigInfoProps) {
+export default function LeaderboardConfigInfo({ xpType, xpRate, xpDecay, roleRewards }: LeaderboardConfigInfoProps) {
   const useLocalLeaderboard = xpType !== "global";
+  const hasRoleRewards = roleRewards && roleRewards.length > 0;
   return (
     <CollapsedInfoBox title="Server configuration">
       <List
@@ -37,6 +40,11 @@ export default function LeaderboardConfigInfo({ xpType, xpRate, xpDecay }: Leade
               </ListItem>
             )}
           </>
+        )}
+        {hasRoleRewards && (
+          <ListItem>
+            <RoleRewardsInfo roleRewards={roleRewards} />
+          </ListItem>
         )}
       </List>
     </CollapsedInfoBox>
@@ -77,4 +85,20 @@ function XpDecayInfo({ xpDecay }: {xpDecay: LeaderboardConfigInfoProps["xpDecay"
   }
   const formatedValue = formatNumber(xpDecay);
   return <>The XP decay is set to <b>{formatedValue} XP</b>: each member will lose {formatedValue} XP every day, no matter their activity.</>;
+}
+
+function RoleRewardsInfo({ roleRewards }: {roleRewards: RoleReward[]}) {
+  const sortedRoleRewars = roleRewards.toSorted((a, b) => ((a.level < b.level) ? -1 : ((a.level > b.level) ? 1 : 0)));
+  return (
+    <>
+      This server uses the following <b>role rewards</b>:
+      <List dense sx={{ listStyleType: "circle", py: 0 }}>
+        {sortedRoleRewars.map((roleReward) => (
+          <ListItem key={roleReward.roleId} sx={{ py: 0.2 }}>
+            <b>{roleReward.role?.name ?? roleReward.roleId}</b>: level {formatNumber(roleReward.level)}
+          </ListItem>
+        ))}
+      </List>
+    </>
+  );
 }
