@@ -1,5 +1,5 @@
+import { Stack } from "@mui/material";
 import { useState } from "react";
-import { Fragment } from "react/jsx-runtime";
 
 import { GuildConfigOptionCategory, GuildConfigOptionCategoryNames } from "../../repository/types/guild-config-types";
 import ConfigurationCategoryPage from "./ConfigurationCategoryPage";
@@ -13,9 +13,9 @@ export default function GuildDashboardNavigation({ guildId }: GuildDashboardNavi
   const [page, setPage] = useState<GuildConfigOptionCategory>(GuildConfigOptionCategoryNames[0]);
 
   return (
-    <Fragment>
+    <Stack direction="row">
       <NavigationDrawer activePage={page} onClick={setPage} />
       <ConfigurationCategoryPage guildId={guildId} activePage={page} />
-    </Fragment>
+    </Stack>
   );
 }

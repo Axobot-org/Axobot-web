@@ -1,5 +1,4 @@
-import { Typography } from "@mui/material";
-import { Fragment } from "react/jsx-runtime";
+import { Stack, Typography } from "@mui/material";
 
 import { GuildConfigOptionCategory } from "../../repository/types/guild-config-types";
 import BubblyButton from "../common/BubblyButton";
@@ -12,7 +11,7 @@ interface ConfigurationCategoryPageProps {
 
 export default function ConfigurationCategoryPage({ guildId, activePage }: ConfigurationCategoryPageProps) {
   return (
-    <Fragment>
+    <Stack alignItems="center">
       <PageTitle text="Dashboard" />
 
       <Typography>
@@ -25,6 +24,6 @@ export default function ConfigurationCategoryPage({ guildId, activePage }: Confi
       <BubblyButton sx={{ my: 5, padding: "0.75rem 5rem" }} />
 
       <i>Currently displaying {activePage} tab for guild {guildId}</i>
-    </Fragment>
+    </Stack>
   );
 }
