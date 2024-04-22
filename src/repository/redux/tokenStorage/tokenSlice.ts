@@ -3,7 +3,6 @@ import { createListenerMiddleware, createSlice, isAnyOf, PayloadAction } from "@
 import { AppStartListening } from "../store";
 
 function getTokenFromStorage(): string | null {
-  if (typeof window === "undefined") return null;
   const token = localStorage.getItem("token");
   if (token) {
     try {
@@ -47,7 +46,6 @@ const startAppListening = localStorageMiddleware.startListening as AppStartListe
 startAppListening({
   matcher: isAnyOf(setToken, logout),
   effect: (action, listenerApi) => {
-    if (typeof window === "undefined") return;
     const token = listenerApi.getState().user.token;
     if (token === null) {
       localStorage.removeItem("token");
