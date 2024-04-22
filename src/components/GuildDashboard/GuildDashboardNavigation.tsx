@@ -11,12 +11,11 @@ interface GuildDashboardNavigationProps {
 
 export default function GuildDashboardNavigation({ guildId }: GuildDashboardNavigationProps) {
   const [page, setPage] = useState<GuildConfigOptionCategory>(GuildConfigOptionCategoryNames[0]);
-  console.debug(guildId);
 
   return (
     <Fragment>
       <NavigationDrawer activePage={page} onClick={setPage} />
-      <ConfigurationCategoryPage activePage={page} />
+      <ConfigurationCategoryPage guildId={guildId} activePage={page} />
     </Fragment>
   );
 }

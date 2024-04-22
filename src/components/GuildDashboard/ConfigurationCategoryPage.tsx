@@ -6,10 +6,11 @@ import BubblyButton from "../common/BubblyButton";
 import PageTitle from "../common/PageTitle";
 
 interface ConfigurationCategoryPageProps {
+  guildId: string;
   activePage: GuildConfigOptionCategory;
 }
 
-export default function ConfigurationCategoryPage({ activePage }: ConfigurationCategoryPageProps) {
+export default function ConfigurationCategoryPage({ guildId, activePage }: ConfigurationCategoryPageProps) {
   return (
     <Fragment>
       <PageTitle text="Dashboard" />
@@ -23,7 +24,7 @@ export default function ConfigurationCategoryPage({ activePage }: ConfigurationC
 
       <BubblyButton sx={{ my: 5, padding: "0.75rem 5rem" }} />
 
-      <i>Currently displaying {activePage} tab</i>
+      <i>Currently displaying {activePage} tab for guild {guildId}</i>
     </Fragment>
   );
 }
