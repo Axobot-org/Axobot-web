@@ -1,14 +1,7 @@
 import { Fragment } from "react";
-import { Helmet } from "react-helmet-async";
 import { Navigate, useParams } from "react-router-dom";
 
 import GuildDashboardNavigation from "../components/GuildDashboard/GuildDashboardNavigation";
-
-const MetaTags = () => (
-  <Helmet>
-    <title>Axobot: Server Dashboard</title>
-  </Helmet>
-);
 
 export default function GuildDashboard() {
   const { id } = useParams();
@@ -19,7 +12,6 @@ export default function GuildDashboard() {
 
   return (
     <Fragment>
-      <MetaTags />
       <GuildDashboardNavigation guildId={id} />
     </Fragment>
   );

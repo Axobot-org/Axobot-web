@@ -1,18 +1,10 @@
 import { CircularProgress, Stack, Typography } from "@mui/material";
 import { useMemo } from "react";
 import { Fragment } from "react/jsx-runtime";
-import { Helmet } from "react-helmet-async";
 
 import PageTitle from "../components/common/PageTitle";
 import GuildBox from "../components/Dashboard/GuildBox";
 import { useGetOrFetchAdminGuilds } from "../repository/commands/useGetOrFetchAdminGuilds";
-
-
-const MetaTags = () => (
-  <Helmet>
-    <title>Axobot: Server Dashboard</title>
-  </Helmet>
-);
 
 function GuildsGrid() {
   const { guilds, error, loading } = useGetOrFetchAdminGuilds();
@@ -68,7 +60,6 @@ export default function GuildSelection() {
 
   return (
     <Fragment>
-      <MetaTags />
       <PageTitle text="Select your server" />
       <GuildsGrid />
     </Fragment>

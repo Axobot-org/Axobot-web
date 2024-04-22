@@ -9,14 +9,17 @@
     "@fontsource/roboto": "^5.0.5",
     "@mui/icons-material": "^5.13.7",
     "@mui/material": "^5.13.7",
-    "@reduxjs/toolkit": "^1.9.5",
+    "@reduxjs/toolkit": "^2.2.3",
     "@vitejs/plugin-react-swc": "^3.6.0",
+    "compression": "^1.7.4",
+    "express": "^4.19.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-helmet-async": "^2.0.4",
     "react-infinite-scroll-hook": "^4.1.1",
-    "react-redux": "^8.1.1",
+    "react-redux": "^9.1.1",
     "react-router-dom": "^6.14.1",
+    "sirv": "^2.0.4",
     "typescript": "^4.9.5",
     "vite": "^5.1.5",
     "vite-plugin-svgr": "^4.2.0",
@@ -24,10 +27,12 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "vite dev",
-    "build": "vite build",
-    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
-    "serve": "serve -s build -l 3001"
+    "start": "npm run build && NODE_ENV=production node server",
+    "dev": "node server",
+    "build": "npm run build:client && npm run build:server",
+    "build:client": "vite build --ssrManifest --outDir build/client",
+    "build:server": "vite build --ssr src/entry-server.tsx --outDir build/server",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
   "browserslist": {
     "production": [

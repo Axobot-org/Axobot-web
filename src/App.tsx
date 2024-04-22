@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Helmet, HelmetProvider } from "react-helmet-async";
+import { HelmetProvider } from "react-helmet-async";
 import { Provider } from "react-redux";
 import { RouterProvider } from "react-router-dom";
 
@@ -13,11 +13,6 @@ declare global {
   }
 }
 
-const DefaultMetaValues = () => (
-  <Helmet>
-    <title>Axobot</title>
-  </Helmet>
-);
 
 function App() {
   useEffect(() => {
@@ -35,8 +30,6 @@ function App() {
 
   return (
     <HelmetProvider>
-      <DefaultMetaValues />
-
       <Provider store={store}>
         <AppTheme>
           <RouterProvider router={router} />

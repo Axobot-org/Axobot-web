@@ -14,7 +14,7 @@ export default function DiscordLoginCallback() {
 
   const message = useMemo(() => {
     if (error) {
-      return `${error}`;
+      return "Oops, something went wrong!";
     } else if (loading) {
       return "Relax, we're taking care of your Discord connection...";
     } else if (data) {
