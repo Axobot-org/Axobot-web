@@ -10,3 +10,5 @@ export interface GuildData {
   permissions: string;
   features: string[];
 }
+
+export type GuildConfig = Record<string, Record<string, unknown>>

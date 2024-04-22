@@ -1,7 +1,8 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 import { LeaderboardResponse, LoginJSONResponse } from "../../types/api";
-import { GuildData } from "../../types/guild";
+import { GuildConfig, GuildData } from "../../types/guild";
+import { GuildConfigOptionCategory, GuildConfigOptionsMapType } from "../../types/guild-config-types";
 import { LeaderboardData, RankedPlayer } from "../../types/leaderboard";
 import { AuthenticatedUserObject } from "../../types/users";
 import { RootState } from "../store";
@@ -21,6 +22,7 @@ export const axoApi = createApi({
     },
   }),
   endpoints: (builder) => ({
+    // ----- QUERIES ----- //
     fetchMe: builder.query<AuthenticatedUserObject, void>({
       query: () => "auth/me",
     }),
@@ -63,7 +65,17 @@ export const axoApi = createApi({
         return currentArg !== previousArg;
       },
     }),
+    fetchDefaultGuildConfig: builder.query<GuildConfigOptionsMapType, void>({
+      query: () => "discord/default-guild-config",
+    }),
+    fetchGuildConfig: builder.query<GuildConfig, {guildId: string, categories: "all" | GuildConfigOptionCategory[]}>({
+      query: ({ guildId, categories }) => ({
+        url: `discord/guild/${guildId}/config`,
+        params: { categories },
+      }),
+    }),
 
+    // ----- MUTATIONS ----- //
     login: builder.mutation<LoginJSONResponse, string>({
       query: (discordCode) => ({
         url: "auth/discord-callback",
@@ -74,8 +86,12 @@ export const axoApi = createApi({
   }),
 });
 
-export const { useFetchMeQuery } = axoApi;
-export const { useFetchGuildsQuery } = axoApi;
-export const { useFetchLeaderboardQuery } = axoApi;
+export const {
+  useFetchMeQuery,
+  useFetchGuildsQuery,
+  useFetchLeaderboardQuery,
+  useFetchDefaultGuildConfigQuery,
+  useFetchGuildConfigQuery,
 
-export const { useLoginMutation } = axoApi;
+  useLoginMutation,
+} = axoApi;
