@@ -26,11 +26,11 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
+    "start": "npm run build && NODE_ENV=production node server",
     "dev": "node server",
     "build": "npm run build:client && npm run build:server",
-    "build:client": "vite build --ssrManifest --outDir dist/client",
-    "build:server": "vite build --ssr src/entry-server.tsx --outDir dist/server",
-    "preview": "cross-env NODE_ENV=production node server",
+    "build:client": "vite build --ssrManifest --outDir build/client",
+    "build:server": "vite build --ssr src/entry-server.tsx --outDir build/server",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
   "browserslist": {
