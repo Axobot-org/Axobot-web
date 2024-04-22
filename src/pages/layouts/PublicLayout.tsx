@@ -8,7 +8,7 @@ import { getMetaTagsFromURL } from "../../router/getMetaTags";
 function DynamicHelmet() {
   const location = useLocation();
   const strippedPathName = location.pathname.replace(/^\/|\/$/, "");
-  return <Helmet>{getMetaTagsFromURL(strippedPathName)}</Helmet>;
+  return <Helmet prioritizeSeoTags>{getMetaTagsFromURL(strippedPathName)}</Helmet>;
 }
 
 
