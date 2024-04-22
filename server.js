@@ -3,10 +3,10 @@ import fs from "node:fs/promises";
 import express from "express";
 import { loadEnv } from "vite";
 
-const env = loadEnv(env.NODE_ENV, process.cwd(), "");
+const env = loadEnv(process.env.NODE_ENV || "development", process.cwd(), "");
 
 // Constants
-const isProduction = env.NODE_ENV === "production";
+const isProduction = process.env.NODE_ENV === "production";
 const port = env.PORT || 5173;
 const base = env.BASE || "/";
 
