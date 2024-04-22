@@ -1,6 +1,5 @@
 import { Typography } from "@mui/material";
 import { Fragment, useMemo, useState } from "react";
-import { Helmet } from "react-helmet-async";
 import { Navigate, useParams } from "react-router-dom";
 
 import GlobalHeader from "../components/Leaderboard/GlobalHeader";
@@ -108,16 +107,6 @@ const LeaderboardPage = ({ guildId }: { guildId: string }) => {
     </Fragment>
   );
 };
-
-const MetaTags = ({ isGlobalPage }: { isGlobalPage: boolean }) => {
-  const pageTitle = isGlobalPage ? "Global Leaderboard" : "Server Leaderboard";
-  return (
-    <Helmet>
-      <title>Axobot: {pageTitle}</title>
-    </Helmet>
-  );
-};
-
 export default function Leaderboard() {
   const { id } = useParams();
 
@@ -129,7 +118,6 @@ export default function Leaderboard() {
 
   return (
     <Fragment>
-      <MetaTags isGlobalPage={guildId === "global"} />
       <LeaderboardPage guildId={guildId} key={guildId} />
     </Fragment>
   );
