@@ -109,8 +109,8 @@ const LeaderboardPage = ({ guildId }: { guildId: string }) => {
   );
 };
 
-const MetaTags = ({ guildId }: { guildId: string }) => {
-  const pageTitle = guildId === "global" ? "Global Leaderboard" : "Server Leaderboard";
+const MetaTags = ({ isGlobalPage }: { isGlobalPage: boolean }) => {
+  const pageTitle = isGlobalPage ? "Global Leaderboard" : "Server Leaderboard";
   return (
     <Helmet>
       <title>Axobot: {pageTitle}</title>
@@ -129,7 +129,7 @@ export default function Leaderboard() {
 
   return (
     <Fragment>
-      <MetaTags guildId={guildId} />
+      <MetaTags isGlobalPage={guildId === "global"} />
       <LeaderboardPage guildId={guildId} key={guildId} />
     </Fragment>
   );
