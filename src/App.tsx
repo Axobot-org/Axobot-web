@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { HelmetProvider } from "react-helmet-async";
 import { Provider } from "react-redux";
 import { RouterProvider } from "react-router-dom";
 
@@ -28,11 +29,13 @@ function App() {
   }, []);
 
   return (
-    <Provider store={store}>
-      <AppTheme>
-        <RouterProvider router={router} />
-      </AppTheme>
-    </Provider>
+    <HelmetProvider>
+      <Provider store={store}>
+        <AppTheme>
+          <RouterProvider router={router} />
+        </AppTheme>
+      </Provider>
+    </HelmetProvider>
   );
 }
 
