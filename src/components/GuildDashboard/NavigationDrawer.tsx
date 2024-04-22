@@ -1,10 +1,9 @@
+import { Gavel, Handshake, HowToVote, InfoOutlined, Leaderboard, LiveTv, Mic, QuestionMark, Settings, WavingHand } from "@mui/icons-material";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import MailIcon from "@mui/icons-material/Mail";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
 import { CSSObject, Divider, IconButton, List, ListItem, ListItemButton, ListItemIcon, ListItemText, styled, Theme, Toolbar } from "@mui/material";
 import MuiDrawer from "@mui/material/Drawer";
-import { useState } from "react";
+import { Fragment, useState } from "react";
 
 import { GuildConfigOptionCategory, GuildConfigOptionCategoryNames } from "../../repository/types/guild-config-types";
 
@@ -74,6 +73,49 @@ const PageTab = styled(ListItemButton, {
   }),
 }));
 
+function TabIcon({ page }: {page: GuildConfigOptionCategory}) {
+  switch (page) {
+  case "core":
+    return <Settings />;
+  case "info":
+    return <InfoOutlined />;
+  case "moderation":
+    return <Gavel />;
+  case "partners":
+    return <Handshake />;
+  case "poll-channels":
+    return <HowToVote />;
+  case "streamers":
+    return <LiveTv />;
+  case "voice-channels":
+    return <Mic />;
+  case "welcome":
+    return <WavingHand />;
+  case "xp":
+    return <Leaderboard />;
+  default:
+    return <QuestionMark />;
+  }
+}
+
+function TabContent({ page, isOpen }: {page: GuildConfigOptionCategory, isOpen: boolean}) {
+  const formatedTitle = page.replace(/-/g, " ").replace(/^\w/, c => c.toUpperCase());
+  return (
+    <Fragment>
+      <ListItemIcon
+        sx={{
+          minWidth: 0,
+          mr: isOpen ? 3 : "auto",
+          justifyContent: "center",
+        }}
+      >
+        <TabIcon page={page} />
+      </ListItemIcon>
+      <ListItemText primary={formatedTitle} sx={{ opacity: isOpen ? 1 : 0 }} />
+    </Fragment>
+  );
+}
+
 
 interface NavigationDrawerProps {
   activePage: GuildConfigOptionCategory;
@@ -97,23 +139,14 @@ export default function NavigationDrawer({ activePage, onClick }: NavigationDraw
       </DrawerHeader>
       <Divider />
       <List>
-        {GuildConfigOptionCategoryNames.map((text, index) => (
-          <ListItem key={text} disablePadding sx={{ display: "block" }}>
+        {GuildConfigOptionCategoryNames.map(page => (
+          <ListItem key={page} disablePadding sx={{ display: "block" }}>
             <PageTab
               isOpen={open}
-              isSelected={activePage === text}
-              onClick={() => onClick(text)}
+              isSelected={activePage === page}
+              onClick={() => onClick(page)}
             >
-              <ListItemIcon
-                sx={{
-                  minWidth: 0,
-                  mr: open ? 3 : "auto",
-                  justifyContent: "center",
-                }}
-              >
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
+              <TabContent page={page} isOpen={open} />
             </PageTab>
           </ListItem>
         ))}
