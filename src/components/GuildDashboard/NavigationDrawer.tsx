@@ -63,7 +63,14 @@ const PageTab = styled(ListItemButton, {
 })<{isOpen: boolean, isSelected: boolean}>(({ theme, isOpen, isSelected }) => ({
   minHeight: 48,
   justifyContent: isOpen ? "initial" : "center",
-  px: 2.5,
+  margin: theme.spacing(0.5, 1),
+  padding: theme.spacing(1),
+
+  borderRadius: isOpen ? "4px" : "100%",
+  transition: theme.transitions.create("border-radius", {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.enteringScreen,
+  }),
 
   ...(isSelected && {
     backgroundColor: theme.palette.primary.dark,
@@ -105,7 +112,8 @@ function TabContent({ page, isOpen }: {page: GuildConfigOptionCategory, isOpen: 
       <ListItemIcon
         sx={{
           minWidth: 0,
-          mr: isOpen ? 3 : "auto",
+          px: 1.5,
+          mr: isOpen ? 3 : 0,
           justifyContent: "center",
         }}
       >
