@@ -15,7 +15,7 @@ export const privateRoutes: RouteObject[] = [
         path: "/dashboard/",
         lazy: () => import("../../pages/Dashboard"),
       }, {
-        path: "/dashboard/:id",
+        path: "/dashboard/:id/*",
         lazy: () => import("../../pages/GuildDashboard"),
       },
     ],

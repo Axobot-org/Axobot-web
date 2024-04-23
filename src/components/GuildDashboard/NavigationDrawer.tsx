@@ -4,6 +4,7 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { CSSObject, Divider, IconButton, List, ListItem, ListItemButton, ListItemIcon, ListItemText, styled, Theme, Toolbar } from "@mui/material";
 import MuiDrawer from "@mui/material/Drawer";
 import { Fragment, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 
 import { GuildConfigOptionCategory, GuildConfigOptionCategoryNames } from "../../repository/types/guild-config-types";
 
@@ -58,9 +59,16 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== "open" 
   }),
 );
 
+interface PageTabProps {
+  isOpen: boolean,
+  isSelected: boolean,
+  to?: string,
+  component?: React.ElementType,
+}
+
 const PageTab = styled(ListItemButton, {
   shouldForwardProp: (prop) => prop !== "isOpen" && prop !== "isSelected",
-})<{isOpen: boolean, isSelected: boolean}>(({ theme, isOpen, isSelected }) => ({
+})<PageTabProps>(({ theme, isOpen, isSelected }) => ({
   minHeight: 48,
   justifyContent: isOpen ? "initial" : "center",
   margin: theme.spacing(0.5, 1),
@@ -125,13 +133,12 @@ function TabContent({ page, isOpen }: {page: GuildConfigOptionCategory, isOpen: 
 }
 
 
-interface NavigationDrawerProps {
-  activePage: GuildConfigOptionCategory;
-  onClick: (page: GuildConfigOptionCategory) => void;
-}
-
-export default function NavigationDrawer({ activePage, onClick }: NavigationDrawerProps) {
+export default function NavigationDrawer() {
+  const location = useLocation();
   const [open, setOpen] = useState(true);
+
+  const currentEndpoint = location.pathname.split("/").pop() || "";
+  const activePage = GuildConfigOptionCategoryNames.includes(currentEndpoint as GuildConfigOptionCategory) ? currentEndpoint : undefined;
 
   const toggleOpen = () => {
     setOpen(!open);
@@ -152,7 +159,8 @@ export default function NavigationDrawer({ activePage, onClick }: NavigationDraw
             <PageTab
               isOpen={open}
               isSelected={activePage === page}
-              onClick={() => onClick(page)}
+              component={Link}
+              to={page}
             >
               <TabContent page={page} isOpen={open} />
             </PageTab>

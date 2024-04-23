@@ -1,7 +1,7 @@
 import { Stack } from "@mui/material";
-import { useState } from "react";
+import { Navigate, Route, Routes } from "react-router-dom";
 
-import { GuildConfigOptionCategory, GuildConfigOptionCategoryNames } from "../../repository/types/guild-config-types";
+import { GuildConfigOptionCategoryNames } from "../../repository/types/guild-config-types";
 import PageTitle from "../common/PageTitle";
 import ConfigurationCategoryPage from "./ConfigurationCategoryPage";
 import NavigationDrawer from "./NavigationDrawer";
@@ -11,14 +11,20 @@ interface GuildDashboardNavigationProps {
 }
 
 export default function GuildDashboardNavigation({ guildId }: GuildDashboardNavigationProps) {
-  const [page, setPage] = useState<GuildConfigOptionCategory>(GuildConfigOptionCategoryNames[0]);
 
   return (
     <Stack direction="row">
-      <NavigationDrawer activePage={page} onClick={setPage} />
+      <NavigationDrawer />
       <Stack alignItems="center">
         <PageTitle text="Dashboard" />
-        <ConfigurationCategoryPage guildId={guildId} activePage={page} />
+        <Routes>
+          <Route path="/" element={<Navigate to={GuildConfigOptionCategoryNames[0]} />} />
+          {
+            GuildConfigOptionCategoryNames.map((category) => (
+              <Route key={category} path={`/${category}`} element={<ConfigurationCategoryPage guildId={guildId} activePage={category} />} />
+            ))
+          }
+        </Routes>
       </Stack>
     </Stack>
   );
