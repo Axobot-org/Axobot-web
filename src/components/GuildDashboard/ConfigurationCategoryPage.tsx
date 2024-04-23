@@ -1,7 +1,7 @@
 import { CircularProgress, Typography } from "@mui/material";
 import { Fragment } from "react/jsx-runtime";
 
-import { useFetchGuildConfigQuery } from "../../repository/redux/api/api";
+import { useFetchGuildConfigCategory } from "../../repository/commands/useFetchGuildConfigCategory";
 import { GuildConfigOptionCategory } from "../../repository/types/guild-config-types";
 import BubblyButton from "../common/BubblyButton";
 
@@ -11,7 +11,7 @@ interface ConfigurationCategoryPageProps {
 }
 
 export default function ConfigurationCategoryPage({ guildId, activePage }: ConfigurationCategoryPageProps) {
-  const { data, isLoading, error } = useFetchGuildConfigQuery({ guildId, categories: [activePage] });
+  const { data, isLoading, error } = useFetchGuildConfigCategory({ guildId, category: activePage });
 
   if (isLoading) {
     return <CircularProgress color="primary" aria-label="Loading guild configuration" />;
@@ -31,7 +31,7 @@ export default function ConfigurationCategoryPage({ guildId, activePage }: Confi
     );
   }
 
-  if (data === undefined || data[activePage] === undefined) {
+  if (data === undefined) {
     return <CircularProgress color="primary" aria-label="Loading guild configuration" />;
   }
 
@@ -46,7 +46,7 @@ export default function ConfigurationCategoryPage({ guildId, activePage }: Confi
 
       <BubblyButton sx={{ my: 5, padding: "0.75rem 5rem" }} />
 
-      {JSON.stringify(data[activePage], null, 2)}
+      {JSON.stringify(data, null, 2)}
     </Fragment>
   );
 }
