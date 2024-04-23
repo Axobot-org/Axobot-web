@@ -73,6 +73,27 @@ export const axoApi = createApi({
         url: `discord/guild/${guildId}/config`,
         params: { categories },
       }),
+      serializeQueryArgs: ({ queryArgs: { guildId } }) => `config-${guildId}`,
+      merge: (currentCache, newItems) => ({
+        ...currentCache,
+        ...newItems,
+      }),
+      forceRefetch({ currentArg, endpointState }) {
+        try {
+          if (endpointState === undefined || currentArg === undefined) {
+            return true;
+          }
+          if (currentArg.categories === "all") {
+            return true;
+          }
+          if (currentArg.categories.some((category) => (endpointState.data as GuildConfig)[category] === undefined)) {
+            return true;
+          }
+        } catch (e) {
+          console.error(e);
+        }
+        return false;
+      },
     }),
 
     // ----- MUTATIONS ----- //
