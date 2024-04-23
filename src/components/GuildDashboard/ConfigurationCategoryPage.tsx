@@ -1,9 +1,13 @@
-import { CircularProgress, Typography } from "@mui/material";
+import { CircularProgress, Stack, Typography } from "@mui/material";
 import { Fragment } from "react/jsx-runtime";
 
 import { useFetchGuildConfigCategory } from "../../repository/commands/useFetchGuildConfigCategory";
+import { PopulatedGuildConfig } from "../../repository/types/guild";
 import { GuildConfigOptionCategory } from "../../repository/types/guild-config-types";
-import BubblyButton from "../common/BubblyButton";
+import BooleanConfigComponent from "./ConfigComponents/BooleanConfigComponent";
+import FloatConfigComponent from "./ConfigComponents/FloatConfigComponent";
+import IntConfigComponent from "./ConfigComponents/IntConfigComponent";
+import { ConfigurationName } from "./ConfigComponents/shared/SharedConfigComponents";
 
 interface ConfigurationCategoryPageProps {
   guildId: string;
@@ -37,16 +41,26 @@ export default function ConfigurationCategoryPage({ guildId, activePage }: Confi
 
   return (
     <Fragment>
-      <Typography>
-        I'm an amazing dashboard, doing amazing things!
-      </Typography>
-      <Typography sx={{ fontStyle: "italic" }}>
-        Or at least I should be...
-      </Typography>
-
-      <BubblyButton sx={{ my: 5, padding: "0.75rem 5rem" }} />
-
-      {JSON.stringify(data, null, 2)}
+      <Stack useFlexGap gap={2} my={4}>
+        {
+          Object.entries(data).map(([optionName, option]) => (
+            <GenericConfigComponent key={optionName} optionName={optionName} option={option} />
+          ))
+        }
+      </Stack>
     </Fragment>
   );
+}
+
+function GenericConfigComponent({ optionName, option }: { optionName: string, option: PopulatedGuildConfig[string] }) {
+  switch (option.type) {
+  case "int":
+    return <IntConfigComponent optionName={optionName} option={option} />;
+  case "float":
+    return <FloatConfigComponent optionName={optionName} option={option} />;
+  case "boolean":
+    return <BooleanConfigComponent optionName={optionName} option={option} />;
+  default:
+    return <span style={{ color: "gray" }}><ConfigurationName>{optionName}</ConfigurationName>: {JSON.stringify(option, null, 2)}</span>;
+  }
 }
