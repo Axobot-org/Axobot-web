@@ -2,6 +2,7 @@ import { Stack } from "@mui/material";
 import { useState } from "react";
 
 import { GuildConfigOptionCategory, GuildConfigOptionCategoryNames } from "../../repository/types/guild-config-types";
+import PageTitle from "../common/PageTitle";
 import ConfigurationCategoryPage from "./ConfigurationCategoryPage";
 import NavigationDrawer from "./NavigationDrawer";
 
@@ -15,7 +16,10 @@ export default function GuildDashboardNavigation({ guildId }: GuildDashboardNavi
   return (
     <Stack direction="row">
       <NavigationDrawer activePage={page} onClick={setPage} />
-      <ConfigurationCategoryPage guildId={guildId} activePage={page} />
+      <Stack alignItems="center">
+        <PageTitle text="Dashboard" />
+        <ConfigurationCategoryPage guildId={guildId} activePage={page} />
+      </Stack>
     </Stack>
   );
 }
