@@ -17,7 +17,7 @@ export default function GuildDashboardNavigation({ guildId }: GuildDashboardNavi
 
   if (isLoading) return null;
 
-  if (error) {
+  if (error || data?.isAdmin === false) {
     return (
       <Stack alignItems="center">
         <PageTitle text="Dashboard" />
