@@ -6,7 +6,7 @@ export interface GuildData {
   icon: string | null;
   banner: string | null;
   splash: string | null;
-  owner: boolean;
+  isOwner: boolean;
   isAdmin: boolean;
   isBotPresent: boolean;
   permissions: string;

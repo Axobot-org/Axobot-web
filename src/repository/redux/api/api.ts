@@ -68,6 +68,9 @@ export const axoApi = createApi({
     fetchDefaultGuildConfig: builder.query<GuildConfigOptionsMapType, void>({
       query: () => "discord/default-guild-config",
     }),
+    fetchGuild: builder.query<GuildData, { guildId: string }>({
+      query: ({ guildId }) => `discord/guild/${guildId}`,
+    }),
     fetchGuildConfig: builder.query<GuildConfig, {guildId: string, categories: "all" | GuildConfigOptionCategory[]}>({
       query: ({ guildId, categories }) => ({
         url: `discord/guild/${guildId}/config`,
@@ -110,6 +113,7 @@ export const axoApi = createApi({
 export const {
   useFetchMeQuery,
   useFetchGuildsQuery,
+  useFetchGuildQuery,
   useFetchLeaderboardQuery,
   useFetchDefaultGuildConfigQuery,
   useFetchGuildConfigQuery,
