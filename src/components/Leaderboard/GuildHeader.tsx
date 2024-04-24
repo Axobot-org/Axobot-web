@@ -5,7 +5,6 @@ import PageTitle from "../common/PageTitle";
 
 interface GuildHeaderProps {
   guildData: {
-    id: string;
     name: string;
     icon: string | null;
   };

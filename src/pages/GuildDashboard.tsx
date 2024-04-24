@@ -1,4 +1,3 @@
-import { Fragment } from "react";
 import { Navigate, useParams } from "react-router-dom";
 
 import GuildDashboardNavigation from "../components/GuildDashboard/GuildDashboardNavigation";
@@ -10,11 +9,7 @@ export default function GuildDashboard() {
     return <Navigate to="/" />;
   }
 
-  return (
-    <Fragment>
-      <GuildDashboardNavigation guildId={id} />
-    </Fragment>
-  );
+  return <GuildDashboardNavigation guildId={id} />;
 }
 
 export const Component = GuildDashboard;
