@@ -13,12 +13,8 @@ const BANNER_HEIGHT = 110;
 
 export default function GuildBox({ guild }: GuildBoxProps) {
 
-  const icon = guild.icon ? `https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}.webp` : undefined;
-  const banner = guild.banner
-    ? `https://cdn.discordapp.com/banners/${guild.id}/${guild.banner}.webp`
-    : guild.splash
-      ? `https://cdn.discordapp.com/splashes/${guild.id}/${guild.splash}.webp`
-      : undefined;
+  const icon = guild.icon ?? undefined;
+  const banner = guild.banner ?? guild.splash ?? undefined;
 
   const avatarText = useMemo(() => {
     if (guild.icon) return undefined;
