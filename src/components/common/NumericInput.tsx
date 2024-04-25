@@ -15,6 +15,7 @@ export default function NumericInput(props: NumericInputProps) {
   return (
     <TextField
       {...rest}
+      sx={{ maxWidth: "4.5em" }}
       InputProps={{
         inputComponent: NumericFormatCustom,
       }}
@@ -36,7 +37,6 @@ const NumericFormatCustom = React.forwardRef<NumericFormatProps, NumericFormatCu
     const { min, max, suffix, ...rest } = props;
 
     function checkValue(values: NumberFormatValues) {
-      console.log("checking", values);
       if (values.floatValue === undefined) return true;
       if (min && values.floatValue < min) return false;
       if (max && values.floatValue > max) return false;
@@ -57,6 +57,7 @@ const NumericFormatCustom = React.forwardRef<NumericFormatProps, NumericFormatCu
         placeholder={placeholder}
         isAllowed={checkValue}
         suffix={suffix ? " " + suffix : undefined}
+        style={{ textAlign: "right", paddingLeft: 8, paddingRight: 8 }}
         thousandSeparator
       />
     );
