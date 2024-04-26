@@ -5,6 +5,7 @@ import { useFetchGuildConfigCategory } from "../../repository/commands/useFetchG
 import { PopulatedGuildConfig } from "../../repository/types/guild";
 import { GuildConfigOptionCategory } from "../../repository/types/guild-config-types";
 import BooleanConfigComponent from "./ConfigComponents/BooleanConfigComponent";
+import EnumConfigComponent from "./ConfigComponents/EnumConfigComponent";
 import FloatConfigComponent from "./ConfigComponents/FloatConfigComponent";
 import IntConfigComponent from "./ConfigComponents/IntConfigComponent";
 import { ConfigurationName } from "./ConfigComponents/shared/SharedConfigComponents";
@@ -60,6 +61,8 @@ function GenericConfigComponent({ optionName, option }: { optionName: string, op
     return <FloatConfigComponent optionName={optionName} option={option} />;
   case "boolean":
     return <BooleanConfigComponent optionName={optionName} option={option} />;
+  case "enum":
+    return <EnumConfigComponent optionName={optionName} option={option} />;
   default:
     return <span style={{ color: "gray" }}><ConfigurationName>{optionName}</ConfigurationName>: {JSON.stringify(option, null, 2)}</span>;
   }
