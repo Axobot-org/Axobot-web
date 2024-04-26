@@ -9,6 +9,7 @@ import ColorConfigComponent from "./ConfigComponents/ColorConfigComponent";
 import EnumConfigComponent from "./ConfigComponents/EnumConfigComponent";
 import FloatConfigComponent from "./ConfigComponents/FloatConfigComponent";
 import IntConfigComponent from "./ConfigComponents/IntConfigComponent";
+import RoleConfigComponent from "./ConfigComponents/RoleConfigComponent";
 import { ConfigurationName } from "./ConfigComponents/shared/SharedConfigComponents";
 
 interface ConfigurationCategoryPageProps {
@@ -46,7 +47,7 @@ export default function ConfigurationCategoryPage({ guildId, activePage }: Confi
       <Stack useFlexGap gap={2} my={4}>
         {
           Object.entries(data).map(([optionName, option]) => (
-            <GenericConfigComponent key={optionName} optionName={optionName} option={option} />
+            <GenericConfigComponent key={optionName} optionName={optionName} option={option} guildId={guildId} />
           ))
         }
       </Stack>
@@ -54,7 +55,7 @@ export default function ConfigurationCategoryPage({ guildId, activePage }: Confi
   );
 }
 
-function GenericConfigComponent({ optionName, option }: { optionName: string, option: PopulatedGuildConfig[string] }) {
+function GenericConfigComponent({ optionName, option, guildId }: { optionName: string, option: PopulatedGuildConfig[string], guildId: string }) {
   switch (option.type) {
   case "int":
     return <IntConfigComponent optionName={optionName} option={option} />;
@@ -64,6 +65,8 @@ function GenericConfigComponent({ optionName, option }: { optionName: string, op
     return <BooleanConfigComponent optionName={optionName} option={option} />;
   case "enum":
     return <EnumConfigComponent optionName={optionName} option={option} />;
+  case "role":
+    return <RoleConfigComponent optionName={optionName} option={option} guildId={guildId} />;
   case "color":
     return <ColorConfigComponent optionName={optionName} option={option} />;
   default:

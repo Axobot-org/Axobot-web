@@ -16,3 +16,12 @@ export interface GuildData {
 export type GuildConfig = Record<string, Record<string, unknown>>
 
 export type PopulatedGuildConfig = Record<string, AllRepresentation & { value: unknown }>
+
+export interface GuildRole {
+  id: string;
+  name: string;
+  color: number;
+  position: number;
+  permissions: string;
+  managed: boolean;
+}
