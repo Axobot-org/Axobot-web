@@ -10,7 +10,7 @@ interface BooleanConfigComponentProps {
 
 export default function BooleanConfigComponent({ optionName, option }: BooleanConfigComponentProps) {
   return (
-    <SimpleConfigurationContainer direction="row" justifyContent="space-between" alignItems="center">
+    <SimpleConfigurationContainer>
       <ConfigurationName>{optionName}</ConfigurationName>
 
       <Switch readOnly checked={option.value as boolean} />

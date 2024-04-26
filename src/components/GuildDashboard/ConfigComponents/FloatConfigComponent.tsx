@@ -9,7 +9,7 @@ interface FloatConfigComponentProps {
 
 export default function FloatConfigComponent({ optionName, option }: FloatConfigComponentProps) {
   return (
-    <SimpleConfigurationContainer direction="row" justifyContent="space-between" alignItems="center">
+    <SimpleConfigurationContainer>
       <ConfigurationName>{optionName}</ConfigurationName>
       <NumericInput
         value={option.value}

@@ -9,7 +9,7 @@ interface IntConfigComponentProps {
 
 export default function IntConfigComponent({ optionName, option }: IntConfigComponentProps) {
   return (
-    <SimpleConfigurationContainer direction="row" justifyContent="space-between" alignItems="center">
+    <SimpleConfigurationContainer>
       <ConfigurationName>{optionName}</ConfigurationName>
       <NumericInput
         value={option.value}
