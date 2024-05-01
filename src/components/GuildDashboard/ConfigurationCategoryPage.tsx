@@ -1,6 +1,7 @@
 import { CircularProgress, Stack, Typography } from "@mui/material";
 import { Fragment } from "react/jsx-runtime";
 
+import { getGuildDashboardTranslations } from "../../i18n/i18n";
 import { useFetchGuildConfigCategory } from "../../repository/commands/useFetchGuildConfigCategory";
 import { PopulatedGuildConfig } from "../../repository/types/guild";
 import { GuildConfigOptionCategory } from "../../repository/types/guild-config-types";
@@ -56,20 +57,22 @@ export default function ConfigurationCategoryPage({ guildId, activePage }: Confi
 }
 
 function GenericConfigComponent({ optionName, option, guildId }: { optionName: string, option: PopulatedGuildConfig[string], guildId: string }) {
+  const translatedName = getGuildDashboardTranslations("option_name." + optionName);
+
   switch (option.type) {
   case "int":
-    return <IntConfigComponent optionName={optionName} option={option} />;
+    return <IntConfigComponent optionName={translatedName} option={option} />;
   case "float":
-    return <FloatConfigComponent optionName={optionName} option={option} />;
+    return <FloatConfigComponent optionName={translatedName} option={option} />;
   case "boolean":
-    return <BooleanConfigComponent optionName={optionName} option={option} />;
+    return <BooleanConfigComponent optionName={translatedName} option={option} />;
   case "enum":
-    return <EnumConfigComponent optionName={optionName} option={option} />;
+    return <EnumConfigComponent optionName={translatedName} option={option} />;
   case "role":
-    return <RoleConfigComponent optionName={optionName} option={option} guildId={guildId} />;
+    return <RoleConfigComponent optionName={translatedName} option={option} guildId={guildId} />;
   case "color":
-    return <ColorConfigComponent optionName={optionName} option={option} />;
+    return <ColorConfigComponent optionName={translatedName} option={option} />;
   default:
-    return <span style={{ color: "gray" }}><ConfigurationName>{optionName}</ConfigurationName>: {JSON.stringify(option, null, 2)}</span>;
+    return <span style={{ color: "gray" }}><ConfigurationName>{translatedName}</ConfigurationName>: {JSON.stringify(option, null, 2)}</span>;
   }
 }
