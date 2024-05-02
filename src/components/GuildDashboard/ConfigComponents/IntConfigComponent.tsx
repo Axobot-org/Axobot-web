@@ -1,16 +1,15 @@
 import { IntOptionRepresentation } from "../../../repository/types/guild-config-types";
 import NumericInput from "../../common/NumericInput";
-import { ConfigurationName, SimpleConfigurationContainer } from "./shared/SharedConfigComponents";
+import { SimpleConfiguration } from "./shared/SharedConfigComponents";
 
 interface IntConfigComponentProps {
-  optionName: string;
+  optionId: string;
   option: IntOptionRepresentation & {value: unknown};
 }
 
-export default function IntConfigComponent({ optionName, option }: IntConfigComponentProps) {
+export default function IntConfigComponent({ optionId, option }: IntConfigComponentProps) {
   return (
-    <SimpleConfigurationContainer>
-      <ConfigurationName>{optionName}</ConfigurationName>
+    <SimpleConfiguration optionId={optionId}>
       <NumericInput
         value={option.value}
         min={option.min}
@@ -18,6 +17,6 @@ export default function IntConfigComponent({ optionName, option }: IntConfigComp
         defaultValue={option.default ?? undefined}
         acceptDecimals={false}
       />
-    </SimpleConfigurationContainer>
+    </SimpleConfiguration>
   );
 }

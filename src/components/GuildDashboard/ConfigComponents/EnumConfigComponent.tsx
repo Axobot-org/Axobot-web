@@ -1,18 +1,17 @@
 import { MenuItem, Select } from "@mui/material";
 
 import { EnumOptionRepresentation } from "../../../repository/types/guild-config-types";
-import { ConfigurationName, SimpleConfigurationContainer } from "./shared/SharedConfigComponents";
+import { SimpleConfiguration } from "./shared/SharedConfigComponents";
 
 
 interface EnumConfigComponentProps {
-  optionName: string;
+  optionId: string;
   option: EnumOptionRepresentation & {value: unknown};
 }
 
-export default function EnumConfigComponent({ optionName, option }: EnumConfigComponentProps) {
+export default function EnumConfigComponent({ optionId, option }: EnumConfigComponentProps) {
   return (
-    <SimpleConfigurationContainer>
-      <ConfigurationName>{optionName}</ConfigurationName>
+    <SimpleConfiguration optionId={optionId}>
       <Select
         value={option.value}
         variant="standard"
@@ -23,6 +22,6 @@ export default function EnumConfigComponent({ optionName, option }: EnumConfigCo
           ))
         }
       </Select>
-    </SimpleConfigurationContainer>
+    </SimpleConfiguration>
   );
 }

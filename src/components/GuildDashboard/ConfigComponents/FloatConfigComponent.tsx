@@ -1,16 +1,15 @@
 import { FloatOptionRepresentation } from "../../../repository/types/guild-config-types";
 import NumericInput from "../../common/NumericInput";
-import { ConfigurationName, SimpleConfigurationContainer } from "./shared/SharedConfigComponents";
+import { SimpleConfiguration } from "./shared/SharedConfigComponents";
 
 interface FloatConfigComponentProps {
-  optionName: string;
+  optionId: string;
   option: FloatOptionRepresentation & {value: unknown};
 }
 
-export default function FloatConfigComponent({ optionName, option }: FloatConfigComponentProps) {
+export default function FloatConfigComponent({ optionId, option }: FloatConfigComponentProps) {
   return (
-    <SimpleConfigurationContainer>
-      <ConfigurationName>{optionName}</ConfigurationName>
+    <SimpleConfiguration optionId={optionId}>
       <NumericInput
         value={option.value}
         min={option.min}
@@ -18,6 +17,6 @@ export default function FloatConfigComponent({ optionName, option }: FloatConfig
         defaultValue={option.default ?? undefined}
         acceptDecimals={true}
       />
-    </SimpleConfigurationContainer>
+    </SimpleConfiguration>
   );
 }

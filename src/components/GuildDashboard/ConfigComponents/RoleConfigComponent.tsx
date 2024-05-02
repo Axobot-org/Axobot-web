@@ -6,15 +6,15 @@ import { useFetchGuildRolesQuery } from "../../../repository/redux/api/api";
 import { GuildRole } from "../../../repository/types/guild";
 import { RoleOptionRepresentation } from "../../../repository/types/guild-config-types";
 import RoleMention from "../../common/RoleMention";
-import { ConfigurationName, SimpleConfigurationContainer } from "./shared/SharedConfigComponents";
+import { SimpleConfiguration } from "./shared/SharedConfigComponents";
 
 interface RoleConfigComponentProps {
-  optionName: string;
+  optionId: string;
   option: RoleOptionRepresentation & {value: unknown};
   guildId: string;
 }
 
-export default function RoleConfigComponent({ optionName, option, guildId }: RoleConfigComponentProps) {
+export default function RoleConfigComponent({ optionId, option, guildId }: RoleConfigComponentProps) {
   const { data, isLoading, error } = useFetchGuildRolesQuery({ guildId });
   const [editing, setEditing] = useState(false);
 
@@ -49,8 +49,7 @@ export default function RoleConfigComponent({ optionName, option, guildId }: Rol
   );
 
   return (
-    <SimpleConfigurationContainer sx={{ height: 32 }}>
-      <ConfigurationName>{optionName}</ConfigurationName>
+    <SimpleConfiguration optionId={optionId}>
       {!error && (
         editing
           ? <Autocomplete
@@ -70,7 +69,7 @@ export default function RoleConfigComponent({ optionName, option, guildId }: Rol
           />
           : <ReadonlyRolePicker currentRole={currentRole} onClick={() => setEditing(true)} />
       )}
-    </SimpleConfigurationContainer>
+    </SimpleConfiguration>
   );
 }
 
@@ -81,7 +80,7 @@ interface ReadonlyRolePickerProps {
 
 function ReadonlyRolePicker({ currentRole, onClick }: ReadonlyRolePickerProps) {
   return (
-    <Button onClick={onClick} endIcon={<EditIcon />} sx={{ textTransform: "none", fontSize: "1rem" }}>
+    <Button onClick={onClick} endIcon={<EditIcon />} sx={{ textTransform: "none", fontSize: "1rem", height: "32px" }}>
       {
         currentRole === null
           ? <Typography color="gray" fontStyle="italic">Pick a role</Typography>

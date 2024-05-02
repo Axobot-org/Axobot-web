@@ -1,7 +1,6 @@
-import { CircularProgress, Stack, Typography } from "@mui/material";
+import { CircularProgress, Stack, styled, Typography } from "@mui/material";
 import { Fragment } from "react/jsx-runtime";
 
-import { getGuildDashboardTranslations } from "../../i18n/i18n";
 import { useFetchGuildConfigCategory } from "../../repository/commands/useFetchGuildConfigCategory";
 import { PopulatedGuildConfig } from "../../repository/types/guild";
 import { GuildConfigOptionCategory } from "../../repository/types/guild-config-types";
@@ -11,7 +10,6 @@ import EnumConfigComponent from "./ConfigComponents/EnumConfigComponent";
 import FloatConfigComponent from "./ConfigComponents/FloatConfigComponent";
 import IntConfigComponent from "./ConfigComponents/IntConfigComponent";
 import RoleConfigComponent from "./ConfigComponents/RoleConfigComponent";
-import { ConfigurationName } from "./ConfigComponents/shared/SharedConfigComponents";
 
 interface ConfigurationCategoryPageProps {
   guildId: string;
@@ -45,34 +43,45 @@ export default function ConfigurationCategoryPage({ guildId, activePage }: Confi
 
   return (
     <Fragment>
-      <Stack useFlexGap gap={2} my={4}>
+      <ComponentsContainer>
         {
           Object.entries(data).map(([optionName, option]) => (
-            <GenericConfigComponent key={optionName} optionName={optionName} option={option} guildId={guildId} />
+            <GenericConfigComponent key={optionName} optionId={optionName} option={option} guildId={guildId} />
           ))
         }
-      </Stack>
+      </ComponentsContainer>
     </Fragment>
   );
 }
 
-function GenericConfigComponent({ optionName, option, guildId }: { optionName: string, option: PopulatedGuildConfig[string], guildId: string }) {
-  const translatedName = getGuildDashboardTranslations("option_name." + optionName);
+const ComponentsContainer = styled(Stack)(({ theme }) => ({
+  gap: theme.spacing(2),
+  marginTop: theme.spacing(4),
+  marginBottom: theme.spacing(4),
+  width: "60vw",
+  maxWidth: "1000px",
 
+  [theme.breakpoints.down("md")]: {
+    width: "85vw",
+  },
+}));
+
+function GenericConfigComponent({ optionId, option, guildId }: { optionId: string, option: PopulatedGuildConfig[string], guildId: string }) {
   switch (option.type) {
   case "int":
-    return <IntConfigComponent optionName={translatedName} option={option} />;
+    return <IntConfigComponent optionId={optionId} option={option} />;
   case "float":
-    return <FloatConfigComponent optionName={translatedName} option={option} />;
+    return <FloatConfigComponent optionId={optionId} option={option} />;
   case "boolean":
-    return <BooleanConfigComponent optionName={translatedName} option={option} />;
+    return <BooleanConfigComponent optionId={optionId} option={option} />;
   case "enum":
-    return <EnumConfigComponent optionName={translatedName} option={option} />;
+    return <EnumConfigComponent optionId={optionId} option={option} />;
   case "role":
-    return <RoleConfigComponent optionName={translatedName} option={option} guildId={guildId} />;
+    return <RoleConfigComponent optionId={optionId} option={option} guildId={guildId} />;
   case "color":
-    return <ColorConfigComponent optionName={translatedName} option={option} />;
+    return <ColorConfigComponent optionId={optionId} option={option} />;
   default:
-    return <span style={{ color: "gray" }}><ConfigurationName>{translatedName}</ConfigurationName>: {JSON.stringify(option, null, 2)}</span>;
+    return null;
+    // return <span style={{ color: "gray" }}><b>{optionId}</b>: {JSON.stringify(option, null, 2)}</span>;
   }
 }

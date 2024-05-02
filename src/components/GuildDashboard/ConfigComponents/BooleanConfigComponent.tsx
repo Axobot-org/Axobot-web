@@ -1,19 +1,17 @@
 import { Switch } from "@mui/material";
 
 import { BooleanOptionRepresentation } from "../../../repository/types/guild-config-types";
-import { ConfigurationName, SimpleConfigurationContainer } from "./shared/SharedConfigComponents";
+import { SimpleConfiguration } from "./shared/SharedConfigComponents";
 
 interface BooleanConfigComponentProps {
-  optionName: string;
+  optionId: string;
   option: BooleanOptionRepresentation & {value: unknown};
 }
 
-export default function BooleanConfigComponent({ optionName, option }: BooleanConfigComponentProps) {
+export default function BooleanConfigComponent({ optionId, option }: BooleanConfigComponentProps) {
   return (
-    <SimpleConfigurationContainer>
-      <ConfigurationName>{optionName}</ConfigurationName>
-
+    <SimpleConfiguration optionId={optionId}>
       <Switch readOnly checked={option.value as boolean} />
-    </SimpleConfigurationContainer>
+    </SimpleConfiguration>
   );
 }

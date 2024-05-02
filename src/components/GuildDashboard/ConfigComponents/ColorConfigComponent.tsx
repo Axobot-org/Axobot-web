@@ -1,19 +1,18 @@
 import { MuiColorInput } from "mui-color-input";
 
 import { ColorOptionRepresentation } from "../../../repository/types/guild-config-types";
-import { ConfigurationName, SimpleConfigurationContainer } from "./shared/SharedConfigComponents";
+import { SimpleConfiguration } from "./shared/SharedConfigComponents";
 
 interface ColorConfigComponentProps {
-  optionName: string;
+  optionId: string;
   option: ColorOptionRepresentation & {value: unknown};
 }
 
-export default function ColorConfigComponent({ optionName, option }: ColorConfigComponentProps) {
+export default function ColorConfigComponent({ optionId, option }: ColorConfigComponentProps) {
   const currentValue = (option.value as string | null) ?? option.default ?? 0x0;
   const currentValueAsHex = "#" + currentValue.toString(16).padStart(6, "0");
   return (
-    <SimpleConfigurationContainer>
-      <ConfigurationName>{optionName}</ConfigurationName>
+    <SimpleConfiguration optionId={optionId}>
       <MuiColorInput
         value={currentValueAsHex}
         variant="standard"
@@ -21,6 +20,6 @@ export default function ColorConfigComponent({ optionName, option }: ColorConfig
         isAlphaHidden
         sx={{ maxWidth: "7.5em" }}
       />
-    </SimpleConfigurationContainer>
+    </SimpleConfiguration>
   );
 }
