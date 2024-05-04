@@ -105,6 +105,47 @@ export const AxoTheme = createTheme({
         LinkComponent: LinkBehavior,
       },
     },
+    MuiSwitch: {
+      styleOverrides: {
+        root: {
+          padding: 8,
+        },
+        switchBase: {
+          "&.Mui-checked": {
+            color: "#fff",
+            "& + .MuiSwitch-track": {
+              opacity: 1,
+              border: 0,
+            },
+          },
+        },
+        track: {
+          borderRadius: 22 / 2,
+        },
+        thumb: ({ theme, ownerState }) => ({
+          boxShadow: "none",
+          width: 16,
+          height: 16,
+          margin: 2,
+          ...(ownerState.checked && {
+            color: "white",
+            "@media (prefers-contrast: more)": {
+              "&::before": {
+                content: "''",
+                position: "absolute",
+                width: 16,
+                height: 16,
+                backgroundRepeat: "no-repeat",
+                backgroundPosition: "center",
+                backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="12" width="12" viewBox="0 0 24 24"><path fill="${encodeURIComponent(
+                  theme.palette.primary.dark
+                )}" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"/></svg>')`,
+              },
+            },
+          }),
+        }),
+      },
+    },
   },
   palette: {
     mode: "dark",
