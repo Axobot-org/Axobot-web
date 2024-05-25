@@ -33,6 +33,13 @@ export function getMetaTagsFromURL(url: string) {
         <meta property="og:title" content={pageTitle} {...helmetProps} />
       </>
     );
+  case "tos":
+    return (
+      <>
+        <title>Axobot: Terms of Use</title>
+        <meta property="og:title" content="Terms of Use" {...helmetProps} />
+      </>
+    );
   default:
     return (
       <>
