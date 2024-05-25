@@ -5,10 +5,9 @@ import { ExternalRoutesURLs } from "../../router/router";
 import DiscordMarkWhite from "../../svg/discord-mark-white.svg?react";
 
 export default function NeedsLoginErrorPage() {
-
   return (
     <Fragment>
-      <h1>Hey!</h1>
+      <Typography variant="h1" mb={2}>Hey!</Typography>
       <Typography my={1}>
         To access this page, you need to log in with your Discord account.
       </Typography>
