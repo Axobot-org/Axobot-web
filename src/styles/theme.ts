@@ -98,7 +98,16 @@ export const AxoTheme = createTheme({
     MuiLink: {
       defaultProps: {
         component: LinkBehavior,
+        underline: "hover",
+        rel: "noopener",
       } as LinkProps,
+      styleOverrides: {
+        root: {
+          "@media (prefers-contrast: more)": {
+            textDecoration: "underline",
+          },
+        },
+      },
     },
     MuiButtonBase: {
       defaultProps: {
@@ -168,10 +177,22 @@ export const AxoTheme = createTheme({
     },
   },
   typography: {
-    h1: HeaderStyle,
-    h2: HeaderStyle,
-    h3: HeaderStyle,
-    h4: HeaderStyle,
+    h1: {
+      ...HeaderStyle,
+      fontSize: "4rem",
+    },
+    h2: {
+      ...HeaderStyle,
+      fontSize: "3.5rem",
+    },
+    h3: {
+      ...HeaderStyle,
+      fontSize: "2.5rem",
+    },
+    h4: {
+      ...HeaderStyle,
+      fontSize: "2rem",
+    },
     h5: HeaderStyle,
     fontFamily: [
       "'M PLUS 2'",
