@@ -3,6 +3,7 @@ import { Box, Collapse, IconButton, Link, Paper, Stack, styled, Typography } fro
 import { PropsWithChildren, useState } from "react";
 import { Fragment } from "react/jsx-runtime";
 
+import { ExternalRoutesURLs } from "../../router/router";
 import { useIsOnMobile } from "../../styles/useIsOnMobile";
 
 const TOSSummary = () => {
@@ -22,9 +23,10 @@ const TOSSummary = () => {
       <Collapse in={isOpen}>
         <ul>
           <li><b>Free updates:</b> Axobot is provided to users free of charge (Section 1), and additional functionalities can be added at any time (Section 2.3).</li>
-          <li><b>Security Measures:</b> Users are encouraged to report any security breaches, and we take prompt action to remedy them (Section 2.4).</li>
+          <li><b>Service Security:</b> Users are encouraged to report any security breaches, and we take prompt action to remedy them (Section 2.4).</li>
           <li><b>Right to Terminate:</b> Users can terminate the use of the Features at any time (Section 2.5.1).</li>
-          <li><b>Terms Modification:</b> The Terms can be modified or replaced at any time, and continued use implies acceptance (Section 1).</li>
+          <li><b>Terms Modification:</b> The Terms may be modified or replaced at any time without notice, and continued use constitutes acceptance (Section 1, Section 5.2).</li>
+          <li><b>Compliance Responsibility:</b> Users are responsible for compliance with all applicable laws in their jurisdiction and must adhere to Discord's General Terms of Use. (Section 2.2, Section 2.4)</li>
           <li><b>Content Liability:</b> Users are solely liable for any content they upload, and the Owner can remove content at its discretion (Section 3.2.3).</li>
           <li><b>No Warranties:</b> The Features and access to the Platform are provided "as is" and "as available," without warranties (Section 4.1).</li>
           <li><b>Platform Interruption Notices:</b> Users will be informed appropriately about interruptions for maintenance or updates (Section 5.3).</li>
@@ -46,7 +48,7 @@ export default function TOS() {
 
         <Typography fontWeight="bold" my={2} textAlign="justify">Please read these Terms of use carefully before using the Features. Before using any of the Features, you must first agree to these Terms. By accessing the Features or by otherwise using them, you expressly confirm that you fully and irrevocably agree to these Terms.</Typography>
 
-        <p>This Platform and the Features are provided by: Arthur BLAISE, France.</p>
+        <p>This Platform and the Features are provided by: Arthur BLAISE, France. Contact us on our <Link href={ExternalRoutesURLs.supportServer}>Discord server</Link>, or by email at <Link href="mailto:z.runner.mc@gmail.com">z.runner.mc@gmail.com</Link>.</p>
 
 
         <TOSSummary />
@@ -101,7 +103,7 @@ export default function TOS() {
 
           <SubtitleSection title="2.5 Duration of and access to the Features and the License">
             <Subtitle2Section title="2.5.1 Termination">
-              <p>The Owner may at any time and without liability, terminate, suspend, or limit your use of the Features, in the event that (a) we reasonably suspect you of acting in breach of these Terms and/or all other applicable provision; (b) we are required to do so by applicable law, regulation or any court or other authority to which we are subject to in any jurisdiction; (c) we have concerns about the security of your account or we suspect the Features are being used in a fraudulent or unauthorized manner; (d) we reasonably believe that we need to do so in order to protect our reputation; (e) decide to stop for whatever reason our activity in full or part.</p>
+              <p>The Owner may at any time and without liability, terminate, suspend, or limit your use of the Features, in the event that (a) we reasonably suspect you of acting in breach of these Terms and/or all other applicable provision; (b) we are required to do so by applicable law, regulation or any court or other authority to which we are subject to in any jurisdiction; (c) we have concerns about the security of your account or we suspect the Features are being used in a fraudulent or unauthorized manner; (d) we reasonably believe that we need to do so in order to protect our reputation; (e) we decide to stop for whatever reason our activity in full or part.</p>
               <p>You shall not be entitled to any compensation or damages whatsoever from the Owner into any suspension, limitation, or termination of your use of the Features due to a breach of the Terms.</p>
               <p>Our rights of suspension, limitation and termination under these Terms shall be without prejudice to any other rights or remedies which we may have (whether under the Terms or applicable law and regulations).</p>
               <p>User may terminate the use of the Features at any time.</p>
