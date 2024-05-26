@@ -21,6 +21,7 @@ const TOSSummary = () => {
         </IconButton>
       </Stack>
       <Collapse in={isOpen}>
+        <p><b>Disclaimer:</b> This is a human readable summary of Axobot Terms of Use, not a substitute for them. To read the full Terms of Use, please scroll down.</p>
         <ul>
           <li><b>Free updates:</b> Axobot is provided to users free of charge (Section 1), and additional functionalities can be added at any time (Section 2.3).</li>
           <li><b>Service Security:</b> Users are encouraged to report any security breaches, and we take prompt action to remedy them (Section 2.4).</li>
