@@ -3,7 +3,7 @@
     "anti_caps_lock": "Send a warning message when a user sends a message with too many capital letters. The offending messages are not deleted.",
     "anti_raid": "Moderate your server activity (members joining, mentions spam, and server invites) to prevent raids. The bot can mute, kick, or ban users depending on their security level.",
     "anti_raid_ignored_roles": "Choose which roles make your members immune to the anti-raid system.",
-    "anti_Scam": "Detect and delete scam messages using a custom scam detection AI.",
+    "anti_scam": "Detect and delete scam messages using a custom scam detection AI.",
     "bot_news": "Send a message to the specified channel when Axobot receives an update.",
     "compress_help": "Compress the global help command to list only the command categories rather than every available command.",
     "delete_welcome_on_quick_leave": "Delete the welcome message if the user leaves the server within a few minutes of joining. Requires the welcome message option to be enabled.",
