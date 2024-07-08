@@ -1,5 +1,4 @@
 import { CircularProgress, Stack, styled, Typography } from "@mui/material";
-import { Fragment } from "react/jsx-runtime";
 
 import { useFetchGuildConfigCategory } from "../../repository/commands/useFetchGuildConfigCategory";
 import { PopulatedGuildConfig } from "../../repository/types/guild";
@@ -20,37 +19,41 @@ export default function ConfigurationCategoryPage({ guildId, activePage }: Confi
   const { data, isLoading, error } = useFetchGuildConfigCategory({ guildId, category: activePage });
 
   if (isLoading) {
-    return <CircularProgress color="primary" aria-label="Loading guild configuration" />;
+    return <LoadingPlaceholder />;
   }
 
   if (error) {
     console.error(error);
     return (
-      <Fragment>
+      <ComponentsContainer sx={{ alignItems: "center" }}>
         <Typography my={1}>
           Oops, something went wrong!
         </Typography>
         <Typography variant="subtitle1" color="text.secondary" fontStyle="italic">
           Sorry, an unexpected error has occurred.
         </Typography>
-      </Fragment>
+      </ComponentsContainer>
     );
   }
 
   if (data === undefined) {
-    return <CircularProgress color="primary" aria-label="Loading guild configuration" />;
+    return <LoadingPlaceholder />;
   }
 
   return (
-    <Fragment>
-      <ComponentsContainer>
-        {
-          Object.entries(data).map(([optionName, option]) => (
-            <GenericConfigComponent key={optionName} optionId={optionName} option={option} guildId={guildId} />
-          ))
-        }
-      </ComponentsContainer>
-    </Fragment>
+    <ComponentsContainer>
+      {Object.entries(data).map(([optionName, option]) => (
+        <GenericConfigComponent key={optionName} optionId={optionName} option={option} guildId={guildId} />
+      ))}
+    </ComponentsContainer>
+  );
+}
+
+function LoadingPlaceholder() {
+  return (
+    <ComponentsContainer sx={{ alignItems: "center" }}>
+      <CircularProgress color="primary" aria-label="Loading guild configuration" />
+    </ComponentsContainer>
   );
 }
 
