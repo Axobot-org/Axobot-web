@@ -1,7 +1,7 @@
-import { Stack, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 import { isRouteErrorResponse, useRouteError } from "react-router-dom";
 
-import Appbar from "../../components/common/Appbar";
+import { PublicLayout } from "../layouts/PublicLayout";
 
 export default function ErrorPage() {
   const error = useRouteError();
@@ -10,7 +10,11 @@ export default function ErrorPage() {
 
   if (isRouteErrorResponse(error)) {
     // error is type `ErrorResponse`
-    errorMessage = error.error?.message || error.statusText;
+    if (typeof error.data === "string") {
+      errorMessage = error.data;
+    } else {
+      errorMessage = error.statusText;
+    }
   } else if (error instanceof Error) {
     errorMessage = error.message;
   } else if (typeof error === "string") {
@@ -21,8 +25,7 @@ export default function ErrorPage() {
   }
 
   return (
-    <Stack height="100%" alignItems="center">
-      <Appbar />
+    <PublicLayout>
       <h1>Oops!</h1>
       <Typography my={1}>
         Sorry, an unexpected error has occurred
@@ -30,6 +33,6 @@ export default function ErrorPage() {
       <Typography variant="subtitle1" color="text.secondary" fontStyle="italic">
         {errorMessage}
       </Typography>
-    </Stack>
+    </PublicLayout>
   );
 }

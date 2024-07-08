@@ -1,7 +1,7 @@
 import { Gavel, Handshake, HowToVote, InfoOutlined, Leaderboard, LiveTv, Mic, QuestionMark, Settings, WavingHand } from "@mui/icons-material";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import { CSSObject, Divider, IconButton, List, ListItem, ListItemButton, ListItemIcon, ListItemText, styled, Theme, Toolbar } from "@mui/material";
+import { Box, CSSObject, Divider, IconButton, List, ListItem, ListItemButton, ListItemIcon, ListItemText, styled, Theme, Toolbar } from "@mui/material";
 import MuiDrawer from "@mui/material/Drawer";
 import { Fragment, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
@@ -88,7 +88,7 @@ const PageTab = styled(ListItemButton, {
   }),
 }));
 
-function TabIcon({ page }: {page: GuildConfigOptionCategory}) {
+function TabIcon({ page }: { page: GuildConfigOptionCategory }) {
   switch (page) {
   case "core":
     return <Settings />;
@@ -113,7 +113,7 @@ function TabIcon({ page }: {page: GuildConfigOptionCategory}) {
   }
 }
 
-function TabContent({ page, isOpen }: {page: GuildConfigOptionCategory, isOpen: boolean}) {
+function TabContent({ page, isOpen }: { page: GuildConfigOptionCategory, isOpen: boolean }) {
   const formatedTitle = page.replace(/-/g, " ").replace(/^\w/, c => c.toUpperCase());
   return (
     <Fragment>
@@ -147,26 +147,28 @@ export default function NavigationDrawer() {
   return (
     <Drawer variant="permanent" open={open}>
       <Toolbar />
-      <DrawerHeader>
-        <IconButton onClick={toggleOpen}>
-          {open ? <ChevronLeftIcon /> : <ChevronRightIcon />}
-        </IconButton>
-      </DrawerHeader>
-      <Divider />
-      <List>
-        {GuildConfigOptionCategoryNames.map(page => (
-          <ListItem key={page} disablePadding sx={{ display: "block" }}>
-            <PageTab
-              isOpen={open}
-              isSelected={activePage === page}
-              component={Link}
-              to={page}
-            >
-              <TabContent page={page} isOpen={open} />
-            </PageTab>
-          </ListItem>
-        ))}
-      </List>
+      <Box overflow="auto">
+        <DrawerHeader>
+          <IconButton onClick={toggleOpen}>
+            {open ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+          </IconButton>
+        </DrawerHeader>
+        <Divider />
+        <List>
+          {GuildConfigOptionCategoryNames.map(page => (
+            <ListItem key={page} disablePadding sx={{ display: "block" }}>
+              <PageTab
+                isOpen={open}
+                isSelected={activePage === page}
+                component={Link}
+                to={page}
+              >
+                <TabContent page={page} isOpen={open} />
+              </PageTab>
+            </ListItem>
+          ))}
+        </List>
+      </Box>
     </Drawer>
   );
 }

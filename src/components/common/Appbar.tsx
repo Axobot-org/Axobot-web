@@ -70,7 +70,7 @@ export default function Appbar() {
   const getExternalParams = (url: string) => (url.startsWith("http") ? { target: "_blank", rel: "noopener" } : {});
 
   return (
-    <AppBar position="static" sx={{ zIndex: 10 }}>
+    <AppBar position="fixed" sx={{ zIndex: 10 }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters sx={{ justifyContent: "space-between" }}>
           <Box sx={{ display: { xs: "flex", md: "none" } }}>

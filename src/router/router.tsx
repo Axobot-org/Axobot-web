@@ -1,7 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 
 import ErrorPage from "../pages/genericPages/ErrorPage";
-import PublicLayout from "../pages/layouts/PublicLayout";
+import RouterPublicLayout from "../pages/layouts/PublicLayout";
 import getBotInviteUrl from "../repository/getBotInviteUrl";
 import getDiscordAuthUrl from "../repository/getDiscordAuthUrl";
 import { privateRoutes as authenticatedRoutes } from "./routes/authenticatedRoutes";
@@ -20,7 +20,7 @@ export const ExternalRoutesURLs = {
 
 const router = createBrowserRouter([
   {
-    element: <PublicLayout />,
+    element: <RouterPublicLayout />,
     errorElement: <ErrorPage />,
     children: [
       ...publicRoutes,

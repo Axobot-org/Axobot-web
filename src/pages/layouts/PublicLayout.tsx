@@ -1,4 +1,5 @@
-import { Stack } from "@mui/material";
+import { Stack, Toolbar } from "@mui/material";
+import { PropsWithChildren } from "react";
 import { Helmet } from "react-helmet-async";
 import { Outlet, useLocation } from "react-router-dom";
 
@@ -11,15 +12,24 @@ function DynamicHelmet() {
   return <Helmet prioritizeSeoTags>{getMetaTagsFromURL(strippedPathName)}</Helmet>;
 }
 
-
-export default function PublicLayout() {
+export function PublicLayout({ children }: PropsWithChildren) {
   return (
     <Stack height="100%" alignItems="center">
       <DynamicHelmet />
       <Appbar />
+      <Toolbar />
       <Stack px={{ xs: 3, md: "5%" }} maxWidth={{ xs: "100%", xl: "1536px" }} alignItems="center">
-        <Outlet />
+        {children}
       </Stack>
     </Stack>
+  );
+}
+
+
+export default function RouterPublicLayout() {
+  return (
+    <PublicLayout>
+      <Outlet />
+    </PublicLayout>
   );
 }
