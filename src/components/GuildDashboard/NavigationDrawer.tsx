@@ -1,9 +1,11 @@
 import { Gavel, Handshake, HowToVote, InfoOutlined, Leaderboard, LiveTv, Mic, QuestionMark, Settings, WavingHand } from "@mui/icons-material";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import { Box, Button, CSSObject, Divider, IconButton, List, ListItem, ListItemButton, ListItemIcon, ListItemText, styled, Theme, Toolbar } from "@mui/material";
+import MenuIcon from "@mui/icons-material/Menu";
+import { Box, CSSObject, Divider, IconButton, List, ListItem, ListItemButton, ListItemIcon, ListItemText, styled, Theme, Toolbar } from "@mui/material";
 import MuiDrawer from "@mui/material/Drawer";
 import { Fragment, useState } from "react";
+import { createPortal } from "react-dom";
 import { Link, useLocation } from "react-router-dom";
 
 import { GuildConfigOptionCategory, GuildConfigOptionCategoryNames } from "../../repository/types/guild-config-types";
@@ -147,7 +149,7 @@ function NavigationDrawerContent({ open, activePage, toggleOpen }: NavigationDra
   const isOnMobile = useIsOnMobile();
   return (
     <Fragment>
-      <Toolbar />
+      <Toolbar sx={{ display: { xs: "none", md: "initial" } }} />
       <Box overflow="auto">
         <DrawerHeader>
           <IconButton onClick={toggleOpen}>
@@ -187,15 +189,20 @@ export default function NavigationDrawer() {
     setOpen(!open);
   };
 
+  const appbarLeftSlot = document.getElementById("appbar-left-slot");
+
   if (isOnMobile) {
     return (
       <Fragment>
         <MuiDrawer variant="temporary" anchor="left" open={open} onClose={toggleOpen}>
           <NavigationDrawerContent open={open} activePage={activePage} toggleOpen={toggleOpen} />
         </MuiDrawer>
-        <Button variant="outlined" startIcon={<ChevronLeftIcon />} sx={{ mt: 2, maxWidth: "fit-content" }} onClick={toggleOpen}>
-          {activePage ? formatPageTitle(activePage) : "?"}
-        </Button>
+        {appbarLeftSlot && createPortal(
+          <IconButton onClick={toggleOpen}>
+            <MenuIcon />
+          </IconButton>,
+          appbarLeftSlot
+        )}
       </Fragment>
     );
   }

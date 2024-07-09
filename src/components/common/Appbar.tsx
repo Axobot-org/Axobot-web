@@ -1,5 +1,4 @@
-import MenuIcon from "@mui/icons-material/Menu";
-import { AppBar, Box, Button, Container, IconButton, Link, Menu, MenuItem, Toolbar, Tooltip, Typography } from "@mui/material";
+import { AppBar, Box, Button, Container, Divider, IconButton, Link, Menu, MenuItem, Stack, Toolbar, Tooltip, Typography } from "@mui/material";
 import React, { useMemo } from "react";
 
 import { useGetorFetchMe } from "../../repository/commands/useGetOrFetchMe";
@@ -30,6 +29,7 @@ export default function Appbar() {
       };
     }
   }, [user]);
+  const mobilePagesKeys = Object.keys(pages).filter(key => key !== "Dashboard");
 
   const settings: { [key: string]: string } = useMemo(() => {
     const base = {
@@ -49,20 +49,10 @@ export default function Appbar() {
     }
   }, [user]);
 
-  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
-
-  const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElNav(event.currentTarget);
-  };
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
   };
-
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
-  };
-
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
@@ -73,33 +63,11 @@ export default function Appbar() {
     <AppBar position="fixed" sx={{ zIndex: 10 }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters sx={{ justifyContent: "space-between" }}>
-          <Box sx={{ display: { xs: "flex", md: "none" } }}>
-            <IconButton
-              aria-controls="website-menu"
-              aria-label="Website menu"
-              aria-haspopup="true"
-              onClick={handleOpenNavMenu}
-              color="inherit"
-            >
-              <MenuIcon />
-            </IconButton>
-            <Menu
-              id="website-menu"
-              anchorEl={anchorElNav}
-              keepMounted
-              open={Boolean(anchorElNav)}
-              onClick={handleCloseNavMenu}
-              onClose={handleCloseNavMenu}
-            >
-              {Object.keys(pages).map((key) => (
-                <MenuItem key={key} component={Link} href={pages[key]} {...getExternalParams(pages[key])}>
-                  <Typography textAlign="center">{key}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box>
+          <Stack direction="row" spacing={1} alignItems="center">
+            <Box id="appbar-left-slot"/>
 
-          <LogoAndTitle />
+            <LogoAndTitle />
+          </Stack>
 
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" }, gap: 1, marginInlineStart: 1 }}>
             {Object.keys(pages).map((key) => (
@@ -147,6 +115,12 @@ export default function Appbar() {
                   <Typography textAlign="center">Logout</Typography>
                 </MenuItem>
               )}
+              <Divider sx={{ display: { xs: "flex", md: "none" }, mx: 3 }} />
+              {mobilePagesKeys.map((key) => (
+                <MenuItem key={key} component={Link} href={pages[key]} sx={{ display: { xs: "flex", md: "none" } }} {...getExternalParams(pages[key])}>
+                  <Typography textAlign="center">{key}</Typography>
+                </MenuItem>
+              ))}
             </Menu>
           </Box>
 
