@@ -24,27 +24,39 @@ export default function ConfigurationCategoryPage({ guildId, activePage }: Confi
 
   if (error) {
     console.error(error);
-    return (
-      <ComponentsContainer sx={{ alignItems: "center" }}>
-        <Typography my={1}>
-          Oops, something went wrong!
-        </Typography>
-        <Typography variant="subtitle1" color="text.secondary" fontStyle="italic">
-          Sorry, an unexpected error has occurred.
-        </Typography>
-      </ComponentsContainer>
-    );
+    return <ErrorPage title="Oops, something went wrong!" message="Sorry, an unexpected error has occurred." />;
   }
 
   if (data === undefined) {
     return <LoadingPlaceholder />;
   }
 
+  const optionsMap: PopulatedGuildConfig = Object.fromEntries(
+    Object.entries(data).filter(([_, option]) => ["int", "float", "boolean", "enum", "role", "color"].includes(option.type))
+  );
+
+  if (Object.keys(optionsMap).length === 0) {
+    return <ErrorPage title="No configuration options available." message="This category appears to be empty. Just be glad it exists!" />;
+  }
+
   return (
     <ComponentsContainer>
-      {Object.entries(data).map(([optionName, option]) => (
+      {Object.entries(optionsMap).map(([optionName, option]) => (
         <GenericConfigComponent key={optionName} optionId={optionName} option={option} guildId={guildId} />
       ))}
+    </ComponentsContainer>
+  );
+}
+
+function ErrorPage({ title, message }: {title: string, message: string}) {
+  return (
+    <ComponentsContainer sx={{ alignItems: "center" }}>
+      <Typography my={1}>
+        {title}
+      </Typography>
+      <Typography variant="subtitle1" color="text.secondary" fontStyle="italic" textAlign="center">
+        {message}
+      </Typography>
     </ComponentsContainer>
   );
 }
@@ -85,6 +97,5 @@ function GenericConfigComponent({ optionId, option, guildId }: { optionId: strin
     return <ColorConfigComponent optionId={optionId} option={option} />;
   default:
     return null;
-    // return <span style={{ color: "gray" }}><b>{optionId}</b>: {JSON.stringify(option, null, 2)}</span>;
   }
 }
