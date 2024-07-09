@@ -1,7 +1,6 @@
 import { RouteObject } from "react-router-dom";
 
 import Home from "../../pages/Home";
-import TOS from "../../pages/legal/TOS";
 
 
 export const publicRoutes: RouteObject[] = [
@@ -11,7 +10,7 @@ export const publicRoutes: RouteObject[] = [
   },
   {
     path: "/tos",
-    Component: TOS,
+    lazy: () => import("../../pages/legal/TOS"),
   },
   {
     path: "/leaderboard/global",

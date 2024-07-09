@@ -217,6 +217,8 @@ export default function TOS() {
   );
 }
 
+export const Component = TOS;
+
 function titleToSectionId(title: string) {
   let result = title.toLowerCase().replace(/\W/g, "-");
   while (result.includes("--")) {
