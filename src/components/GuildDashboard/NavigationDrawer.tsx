@@ -150,7 +150,7 @@ function NavigationDrawerContent({ open, activePage, toggleOpen }: NavigationDra
   return (
     <Fragment>
       <Toolbar sx={{ display: { xs: "none", md: "initial" } }} />
-      <Box overflow="auto">
+      <Box>
         <DrawerHeader>
           <IconButton onClick={toggleOpen}>
             {open ? <ChevronLeftIcon /> : <ChevronRightIcon />}
