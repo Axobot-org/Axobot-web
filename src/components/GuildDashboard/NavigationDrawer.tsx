@@ -1,12 +1,13 @@
 import { Gavel, Handshake, HowToVote, InfoOutlined, Leaderboard, LiveTv, Mic, QuestionMark, Settings, WavingHand } from "@mui/icons-material";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import { Box, CSSObject, Divider, IconButton, List, ListItem, ListItemButton, ListItemIcon, ListItemText, styled, Theme, Toolbar } from "@mui/material";
+import { Box, Button, CSSObject, Divider, IconButton, List, ListItem, ListItemButton, ListItemIcon, ListItemText, styled, Theme, Toolbar } from "@mui/material";
 import MuiDrawer from "@mui/material/Drawer";
 import { Fragment, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 
 import { GuildConfigOptionCategory, GuildConfigOptionCategoryNames } from "../../repository/types/guild-config-types";
+import { useIsOnMobile } from "../../styles/useIsOnMobile";
 
 const drawerWidth = 240;
 
@@ -113,8 +114,12 @@ function TabIcon({ page }: { page: GuildConfigOptionCategory }) {
   }
 }
 
+function formatPageTitle(page: string) {
+  return page.replace(/-/g, " ").replace(/^\w/, c => c.toUpperCase());
+}
+
 function TabContent({ page, isOpen }: { page: GuildConfigOptionCategory, isOpen: boolean }) {
-  const formatedTitle = page.replace(/-/g, " ").replace(/^\w/, c => c.toUpperCase());
+  const formatedTitle = formatPageTitle(page);
   return (
     <Fragment>
       <ListItemIcon
@@ -132,20 +137,16 @@ function TabContent({ page, isOpen }: { page: GuildConfigOptionCategory, isOpen:
   );
 }
 
+interface NavigationDrawerContentProps {
+  open: boolean,
+  activePage?: GuildConfigOptionCategory,
+  toggleOpen: () => void,
+}
 
-export default function NavigationDrawer() {
-  const location = useLocation();
-  const [open, setOpen] = useState(true);
-
-  const currentEndpoint = location.pathname.split("/").pop() || "";
-  const activePage = GuildConfigOptionCategoryNames.includes(currentEndpoint as GuildConfigOptionCategory) ? currentEndpoint : undefined;
-
-  const toggleOpen = () => {
-    setOpen(!open);
-  };
-
+function NavigationDrawerContent({ open, activePage, toggleOpen }: NavigationDrawerContentProps) {
+  const isOnMobile = useIsOnMobile();
   return (
-    <Drawer variant="permanent" open={open}>
+    <Fragment>
       <Toolbar />
       <Box overflow="auto">
         <DrawerHeader>
@@ -162,6 +163,7 @@ export default function NavigationDrawer() {
                 isSelected={activePage === page}
                 component={Link}
                 to={page}
+                onClick={isOnMobile ? toggleOpen : undefined}
               >
                 <TabContent page={page} isOpen={open} />
               </PageTab>
@@ -169,6 +171,38 @@ export default function NavigationDrawer() {
           ))}
         </List>
       </Box>
+    </Fragment>
+  );
+}
+
+export default function NavigationDrawer() {
+  const location = useLocation();
+  const isOnMobile = useIsOnMobile();
+  const [open, setOpen] = useState(!isOnMobile);
+
+  const currentEndpoint = location.pathname.split("/").pop() || "";
+  const activePage = (GuildConfigOptionCategoryNames.includes(currentEndpoint as GuildConfigOptionCategory) ? currentEndpoint : undefined) as GuildConfigOptionCategory | undefined;
+
+  const toggleOpen = () => {
+    setOpen(!open);
+  };
+
+  if (isOnMobile) {
+    return (
+      <Fragment>
+        <MuiDrawer variant="temporary" anchor="left" open={open} onClose={toggleOpen}>
+          <NavigationDrawerContent open={open} activePage={activePage} toggleOpen={toggleOpen} />
+        </MuiDrawer>
+        <Button variant="outlined" startIcon={<ChevronLeftIcon />} sx={{ mt: 2, maxWidth: "fit-content" }} onClick={toggleOpen}>
+          {activePage ? formatPageTitle(activePage) : "?"}
+        </Button>
+      </Fragment>
+    );
+  }
+
+  return (
+    <Drawer variant="permanent" open={open}>
+      <NavigationDrawerContent open={open} activePage={activePage} toggleOpen={toggleOpen} />
     </Drawer>
   );
 }

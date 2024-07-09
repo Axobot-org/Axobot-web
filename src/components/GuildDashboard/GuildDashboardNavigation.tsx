@@ -31,7 +31,7 @@ export default function GuildDashboardNavigation({ guildId }: GuildDashboardNavi
   if (data === undefined) return null;
 
   return (
-    <Stack direction="row">
+    <Stack direction={{ xs: "column", md: "row" }}>
       <NavigationDrawer />
       <Stack alignItems="center">
         <GuildHeader guildData={data} />
