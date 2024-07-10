@@ -4,6 +4,7 @@ import { GuildConfigEditionContext } from "../../../repository/context/GuildConf
 import { FloatOptionRepresentation } from "../../../repository/types/guild-config-types";
 import NumericInput from "../../common/NumericInput";
 import { SimpleConfiguration } from "./shared/SharedConfigComponents";
+import useIsConfigEdited from "./shared/useIsConfigEdited";
 
 interface FloatConfigComponentProps {
   optionId: string;
@@ -12,7 +13,7 @@ interface FloatConfigComponentProps {
 
 export default function FloatConfigComponent({ optionId, option }: FloatConfigComponentProps) {
   const { state, setValue, resetValue } = useContext(GuildConfigEditionContext);
-  const isEdited = state[optionId] !== undefined;
+  const isEdited = useIsConfigEdited(optionId);
 
   function onChange(value: number | undefined) {
     if (value === undefined) {

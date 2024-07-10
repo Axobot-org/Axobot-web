@@ -1,13 +1,17 @@
-import { Stack, styled, Typography } from "@mui/material";
+import SyncProblemIcon from "@mui/icons-material/SyncProblem";
+import { Stack, styled, Tooltip, Typography } from "@mui/material";
 import { PropsWithChildren } from "react";
 
 import { getGuildDashboardTranslations } from "../../../../i18n/i18n";
+import useIsConfigEdited from "./useIsConfigEdited";
 
 interface SimpleConfigurationProps {
   optionId: string;
 }
 
 export function SimpleConfiguration({ optionId, children }: PropsWithChildren<SimpleConfigurationProps>) {
+  const isEdited = useIsConfigEdited(optionId);
+
   const translatedName = getGuildDashboardTranslations("option_name." + optionId);
   const translatedDescription = getGuildDashboardTranslations("option_description." + optionId);
 
@@ -16,12 +20,26 @@ export function SimpleConfiguration({ optionId, children }: PropsWithChildren<Si
 
   return (
     <Stack>
-      <SimpleConfigurationRow>
-        <ConfigurationName>{optionName}</ConfigurationName>
+      <SimpleConfigurationRow position="relative">
+        <ConfigurationName>
+          {optionName}
+          {isEdited && <EditedBadge />}
+        </ConfigurationName>
         {children}
       </SimpleConfigurationRow>
       <ConfigurationDescription>{optionDescription}</ConfigurationDescription>
     </Stack>
+  );
+}
+
+function EditedBadge() {
+  return (
+    <Tooltip title="This configuration has been edited and needs to be saved.">
+      <Stack direction="row" gap={0.5} display="inline-flex" ml={1.5} sx={{ verticalAlign: "sub" }}>
+        <SyncProblemIcon color="warning" fontSize="small" />
+        <Typography component="span" variant="caption" color="text.secondary" sx={{ display: "inline-block" }}>Edited</Typography>
+      </Stack>
+    </Tooltip>
   );
 }
 

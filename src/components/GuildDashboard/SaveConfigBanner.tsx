@@ -1,3 +1,4 @@
+import SyncProblemIcon from "@mui/icons-material/SyncProblem";
 import { Button, Paper, Snackbar, Stack, styled, Typography } from "@mui/material";
 import { useContext, useEffect } from "react";
 
@@ -44,7 +45,7 @@ export default function SaveConfigBanner({ guildId }: SaveConfigBannerProps) {
       <SnackbarContent elevation={5}>
         <Stack>
           <Typography variant="h6">
-            Unsaved changes
+            <SyncProblemIcon color="warning" sx={{ verticalAlign: "sub" }} /> Unsaved changes
           </Typography>
           <Typography variant="subtitle2" color="gray">
             You have unsaved changes in the configuration. They won't be applied until you save them.
