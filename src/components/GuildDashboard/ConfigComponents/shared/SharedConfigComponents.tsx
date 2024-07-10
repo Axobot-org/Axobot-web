@@ -35,7 +35,7 @@ export function SimpleConfiguration({ optionId, children }: PropsWithChildren<Si
 function EditedBadge() {
   return (
     <Tooltip title="This configuration has been edited and needs to be saved.">
-      <Stack direction="row" gap={0.5} display="inline-flex" ml={1.5} sx={{ verticalAlign: "sub" }}>
+      <Stack direction="row" gap={0.5} component="span" display="inline-flex" ml={1.5} sx={{ verticalAlign: "sub" }}>
         <SyncProblemIcon color="warning" fontSize="small" />
         <Typography component="span" variant="caption" color="text.secondary" sx={{ display: "inline-block" }}>Edited</Typography>
       </Stack>
