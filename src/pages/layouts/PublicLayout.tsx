@@ -14,11 +14,11 @@ function DynamicHelmet() {
 
 export function PublicLayout({ children }: PropsWithChildren) {
   return (
-    <Stack height="100%" alignItems="center">
+    <Stack height="100vh" alignItems="center">
       <DynamicHelmet />
       <Appbar />
       <Toolbar />
-      <Stack px={{ xs: 3, md: "5%" }} maxWidth={{ xs: "100%", xl: "1536px" }} alignItems="center">
+      <Stack px={{ xs: 3, md: "5%" }} maxWidth={{ xs: "100%", xl: "1536px" }} alignItems="center" flex={1}>
         {children}
       </Stack>
     </Stack>

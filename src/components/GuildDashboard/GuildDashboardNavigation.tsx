@@ -34,7 +34,7 @@ export default function GuildDashboardNavigation({ guildId }: GuildDashboardNavi
 
   return (
     <GuildConfigEditionProvider>
-      <Stack direction="row">
+      <Stack direction="row" flex={1} className="GuildDashboardNavigation__Container">
         <NavigationDrawer />
         <Stack alignItems="center">
           <GuildHeader guildData={data} />

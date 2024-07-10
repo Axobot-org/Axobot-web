@@ -50,27 +50,27 @@ export default function ConfigurationCategoryPage({ guildId, activePage }: Confi
 
 function ErrorPage({ title, message }: {title: string, message: string}) {
   return (
-    <ComponentsContainer sx={{ alignItems: "center" }}>
-      <Typography my={1}>
+    <TextPageContainer>
+      <Typography variant="h6">
         {title}
       </Typography>
       <Typography variant="subtitle1" color="text.secondary" fontStyle="italic" textAlign="center">
         {message}
       </Typography>
-    </ComponentsContainer>
+    </TextPageContainer>
   );
 }
 
 function LoadingPlaceholder() {
   return (
-    <ComponentsContainer sx={{ alignItems: "center" }}>
+    <TextPageContainer>
       <CircularProgress color="primary" aria-label="Loading guild configuration" />
-    </ComponentsContainer>
+    </TextPageContainer>
   );
 }
 
 const ComponentsContainer = styled(Stack)(({ theme }) => ({
-  gap: theme.spacing(2),
+  gap: theme.spacing(4),
   marginTop: theme.spacing(4),
   marginBottom: theme.spacing(4),
   width: "60vw",
@@ -79,6 +79,11 @@ const ComponentsContainer = styled(Stack)(({ theme }) => ({
   [theme.breakpoints.down("md")]: {
     width: "85vw",
   },
+}));
+
+const TextPageContainer = styled(ComponentsContainer)(({ theme }) => ({
+  gap: theme.spacing(2),
+  alignItems: "center",
 }));
 
 function GenericConfigComponent({ optionId, option, guildId }: { optionId: string, option: PopulatedGuildConfig[string], guildId: string }) {
