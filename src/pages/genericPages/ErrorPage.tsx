@@ -27,10 +27,10 @@ export default function ErrorPage() {
   return (
     <PublicLayout>
       <h1>Oops!</h1>
-      <Typography my={1}>
+      <Typography variant="h6" my={1}>
         Sorry, an unexpected error has occurred
       </Typography>
-      <Typography variant="subtitle1" color="text.secondary" fontStyle="italic">
+      <Typography variant="subtitle1" color="text.secondary" fontStyle="italic" textAlign="center">
         {errorMessage}
       </Typography>
     </PublicLayout>
