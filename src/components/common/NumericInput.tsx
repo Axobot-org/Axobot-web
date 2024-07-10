@@ -8,10 +8,11 @@ interface NumericInputProps extends React.ComponentProps<typeof TextField> {
   suffix?: string;
   acceptDecimals?: boolean;
   defaultValue?: number;
+  onValueChange? (value: number | undefined): void;
 }
 
 export default function NumericInput(props: NumericInputProps) {
-  const { min, max, suffix, acceptDecimals, defaultValue, ...rest } = props;
+  const { min, max, suffix, acceptDecimals, defaultValue, onValueChange, ...rest } = props;
   return (
     <TextField
       {...rest}
@@ -19,22 +20,23 @@ export default function NumericInput(props: NumericInputProps) {
       InputProps={{
         inputComponent: NumericFormatCustom,
       }}
-      inputProps={{ min: min, max: max, suffix: suffix, defaultValue: defaultValue, decimalScale: acceptDecimals ? 3 : 0 }}
+      inputProps={{ min, max, suffix, defaultValue, onValueChange, decimalScale: acceptDecimals ? 3 : 0 }}
       variant="standard"
     />
   );
 }
 
 interface NumericFormatCustomProps extends InputBaseComponentProps {
-  defaultValue?: string | number;
   min?: number;
   max?: number;
   suffix?: string;
+  defaultValue?: string | number;
+  onValueChange? (value: number | undefined): void;
 }
 
 const NumericFormatCustom = React.forwardRef<NumericFormatProps, NumericFormatCustomProps>(
   function NumericFormatCustom(props, ref) {
-    const { min, max, suffix, ...rest } = props;
+    const { min, max, suffix, onValueChange, ...rest } = props;
 
     function checkValue(values: NumberFormatValues) {
       if (values.floatValue === undefined) return true;
@@ -50,7 +52,6 @@ const NumericFormatCustom = React.forwardRef<NumericFormatProps, NumericFormatCu
     return (
       <NumericFormat
         {...rest}
-        readOnly
         min={min}
         max={max}
         getInputRef={ref}
@@ -58,6 +59,7 @@ const NumericFormatCustom = React.forwardRef<NumericFormatProps, NumericFormatCu
         isAllowed={checkValue}
         suffix={suffix ? " " + suffix : undefined}
         style={{ textAlign: "right", paddingLeft: 8, paddingRight: 8 }}
+        onValueChange={(values) => onValueChange?.(values.floatValue)}
         thousandSeparator
       />
     );

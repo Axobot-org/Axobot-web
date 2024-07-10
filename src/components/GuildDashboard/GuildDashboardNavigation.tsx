@@ -48,7 +48,7 @@ export default function GuildDashboardNavigation({ guildId }: GuildDashboardNavi
           </Routes>
         </Stack>
       </Stack>
-      <SaveConfigBanner />
+      <SaveConfigBanner guildId={guildId} />
     </GuildConfigEditionProvider>
   );
 }
