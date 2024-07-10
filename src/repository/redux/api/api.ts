@@ -116,7 +116,7 @@ export const axoApi = createApi({
       query: ({ guildId, config }) => ({
         url: `discord/guild/${guildId}/config`,
         method: "PATCH",
-        body: JSON.stringify(config),
+        body: config,
       }),
       invalidatesTags: (result, error, args) => (result ? [{ type: "GuildConfig", id: args.guildId }] : []),
     }),
