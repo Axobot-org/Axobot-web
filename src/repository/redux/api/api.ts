@@ -21,6 +21,7 @@ export const axoApi = createApi({
       return headers;
     },
   }),
+  tagTypes: ["GuildConfig"],
   endpoints: (builder) => ({
     // ----- QUERIES ----- //
     fetchMe: builder.query<AuthenticatedUserObject, void>({
@@ -97,6 +98,7 @@ export const axoApi = createApi({
         }
         return false;
       },
+      providesTags: (result, error, args) => [{ type: "GuildConfig", id: args.guildId }],
     }),
     fetchGuildRoles: builder.query<GuildRole[], { guildId: string }>({
       query: ({ guildId }) => `discord/guild/${guildId}/roles`,
@@ -109,6 +111,14 @@ export const axoApi = createApi({
         method: "POST",
         params: { code: discordCode },
       }),
+    }),
+    patchGuildConfig: builder.mutation<Record<string, unknown>, { guildId: string, config: Record<string, unknown> }>({
+      query: ({ guildId, config }) => ({
+        url: `discord/guild/${guildId}/config`,
+        method: "PATCH",
+        body: JSON.stringify(config),
+      }),
+      invalidatesTags: (result, error, args) => (result ? [{ type: "GuildConfig", id: args.guildId }] : []),
     }),
   }),
 });
@@ -123,4 +133,5 @@ export const {
   useFetchGuildRolesQuery,
 
   useLoginMutation,
+  usePatchGuildConfigMutation,
 } = axoApi;
