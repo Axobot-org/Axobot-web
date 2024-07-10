@@ -1,12 +1,14 @@
 import { Stack, Typography } from "@mui/material";
 import { Navigate, Route, Routes } from "react-router-dom";
 
+import GuildConfigEditionProvider from "../../repository/context/GuildConfigEditionContext";
 import { useFetchGuildQuery } from "../../repository/redux/api/api";
 import { GuildConfigOptionCategoryNames } from "../../repository/types/guild-config-types";
 import PageTitle from "../common/PageTitle";
 import GuildHeader from "../Leaderboard/GuildHeader";
 import ConfigurationCategoryPage from "./ConfigurationCategoryPage";
 import NavigationDrawer from "./NavigationDrawer";
+import SaveConfigBanner from "./SaveConfigBanner";
 
 interface GuildDashboardNavigationProps {
   guildId: string;
@@ -31,19 +33,22 @@ export default function GuildDashboardNavigation({ guildId }: GuildDashboardNavi
   if (data === undefined) return null;
 
   return (
-    <Stack direction="row">
-      <NavigationDrawer />
-      <Stack alignItems="center">
-        <GuildHeader guildData={data} />
-        <Routes>
-          <Route path="/" element={<Navigate to={GuildConfigOptionCategoryNames[0]} replace />} />
-          {
-            GuildConfigOptionCategoryNames.map((category) => (
-              <Route key={category} path={`/${category}`} element={<ConfigurationCategoryPage guildId={guildId} activePage={category} />} />
-            ))
-          }
-        </Routes>
+    <GuildConfigEditionProvider>
+      <Stack direction="row">
+        <NavigationDrawer />
+        <Stack alignItems="center">
+          <GuildHeader guildData={data} />
+          <Routes>
+            <Route path="/" element={<Navigate to={GuildConfigOptionCategoryNames[0]} replace />} />
+            {
+              GuildConfigOptionCategoryNames.map((category) => (
+                <Route key={category} path={`/${category}`} element={<ConfigurationCategoryPage guildId={guildId} activePage={category} />} />
+              ))
+            }
+          </Routes>
+        </Stack>
       </Stack>
-    </Stack>
+      <SaveConfigBanner />
+    </GuildConfigEditionProvider>
   );
 }
