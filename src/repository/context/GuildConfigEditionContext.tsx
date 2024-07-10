@@ -34,7 +34,7 @@ export default function GuildConfigEditionProvider({ children }: PropsWithChildr
   }, [state]);
 
   const resetValue = useCallback((optionId: string) => {
-    const [, ...rest] = Object.entries(state).filter(([key]) => key !== optionId);
+    const rest = Object.entries(state).filter(([key]) => key !== optionId);
     setState(Object.fromEntries(rest));
   }, [state]);
 
