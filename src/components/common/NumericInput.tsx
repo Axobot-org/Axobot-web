@@ -37,10 +37,11 @@ interface NumericFormatCustomProps extends InputBaseComponentProps {
 const NumericFormatCustom = React.forwardRef<NumericFormatProps, NumericFormatCustomProps>(
   function NumericFormatCustom(props, ref) {
     const { min, max, suffix, onValueChange, ...rest } = props;
+    const isNegativeAllowed = min !== undefined && min < 0;
 
     function checkValue(values: NumberFormatValues) {
-      if (values.floatValue === undefined) return true;
-      if (min && values.floatValue < min) return false;
+      if (values.floatValue === undefined) return ((isNegativeAllowed || values.formattedValue.charAt(0) !== "-"));
+      if (min && values.floatValue < min && !(values.floatValue === 0 && min < 1)) return false;
       if (max && values.floatValue > max) return false;
       return true;
     }
