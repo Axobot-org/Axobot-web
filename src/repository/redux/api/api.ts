@@ -21,7 +21,6 @@ export const axoApi = createApi({
       return headers;
     },
   }),
-  tagTypes: ["GuildConfig"],
   endpoints: (builder) => ({
     // ----- QUERIES ----- //
     fetchMe: builder.query<AuthenticatedUserObject, void>({
@@ -98,7 +97,6 @@ export const axoApi = createApi({
         }
         return false;
       },
-      providesTags: (result, error, args) => [{ type: "GuildConfig", id: args.guildId }],
     }),
     fetchGuildRoles: builder.query<GuildRole[], { guildId: string }>({
       query: ({ guildId }) => `discord/guild/${guildId}/roles`,
@@ -118,7 +116,23 @@ export const axoApi = createApi({
         method: "PATCH",
         body: config,
       }),
-      invalidatesTags: (result, error, args) => (result ? [{ type: "GuildConfig", id: args.guildId }] : []),
+      async onQueryStarted({ guildId }, { dispatch, queryFulfilled }) {
+        // update fetchGuildConfig cache with returned updated data
+        try {
+          const { data } = await queryFulfilled;
+          dispatch(
+            axoApi.util.updateQueryData("fetchGuildConfig", { guildId, categories: [] }, (draft) => {
+              for (const categoryValue of Object.values(draft)) {
+                for (const [optionId, newValue] of Object.entries(data)) {
+                  if (categoryValue[optionId]) {
+                    categoryValue[optionId] = newValue;
+                  }
+                }
+              }
+            })
+          );
+        } catch { /* don't update cache on error */ }
+      },
     }),
   }),
 });
