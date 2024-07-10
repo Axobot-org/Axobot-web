@@ -164,6 +164,9 @@ export const AxoTheme = createTheme({
     secondary: {
       main: "#26d2ea",
     },
+    warning: {
+      main: "#f0b132",
+    },
     blurple: {
       main: "#5865F2",
       light: "#7289DA",
