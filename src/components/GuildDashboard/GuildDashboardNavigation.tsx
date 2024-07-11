@@ -20,11 +20,15 @@ export default function GuildDashboardNavigation({ guildId }: GuildDashboardNavi
   if (isLoading) return null;
 
   if (error || data?.isAdmin === false) {
+    let errorMessage = "An error occurred while fetching the guild data.";
+    if (error && "originalStatus" in error && error.originalStatus === 401) {
+      errorMessage = "You do not have access to this server.";
+    }
     return (
       <Stack alignItems="center">
         <PageTitle text="Dashboard" />
         <Typography variant="h6" color="text.secondary">
-          You do not have access to this server.
+          {errorMessage}
         </Typography>
       </Stack>
     );
