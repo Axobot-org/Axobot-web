@@ -80,7 +80,7 @@ export default function RoleConfigComponent({ optionId, option, guildId }: RoleC
             onBlur={() => setEditing(false)}
             renderInput={(params) => <TextField {...params} autoFocus variant="standard" placeholder="Pick a role" />}
             renderOption={(props, opt) => (
-              <li {...props}>
+              <li {...props} key={opt.id}>
                 <RoleMention name={opt.name} color={opt.color} />
               </li>
             )}
