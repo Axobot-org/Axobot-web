@@ -59,7 +59,7 @@ function getTitleFromURL(url: string) {
     return "Server Leaderboard";
   case "dashboard":
     return "Your Dashboard";
-  case url.match(/^dashboard\/\d{17,20}$/)?.[0]:
+  case url.match(/^dashboard\/\d{17,20}\/\w+$/)?.[0]:
     return "Server Dashboard";
   default:
     return "Axobot";
