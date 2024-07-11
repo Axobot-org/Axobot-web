@@ -37,10 +37,18 @@ export default function FloatConfigComponent({ optionId, option }: FloatConfigCo
   const value = getValue();
   const defaultValue = option.default ?? undefined;
 
-  // get marks from 0 to option.max every 0.25
-  const marks = Array.from({ length: option.max / 0.25 + 1 }, (_, i) => ({
-    value: i * 0.25,
-  }));
+  // get marks from 0 to option.max every 0.25, but label only every 0.5
+  const labelPrefix = optionId === "xp_rate" ? "x" : "";
+  const marks = [
+    {
+      value: option.min,
+      label: labelPrefix + option.min,
+    },
+    ...Array.from({ length: option.max / 0.25 + 1 }, (_, i) => ({
+      value: i * 0.25,
+      label: (i * 0.25 % 0.5 === 0) ? (labelPrefix + i * 0.25) : "",
+    })),
+  ];
 
   return (
     <ComplexConfiguration optionId={optionId}>
@@ -54,7 +62,7 @@ export default function FloatConfigComponent({ optionId, option }: FloatConfigCo
           marks={marks}
           min={option.min}
           max={option.max}
-          value={value}
+          value={value ?? defaultValue}
           onChange={(_, newValue) => onChange(newValue as number)}
         />
         <NumericInput
