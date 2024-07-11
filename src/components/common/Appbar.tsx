@@ -57,7 +57,7 @@ export default function Appbar() {
     setAnchorElUser(null);
   };
 
-  const getExternalParams = (url: string) => (url.startsWith("http") ? { target: "_blank", rel: "noopener" } : {});
+  const getExternalParams = (key: string, url: string) => ((url.startsWith("http") && key !== "Login") ? { target: "_blank", rel: "noopener" } : {});
 
   return (
     <AppBar position="fixed" sx={{ zIndex: 10 }}>
@@ -75,7 +75,7 @@ export default function Appbar() {
                 key={key}
                 href={pages[key]}
                 sx={{ color: "white", display: "block" }}
-                {...getExternalParams(pages[key])}
+                {...getExternalParams(key, pages[key])}
               >
                 {key}
               </Button>
@@ -106,7 +106,7 @@ export default function Appbar() {
               onClose={handleCloseUserMenu}
             >
               {Object.keys(settings).map((key) => (
-                <MenuItem key={key} component={Link} href={settings[key]} {...getExternalParams(settings[key])}>
+                <MenuItem key={key} component={Link} href={settings[key]} {...getExternalParams(key, settings[key])}>
                   <Typography textAlign="center">{key}</Typography>
                 </MenuItem>
               ))}
@@ -117,7 +117,7 @@ export default function Appbar() {
               )}
               <Divider sx={{ display: { xs: "flex", md: "none" }, mx: 3 }} />
               {mobilePagesKeys.map((key) => (
-                <MenuItem key={key} component={Link} href={pages[key]} sx={{ display: { xs: "flex", md: "none" } }} {...getExternalParams(pages[key])}>
+                <MenuItem key={key} component={Link} href={pages[key]} sx={{ display: { xs: "flex", md: "none" } }} {...getExternalParams(key, pages[key])}>
                   <Typography textAlign="center">{key}</Typography>
                 </MenuItem>
               ))}
