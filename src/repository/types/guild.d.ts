@@ -1,3 +1,5 @@
+import { ChannelType } from "discord-api-types/payloads/v10";
+
 import { AllRepresentation } from "./guild-config-types";
 
 export interface GuildData {
@@ -24,4 +26,16 @@ export interface GuildRole {
   position: number;
   permissions: string;
   managed: boolean;
+}
+
+export interface GuildChannel {
+  id: string;
+  name: string;
+  type: ChannelType;
+  isText: boolean;
+  isVoice: boolean;
+  isThread: boolean;
+  isNSFW: boolean;
+  position: number | null;
+  parentId: string | null;
 }

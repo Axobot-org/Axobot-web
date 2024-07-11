@@ -9,6 +9,7 @@ import EnumConfigComponent from "./ConfigComponents/EnumConfigComponent";
 import FloatConfigComponent from "./ConfigComponents/FloatConfigComponent";
 import IntConfigComponent from "./ConfigComponents/IntConfigComponent";
 import RoleConfigComponent from "./ConfigComponents/RoleConfigComponent";
+import TextChannelConfigComponent from "./ConfigComponents/TextChannelConfigComponent";
 
 interface ConfigurationCategoryPageProps {
   guildId: string;
@@ -32,7 +33,7 @@ export default function ConfigurationCategoryPage({ guildId, activePage }: Confi
   }
 
   const optionsMap: PopulatedGuildConfig = Object.fromEntries(
-    Object.entries(data).filter(([_, option]) => ["int", "float", "boolean", "enum", "role", "color"].includes(option.type))
+    Object.entries(data).filter(([_, option]) => ["int", "float", "boolean", "enum", "role", "text_channel", "color"].includes(option.type))
   );
 
   if (Object.keys(optionsMap).length === 0) {
@@ -98,6 +99,8 @@ function GenericConfigComponent({ optionId, option, guildId }: { optionId: strin
     return <EnumConfigComponent optionId={optionId} option={option} />;
   case "role":
     return <RoleConfigComponent optionId={optionId} option={option} guildId={guildId} />;
+  case "text_channel":
+    return <TextChannelConfigComponent optionId={optionId} option={option} guildId={guildId} />;
   case "color":
     return <ColorConfigComponent optionId={optionId} option={option} />;
   default:
