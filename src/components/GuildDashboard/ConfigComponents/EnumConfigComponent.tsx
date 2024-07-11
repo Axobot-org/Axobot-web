@@ -1,7 +1,10 @@
-import { MenuItem, Select } from "@mui/material";
+import { MenuItem, Select, styled } from "@mui/material";
+import { useContext } from "react";
 
+import { GuildConfigEditionContext } from "../../../repository/context/GuildConfigEditionContext";
 import { EnumOptionRepresentation } from "../../../repository/types/guild-config-types";
 import { SimpleConfiguration } from "./shared/SharedConfigComponents";
+import useIsConfigEdited from "./shared/useIsConfigEdited";
 
 
 interface EnumConfigComponentProps {
@@ -10,10 +13,22 @@ interface EnumConfigComponentProps {
 }
 
 export default function EnumConfigComponent({ optionId, option }: EnumConfigComponentProps) {
+  const { state, setValue, resetValue } = useContext(GuildConfigEditionContext);
+  const isEdited = useIsConfigEdited(optionId);
+
+  function onChange(value: string) {
+    if (value === option.value) {
+      resetValue(optionId);
+    } else {
+      setValue(optionId, value);
+    }
+  }
+
   return (
     <SimpleConfiguration optionId={optionId}>
-      <Select
-        value={option.value}
+      <StyledSelect
+        value={isEdited ? state[optionId] : option.value}
+        onChange={(e) => onChange(e.target.value as string)}
         variant="standard"
       >
         {
@@ -21,7 +36,13 @@ export default function EnumConfigComponent({ optionId, option }: EnumConfigComp
             <MenuItem key={value} value={value}>{value}</MenuItem>
           ))
         }
-      </Select>
+      </StyledSelect>
     </SimpleConfiguration>
   );
 }
+
+const StyledSelect = styled(Select)({
+  "& .MuiInputBase-input": {
+    paddingLeft: 8,
+  },
+});
