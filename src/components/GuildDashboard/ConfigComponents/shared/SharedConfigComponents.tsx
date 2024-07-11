@@ -20,7 +20,7 @@ export function SimpleConfiguration({ optionId, children }: PropsWithChildren<Si
 
   return (
     <Stack>
-      <SimpleConfigurationRow position="relative">
+      <SimpleConfigurationRow>
         <ConfigurationName>
           {optionName}
           {isEdited && <EditedBadge />}
@@ -28,6 +28,27 @@ export function SimpleConfiguration({ optionId, children }: PropsWithChildren<Si
         {children}
       </SimpleConfigurationRow>
       <ConfigurationDescription>{optionDescription}</ConfigurationDescription>
+    </Stack>
+  );
+}
+
+export function ComplexConfiguration({ optionId, children }: PropsWithChildren<SimpleConfigurationProps>) {
+  const isEdited = useIsConfigEdited(optionId);
+
+  const translatedName = getGuildDashboardTranslations("option_name." + optionId);
+  const translatedDescription = getGuildDashboardTranslations("option_description." + optionId);
+
+  const optionName = translatedName.includes("option_name.") ? optionId : translatedName;
+  const optionDescription = translatedDescription.includes("option_description.") ? undefined : translatedDescription;
+
+  return (
+    <Stack>
+      <Stack direction="row">
+        {optionName}
+        {isEdited && <EditedBadge />}
+      </Stack>
+      <ConfigurationDescription mb={1}>{optionDescription}</ConfigurationDescription>
+      {children}
     </Stack>
   );
 }
