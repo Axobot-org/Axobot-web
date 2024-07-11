@@ -124,7 +124,7 @@ export const axoApi = createApi({
             axoApi.util.updateQueryData("fetchGuildConfig", { guildId, categories: [] }, (draft) => {
               for (const categoryValue of Object.values(draft)) {
                 for (const [optionId, newValue] of Object.entries(data)) {
-                  if (categoryValue[optionId]) {
+                  if (categoryValue[optionId] !== undefined) {
                     categoryValue[optionId] = newValue;
                   }
                 }
