@@ -19,7 +19,7 @@ export function SimpleConfiguration({ optionId, children }: PropsWithChildren<Si
   const optionDescription = translatedDescription.includes("option_description.") ? undefined : translatedDescription;
 
   return (
-    <Stack>
+    <ConfigComponentContainer>
       <SimpleConfigurationRow>
         <ConfigurationName>
           {optionName}
@@ -28,7 +28,7 @@ export function SimpleConfiguration({ optionId, children }: PropsWithChildren<Si
         {children}
       </SimpleConfigurationRow>
       <ConfigurationDescription>{optionDescription}</ConfigurationDescription>
-    </Stack>
+    </ConfigComponentContainer>
   );
 }
 
@@ -42,14 +42,14 @@ export function ComplexConfiguration({ optionId, children }: PropsWithChildren<S
   const optionDescription = translatedDescription.includes("option_description.") ? undefined : translatedDescription;
 
   return (
-    <Stack>
+    <ConfigComponentContainer>
       <Stack direction="row">
         {optionName}
         {isEdited && <EditedBadge />}
       </Stack>
       <ConfigurationDescription mb={1}>{optionDescription}</ConfigurationDescription>
       {children}
-    </Stack>
+    </ConfigComponentContainer>
   );
 }
 
@@ -63,6 +63,18 @@ function EditedBadge() {
     </Tooltip>
   );
 }
+
+const ConfigComponentContainer = styled(Stack)(({ theme }) => ({
+  padding: theme.spacing(1.5, 2),
+  borderRadius: 15,
+  transitionProperty: "background-color",
+  transitionDuration: "150ms",
+
+  "&:hover": {
+    backgroundColor: theme.palette.custom.background1,
+  },
+
+}));
 
 const SimpleConfigurationRow = styled(Stack)({
   flexDirection: "row",

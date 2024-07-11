@@ -70,7 +70,7 @@ function LoadingPlaceholder() {
 }
 
 const ComponentsContainer = styled(Stack)(({ theme }) => ({
-  gap: theme.spacing(4),
+  gap: theme.spacing(1),
   marginTop: theme.spacing(4),
   marginBottom: theme.spacing(4),
   width: "60vw",
