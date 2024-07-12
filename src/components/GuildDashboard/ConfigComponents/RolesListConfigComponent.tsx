@@ -95,6 +95,11 @@ export default function RolesListConfigComponent({ optionId, option, guildId }: 
           renderTags={(value, getTagProps) => value.map((role, index) => (
             <RoleMention name={role.name} color={role.color} {...getTagProps({ index })} />
           ))}
+          sx={{
+            "& .MuiInput-root": {
+              paddingBottom: "5px",
+            },
+          }}
         />
       )}
     </ComplexConfiguration>
