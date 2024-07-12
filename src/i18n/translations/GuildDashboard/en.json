@@ -80,5 +80,13 @@
     "xp_decay": "XP decay (per day)",
     "xp_rate": "XP rate",
     "xp_type": "XP system type"
+  },
+  "enum": {
+    "levelup_channel": {
+      "any": "Any channel",
+      "none": "No message",
+      "dm": "Private Messages",
+      "specific channel": "Specific channel"
+    }
   }
 }

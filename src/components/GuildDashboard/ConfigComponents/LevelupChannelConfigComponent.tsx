@@ -1,6 +1,7 @@
 import { MenuItem, Select, Stack, styled } from "@mui/material";
 import { ComponentProps, useState } from "react";
 
+import { getGuildDashboardTranslations } from "../../../i18n/i18n";
 import { useGuildConfigEditionContext } from "../../../repository/context/GuildConfigEditionContext";
 import { LevelupChannelOptionRepresentation } from "../../../repository/types/guild-config-types";
 import { SimpleConfiguration } from "./shared/SharedConfigComponents";
@@ -44,6 +45,10 @@ export default function LevelupChannelConfigComponent({ optionId, option, guildI
 
   const currentEnumValue = showChannelSelector ? SpecificChannelEnum : currentValue;
 
+  function translateEnum(value: string) {
+    return getGuildDashboardTranslations(`enum.levelup_channel.${value}`);
+  }
+
   const textChannelOption: TextChannelPickerOption = {
     "type": "text_channel",
     "default": null,
@@ -63,8 +68,8 @@ export default function LevelupChannelConfigComponent({ optionId, option, guildI
           variant="standard"
         >
           {
-            [SpecificChannelEnum, ...staticValues].map(value => (
-              <MenuItem key={value} value={value}>{value}</MenuItem>
+            [...staticValues, SpecificChannelEnum].map(value => (
+              <MenuItem key={value} value={value}>{translateEnum(value)}</MenuItem>
             ))
           }
         </StyledSelect>
