@@ -1,7 +1,6 @@
 import { MenuItem, Select, styled } from "@mui/material";
-import { useContext } from "react";
 
-import { GuildConfigEditionContext } from "../../../repository/context/GuildConfigEditionContext";
+import { useGuildConfigEditionContext } from "../../../repository/context/GuildConfigEditionContext";
 import { EnumOptionRepresentation } from "../../../repository/types/guild-config-types";
 import { SimpleConfiguration } from "./shared/SharedConfigComponents";
 import useIsConfigEdited from "./shared/useIsConfigEdited";
@@ -13,7 +12,7 @@ interface EnumConfigComponentProps {
 }
 
 export default function EnumConfigComponent({ optionId, option }: EnumConfigComponentProps) {
-  const { state, setValue, resetValue } = useContext(GuildConfigEditionContext);
+  const { state, setValue, resetValue } = useGuildConfigEditionContext();
   const isEdited = useIsConfigEdited(optionId);
 
   function onChange(value: string) {

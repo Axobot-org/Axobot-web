@@ -1,8 +1,8 @@
 import SyncProblemIcon from "@mui/icons-material/SyncProblem";
 import { Button, Paper, Snackbar, Stack, styled, Typography } from "@mui/material";
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 
-import { GuildConfigEditionContext } from "../../repository/context/GuildConfigEditionContext";
+import { useGuildConfigEditionContext } from "../../repository/context/GuildConfigEditionContext";
 import { usePatchGuildConfig } from "../../repository/redux/dispatchs/usePatchGuildConfig";
 import { useIsOnMobile } from "../../styles/useIsOnMobile";
 
@@ -13,7 +13,7 @@ interface SaveConfigBannerProps {
 
 export default function SaveConfigBanner({ guildId }: SaveConfigBannerProps) {
   const { patchCommand, loading, data } = usePatchGuildConfig();
-  const { state, resetState } = useContext(GuildConfigEditionContext);
+  const { state, resetState } = useGuildConfigEditionContext();
   const isOnMobile = useIsOnMobile();
 
   function saveConfiguration() {

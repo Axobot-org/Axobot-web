@@ -1,4 +1,4 @@
-import { createContext, PropsWithChildren, useCallback, useState } from "react";
+import { createContext, PropsWithChildren, useCallback, useContext, useState } from "react";
 
 type EditionValueType = number | boolean | string | string[] | null;
 type GuildConfigEdition = Record<string, EditionValueType>;
@@ -10,7 +10,7 @@ interface ContextType {
   resetState: () => void;
 }
 
-export const GuildConfigEditionContext = createContext<ContextType>({
+const GuildConfigEditionContext = createContext<ContextType>({
   state: {},
   setValue: () => {
     throw new Error("GuildConfigEditionContext is not provided");
@@ -23,7 +23,11 @@ export const GuildConfigEditionContext = createContext<ContextType>({
   },
 });
 
-export default function GuildConfigEditionProvider({ children }: PropsWithChildren) {
+export function useGuildConfigEditionContext() {
+  return useContext(GuildConfigEditionContext);
+}
+
+export function GuildConfigEditionProvider({ children }: PropsWithChildren) {
   const [state, setState] = useState<GuildConfigEdition>({});
 
   const setValue = useCallback((optionId: string, value: EditionValueType) => {

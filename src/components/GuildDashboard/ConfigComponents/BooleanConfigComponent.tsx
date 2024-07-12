@@ -1,7 +1,6 @@
 import { Switch } from "@mui/material";
-import { useContext } from "react";
 
-import { GuildConfigEditionContext } from "../../../repository/context/GuildConfigEditionContext";
+import { useGuildConfigEditionContext } from "../../../repository/context/GuildConfigEditionContext";
 import { BooleanOptionRepresentation } from "../../../repository/types/guild-config-types";
 import { SimpleConfiguration } from "./shared/SharedConfigComponents";
 import useIsConfigEdited from "./shared/useIsConfigEdited";
@@ -12,7 +11,7 @@ interface BooleanConfigComponentProps {
 }
 
 export default function BooleanConfigComponent({ optionId, option }: BooleanConfigComponentProps) {
-  const { state, setValue, resetValue } = useContext(GuildConfigEditionContext);
+  const { state, setValue, resetValue } = useGuildConfigEditionContext();
   const isEdited = useIsConfigEdited(optionId);
 
   function onChange(value: boolean) {

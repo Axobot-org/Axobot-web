@@ -1,9 +1,9 @@
 import EditIcon from "@mui/icons-material/Edit";
 import { Autocomplete, Button, TextField, Typography } from "@mui/material";
 import { ChannelType } from "discord-api-types/v10";
-import { useContext, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 
-import { GuildConfigEditionContext } from "../../../../repository/context/GuildConfigEditionContext";
+import { useGuildConfigEditionContext } from "../../../../repository/context/GuildConfigEditionContext";
 import { useFetchGuildChannelsQuery } from "../../../../repository/redux/api/api";
 import { GuildChannel } from "../../../../repository/types/guild";
 import { TextChannelOptionRepresentation } from "../../../../repository/types/guild-config-types";
@@ -18,7 +18,7 @@ interface TextChannelPickerProps {
 }
 
 export default function TextChannelPicker({ optionId, option, guildId }: TextChannelPickerProps) {
-  const { state, setValue, resetValue } = useContext(GuildConfigEditionContext);
+  const { state, setValue, resetValue } = useGuildConfigEditionContext();
   const isEdited = useIsConfigEdited(optionId);
   const { data, isLoading, error } = useFetchGuildChannelsQuery({ guildId });
   const [editing, setEditing] = useState(false);

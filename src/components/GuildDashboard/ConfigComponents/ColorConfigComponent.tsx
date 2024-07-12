@@ -1,7 +1,6 @@
 import { MuiColorInput } from "mui-color-input";
-import { useContext } from "react";
 
-import { GuildConfigEditionContext } from "../../../repository/context/GuildConfigEditionContext";
+import { useGuildConfigEditionContext } from "../../../repository/context/GuildConfigEditionContext";
 import { ColorOptionRepresentation } from "../../../repository/types/guild-config-types";
 import { SimpleConfiguration } from "./shared/SharedConfigComponents";
 import useIsConfigEdited from "./shared/useIsConfigEdited";
@@ -12,7 +11,7 @@ interface ColorConfigComponentProps {
 }
 
 export default function ColorConfigComponent({ optionId, option }: ColorConfigComponentProps) {
-  const { state, setValue, resetValue } = useContext(GuildConfigEditionContext);
+  const { state, setValue, resetValue } = useGuildConfigEditionContext();
   const isEdited = useIsConfigEdited(optionId);
 
   const defaultValue = option.default ?? 0x0;

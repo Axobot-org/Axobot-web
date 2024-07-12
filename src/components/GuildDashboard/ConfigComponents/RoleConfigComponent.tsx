@@ -1,8 +1,8 @@
 import EditIcon from "@mui/icons-material/Edit";
 import { Autocomplete, Button, TextField, Typography } from "@mui/material";
-import { useContext, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 
-import { GuildConfigEditionContext } from "../../../repository/context/GuildConfigEditionContext";
+import { useGuildConfigEditionContext } from "../../../repository/context/GuildConfigEditionContext";
 import { useFetchGuildRolesQuery } from "../../../repository/redux/api/api";
 import { GuildRole } from "../../../repository/types/guild";
 import { RoleOptionRepresentation } from "../../../repository/types/guild-config-types";
@@ -17,7 +17,7 @@ interface RoleConfigComponentProps {
 }
 
 export default function RoleConfigComponent({ optionId, option, guildId }: RoleConfigComponentProps) {
-  const { state, setValue, resetValue } = useContext(GuildConfigEditionContext);
+  const { state, setValue, resetValue } = useGuildConfigEditionContext();
   const isEdited = useIsConfigEdited(optionId);
   const { data, isLoading, error } = useFetchGuildRolesQuery({ guildId });
   const [editing, setEditing] = useState(false);

@@ -1,7 +1,7 @@
 import { Stack, Typography } from "@mui/material";
 import { Navigate, Route, Routes } from "react-router-dom";
 
-import GuildConfigEditionProvider from "../../repository/context/GuildConfigEditionContext";
+import { GuildConfigEditionProvider } from "../../repository/context/GuildConfigEditionContext";
 import { useFetchGuildQuery } from "../../repository/redux/api/api";
 import { GuildConfigOptionCategoryNames } from "../../repository/types/guild-config-types";
 import PageTitle from "../common/PageTitle";

@@ -1,7 +1,7 @@
 import { MenuItem, Select, Stack, styled } from "@mui/material";
-import { ComponentProps, useContext, useState } from "react";
+import { ComponentProps, useState } from "react";
 
-import { GuildConfigEditionContext } from "../../../repository/context/GuildConfigEditionContext";
+import { useGuildConfigEditionContext } from "../../../repository/context/GuildConfigEditionContext";
 import { LevelupChannelOptionRepresentation } from "../../../repository/types/guild-config-types";
 import { SimpleConfiguration } from "./shared/SharedConfigComponents";
 import TextChannelPicker from "./shared/TextChannelPicker";
@@ -17,7 +17,7 @@ type TextChannelPickerOption = ComponentProps<typeof TextChannelPicker>["option"
 const SpecificChannelEnum = "specific channel";
 
 export default function LevelupChannelConfigComponent({ optionId, option, guildId }: LevelupChannelConfigComponentProps) {
-  const { state, setValue, resetValue } = useContext(GuildConfigEditionContext);
+  const { state, setValue, resetValue } = useGuildConfigEditionContext();
   const isEdited = useIsConfigEdited(optionId);
 
   const staticValues = ["none", "any", "dm"];

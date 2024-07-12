@@ -1,6 +1,4 @@
-import { useContext } from "react";
-
-import { GuildConfigEditionContext } from "../../../repository/context/GuildConfigEditionContext";
+import { useGuildConfigEditionContext } from "../../../repository/context/GuildConfigEditionContext";
 import { IntOptionRepresentation } from "../../../repository/types/guild-config-types";
 import NumericInput from "../../common/NumericInput";
 import { SimpleConfiguration } from "./shared/SharedConfigComponents";
@@ -12,7 +10,7 @@ interface IntConfigComponentProps {
 }
 
 export default function IntConfigComponent({ optionId, option }: IntConfigComponentProps) {
-  const { state, setValue, resetValue } = useContext(GuildConfigEditionContext);
+  const { state, setValue, resetValue } = useGuildConfigEditionContext();
   const isEdited = useIsConfigEdited(optionId);
 
   function onChange(value: number | undefined) {
