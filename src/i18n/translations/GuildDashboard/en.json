@@ -1,4 +1,23 @@
 {
+  "category_name": {
+    "core": "Core",
+    "info": "Info",
+    "moderation": "Moderation",
+    "partners": "Partners",
+    "poll-channels": "Poll channels",
+    "streamers": "Streaming",
+    "voice-channels": "Voice channels",
+    "welcome": "Welcome",
+    "xp": "XP"
+  },
+  "enum": {
+    "levelup_channel": {
+      "any": "Any channel",
+      "dm": "Private Messages",
+      "none": "No message",
+      "specific channel": "Specific channel"
+    }
+  },
   "option_description": {
     "anti_caps_lock": "Send a warning message when a user sends a message with too many capital letters. The offending messages are not deleted.",
     "anti_raid": "Moderate your server activity (members joining, mentions spam, and server invites) to prevent raids. The bot can mute, kick, or ban users depending on their security level.",
@@ -80,13 +99,5 @@
     "xp_decay": "XP decay (per day)",
     "xp_rate": "XP rate",
     "xp_type": "XP system type"
-  },
-  "enum": {
-    "levelup_channel": {
-      "any": "Any channel",
-      "none": "No message",
-      "dm": "Private Messages",
-      "specific channel": "Specific channel"
-    }
   }
 }

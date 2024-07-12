@@ -8,6 +8,7 @@ import { Fragment, useState } from "react";
 import { createPortal } from "react-dom";
 import { Link, useLocation } from "react-router-dom";
 
+import { getGuildDashboardTranslations } from "../../i18n/i18n";
 import { GuildConfigOptionCategory, GuildConfigOptionCategoryNames } from "../../repository/types/guild-config-types";
 import { useIsOnMobile } from "../../styles/useIsOnMobile";
 
@@ -116,12 +117,12 @@ function TabIcon({ page }: { page: GuildConfigOptionCategory }) {
   }
 }
 
-function formatPageTitle(page: string) {
-  return page.replace(/-/g, " ").replace(/^\w/, c => c.toUpperCase());
+function getPageTitle(page: string) {
+  return getGuildDashboardTranslations(`category_name.${page}`);
 }
 
 function TabContent({ page, isOpen }: { page: GuildConfigOptionCategory, isOpen: boolean }) {
-  const formatedTitle = formatPageTitle(page);
+  const formatedTitle = getPageTitle(page);
   return (
     <Fragment>
       <ListItemIcon
