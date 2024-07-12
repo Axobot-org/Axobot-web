@@ -78,7 +78,13 @@ export default function RoleConfigComponent({ optionId, option, guildId }: RoleC
             isOptionEqualToValue={(opt, value) => opt.id === value.id}
             getOptionLabel={(role) => role.name}
             onBlur={() => setEditing(false)}
-            renderInput={(params) => <TextField {...params} autoFocus variant="standard" placeholder="Pick a role" />}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                autoFocus
+                variant="standard"
+                placeholder="Pick a role" />
+            )}
             renderOption={(props, opt) => (
               <li {...props} key={opt.id}>
                 <RoleMention name={opt.name} color={opt.color} />
