@@ -43,10 +43,10 @@ export function ComplexConfiguration({ optionId, children }: PropsWithChildren<S
 
   return (
     <ConfigComponentContainer>
-      <Stack direction="row">
+      <ConfigurationName>
         {optionName}
         {isEdited && <EditedBadge />}
-      </Stack>
+      </ConfigurationName>
       <ConfigurationDescription mb={1}>{optionDescription}</ConfigurationDescription>
       {children}
     </ConfigComponentContainer>
