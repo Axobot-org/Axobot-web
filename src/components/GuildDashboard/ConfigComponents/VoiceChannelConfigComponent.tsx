@@ -6,36 +6,39 @@ import { useContext, useMemo, useState } from "react";
 import { GuildConfigEditionContext } from "../../../repository/context/GuildConfigEditionContext";
 import { useFetchGuildChannelsQuery } from "../../../repository/redux/api/api";
 import { GuildChannel } from "../../../repository/types/guild";
-import { TextChannelOptionRepresentation } from "../../../repository/types/guild-config-types";
+import { VoiceChannelOptionRepresentation } from "../../../repository/types/guild-config-types";
 import ChannelMention from "../../common/ChannelMention";
 import { SimpleConfiguration } from "./shared/SharedConfigComponents";
 import useIsConfigEdited from "./shared/useIsConfigEdited";
 
 
-interface TextChannelConfigComponentProps {
+interface VoiceChannelConfigComponentProps {
   optionId: string;
-  option: TextChannelOptionRepresentation & {value: unknown};
+  option: VoiceChannelOptionRepresentation & {value: unknown};
   guildId: string;
 }
 
-export default function TextChannelConfigComponent({ optionId, option, guildId }: TextChannelConfigComponentProps) {
+export default function VoiceChannelConfigComponent({ optionId, option, guildId }: VoiceChannelConfigComponentProps) {
   const { state, setValue, resetValue } = useContext(GuildConfigEditionContext);
   const isEdited = useIsConfigEdited(optionId);
   const { data, isLoading, error } = useFetchGuildChannelsQuery({ guildId });
   const [editing, setEditing] = useState(false);
 
-  const channels = useMemo(() => (
-    data?.filter((channel) => {
-      if (channel.isVoice) return false;
-      if (!option.allow_threads && channel.isThread) return false;
-      if (!option.allow_announcement_channels && channel.type === ChannelType.GuildAnnouncement) return false;
+  const channels = useMemo(() => {
+    const allVoiceAndCategories = data?.filter((channel) => {
+      if (!channel.isVoice && channel.type !== ChannelType.GuildCategory) return false;
+      if (!option.allow_stage_channels && channel.type === ChannelType.GuildStageVoice) return false;
       if (!option.allow_non_nsfw_channels && !channel.isNSFW) return false;
       return true;
-    }) ?? []
-  ), [data, option.allow_announcement_channels, option.allow_non_nsfw_channels, option.allow_threads]);
+    }) ?? [];
+    return allVoiceAndCategories.filter((channel) => {
+      if (channel.type === ChannelType.GuildCategory && !allVoiceAndCategories.some((c) => c.parentId === channel.id)) return false;
+      return true;
+    });
+  }, [data, option.allow_non_nsfw_channels, option.allow_stage_channels]);
 
   if (option.value !== null && typeof option.value !== "string") {
-    console.error("TextChannelConfigComponent: option value is not a string", option.value);
+    console.error("VoiceChannelConfigComponent: option value is not a string", option.value);
     return null;
   }
 
@@ -50,9 +53,9 @@ export default function TextChannelConfigComponent({ optionId, option, guildId }
       currentValue === null ? null : {
         id: currentValue,
         name: currentValue,
-        type: ChannelType.GuildText,
-        isText: true,
-        isVoice: false,
+        type: ChannelType.GuildVoice,
+        isText: false,
+        isVoice: true,
         isThread: false,
         isNSFW: false,
         position: null,

@@ -4,12 +4,14 @@ import { useFetchGuildConfigCategory } from "../../repository/commands/useFetchG
 import { PopulatedGuildConfig } from "../../repository/types/guild";
 import { GuildConfigOptionCategory } from "../../repository/types/guild-config-types";
 import BooleanConfigComponent from "./ConfigComponents/BooleanConfigComponent";
+import CategoryConfigComponent from "./ConfigComponents/CategoryConfigComponent";
 import ColorConfigComponent from "./ConfigComponents/ColorConfigComponent";
 import EnumConfigComponent from "./ConfigComponents/EnumConfigComponent";
 import FloatConfigComponent from "./ConfigComponents/FloatConfigComponent";
 import IntConfigComponent from "./ConfigComponents/IntConfigComponent";
 import RoleConfigComponent from "./ConfigComponents/RoleConfigComponent";
 import TextChannelConfigComponent from "./ConfigComponents/TextChannelConfigComponent";
+import VoiceChannelConfigComponent from "./ConfigComponents/VoiceChannelConfigComponent";
 
 interface ConfigurationCategoryPageProps {
   guildId: string;
@@ -33,7 +35,7 @@ export default function ConfigurationCategoryPage({ guildId, activePage }: Confi
   }
 
   const optionsMap: PopulatedGuildConfig = Object.fromEntries(
-    Object.entries(data).filter(([_, option]) => ["int", "float", "boolean", "enum", "role", "text_channel", "color"].includes(option.type))
+    Object.entries(data).filter(([_, option]) => ["int", "float", "boolean", "enum", "role", "text_channel", "voice_channel", "category", "color"].includes(option.type))
   );
 
   if (Object.keys(optionsMap).length === 0) {
@@ -101,6 +103,10 @@ function GenericConfigComponent({ optionId, option, guildId }: { optionId: strin
     return <RoleConfigComponent optionId={optionId} option={option} guildId={guildId} />;
   case "text_channel":
     return <TextChannelConfigComponent optionId={optionId} option={option} guildId={guildId} />;
+  case "voice_channel":
+    return <VoiceChannelConfigComponent optionId={optionId} option={option} guildId={guildId} />;
+  case "category":
+    return <CategoryConfigComponent optionId={optionId} option={option} guildId={guildId} />;
   case "color":
     return <ColorConfigComponent optionId={optionId} option={option} />;
   default:

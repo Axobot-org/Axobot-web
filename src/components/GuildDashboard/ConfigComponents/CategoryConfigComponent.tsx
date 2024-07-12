@@ -6,52 +6,42 @@ import { useContext, useMemo, useState } from "react";
 import { GuildConfigEditionContext } from "../../../repository/context/GuildConfigEditionContext";
 import { useFetchGuildChannelsQuery } from "../../../repository/redux/api/api";
 import { GuildChannel } from "../../../repository/types/guild";
-import { TextChannelOptionRepresentation } from "../../../repository/types/guild-config-types";
+import { CategoryOptionRepresentation } from "../../../repository/types/guild-config-types";
 import ChannelMention from "../../common/ChannelMention";
 import { SimpleConfiguration } from "./shared/SharedConfigComponents";
 import useIsConfigEdited from "./shared/useIsConfigEdited";
 
 
-interface TextChannelConfigComponentProps {
+interface CategoryConfigComponentProps {
   optionId: string;
-  option: TextChannelOptionRepresentation & {value: unknown};
+  option: CategoryOptionRepresentation & {value: unknown};
   guildId: string;
 }
 
-export default function TextChannelConfigComponent({ optionId, option, guildId }: TextChannelConfigComponentProps) {
+export default function CategoryConfigComponent({ optionId, option, guildId }: CategoryConfigComponentProps) {
   const { state, setValue, resetValue } = useContext(GuildConfigEditionContext);
   const isEdited = useIsConfigEdited(optionId);
   const { data, isLoading, error } = useFetchGuildChannelsQuery({ guildId });
   const [editing, setEditing] = useState(false);
 
-  const channels = useMemo(() => (
-    data?.filter((channel) => {
-      if (channel.isVoice) return false;
-      if (!option.allow_threads && channel.isThread) return false;
-      if (!option.allow_announcement_channels && channel.type === ChannelType.GuildAnnouncement) return false;
-      if (!option.allow_non_nsfw_channels && !channel.isNSFW) return false;
-      return true;
-    }) ?? []
-  ), [data, option.allow_announcement_channels, option.allow_non_nsfw_channels, option.allow_threads]);
+  const categories = useMemo(() => (
+    data?.filter((channel) => channel.type === ChannelType.GuildCategory) ?? []
+  ), [data]);
 
   if (option.value !== null && typeof option.value !== "string") {
-    console.error("TextChannelConfigComponent: option value is not a string", option.value);
+    console.error("CategoryConfigComponent: option value is not a string", option.value);
     return null;
   }
 
-  function isOptionDisabled(channel: GuildChannel) {
-    return channel.type === ChannelType.GuildCategory || channel.type === ChannelType.GuildForum || channel.type === ChannelType.GuildMedia;
-  }
-
   const currentValue = isEdited ? state[optionId] as string : option.value;
-  const currentChannel: GuildChannel | null = (
-    channels.find((channel) => channel.id === currentValue)
+  const currentCategory: GuildChannel | null = (
+    categories.find((category) => category.id === currentValue)
     || (
       currentValue === null ? null : {
         id: currentValue,
         name: currentValue,
-        type: ChannelType.GuildText,
-        isText: true,
+        type: ChannelType.GuildCategory,
+        isText: false,
         isVoice: false,
         isThread: false,
         isNSFW: false,
@@ -82,40 +72,39 @@ export default function TextChannelConfigComponent({ optionId, option, guildId }
           ? <Autocomplete
             openOnFocus
             blurOnSelect
-            options={channels}
-            value={currentChannel}
+            options={categories}
+            value={currentCategory}
             onChange={(_, newValue) => onChange(newValue)}
             sx={{ width: 250 }}
-            loading={isLoading || !channels}
+            loading={isLoading || !categories}
             isOptionEqualToValue={(opt, value) => opt.id === value.id}
-            getOptionLabel={(channel) => channel.name}
-            getOptionDisabled={isOptionDisabled}
+            getOptionLabel={(category) => category.name}
             onBlur={() => setEditing(false)}
-            renderInput={(params) => <TextField {...params} autoFocus variant="standard" placeholder="Pick a channel" />}
+            renderInput={(params) => <TextField {...params} autoFocus variant="standard" placeholder="Pick a category" />}
             renderOption={(props, opt) => (
               <li {...props} key={opt.id}>
-                <ChannelMention channel={opt} disabled={isOptionDisabled(opt)} indent />
+                <ChannelMention channel={opt} />
               </li>
             )}
           />
-          : <ReadonlyChannelPicker currentChannel={currentChannel} onClick={() => setEditing(true)} />
+          : <ReadonlyChannelPicker currentCategory={currentCategory} onClick={() => setEditing(true)} />
       )}
     </SimpleConfiguration>
   );
 }
 
 interface ReadonlyChannelPickerProps {
-  currentChannel: GuildChannel | null;
+  currentCategory: GuildChannel | null;
   onClick: () => void;
 }
 
-function ReadonlyChannelPicker({ currentChannel, onClick }: ReadonlyChannelPickerProps) {
+function ReadonlyChannelPicker({ currentCategory, onClick }: ReadonlyChannelPickerProps) {
   return (
     <Button onClick={onClick} endIcon={<EditIcon />} sx={{ textTransform: "none", fontSize: "1rem", height: "32px" }}>
       {
-        currentChannel === null
-          ? <Typography color="gray" fontStyle="italic">Pick a channel</Typography>
-          : <ChannelMention channel={currentChannel} />
+        currentCategory === null
+          ? <Typography color="gray" fontStyle="italic">Pick a category</Typography>
+          : <ChannelMention channel={currentCategory} />
       }
     </Button>
   );
