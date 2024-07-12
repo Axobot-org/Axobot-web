@@ -25,6 +25,17 @@ export default function FloatConfigComponent({ optionId, option }: FloatConfigCo
     }
   }
 
+  function onBlur(event: React.FocusEvent<HTMLInputElement>) {
+    const newValue = parseFloat(event.target.value);
+    if (isNaN(newValue)) {
+      resetValue(optionId);
+    } else if (newValue < option.min) {
+      onChange(option.min);
+    } else if (newValue > option.max) {
+      onChange(option.max);
+    }
+  }
+
   function getValue(): number | undefined {
     const value = isEdited ? state[optionId] : option.value;
     if (typeof value === "number") {
@@ -71,6 +82,7 @@ export default function FloatConfigComponent({ optionId, option }: FloatConfigCo
           defaultValue={defaultValue}
           acceptDecimals={true}
           onValueChange={onChange}
+          onBlur={onBlur}
         />
       </Stack>
     </ComplexConfiguration>
