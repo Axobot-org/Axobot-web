@@ -9,6 +9,7 @@ import ColorConfigComponent from "./ConfigComponents/ColorConfigComponent";
 import EnumConfigComponent from "./ConfigComponents/EnumConfigComponent";
 import FloatConfigComponent from "./ConfigComponents/FloatConfigComponent";
 import IntConfigComponent from "./ConfigComponents/IntConfigComponent";
+import LevelupChannelConfigComponent from "./ConfigComponents/LevelupChannelConfigComponent";
 import RoleConfigComponent from "./ConfigComponents/RoleConfigComponent";
 import TextChannelConfigComponent from "./ConfigComponents/TextChannelConfigComponent";
 import VoiceChannelConfigComponent from "./ConfigComponents/VoiceChannelConfigComponent";
@@ -35,7 +36,10 @@ export default function ConfigurationCategoryPage({ guildId, activePage }: Confi
   }
 
   const optionsMap: PopulatedGuildConfig = Object.fromEntries(
-    Object.entries(data).filter(([_, option]) => ["int", "float", "boolean", "enum", "role", "text_channel", "voice_channel", "category", "color"].includes(option.type))
+    Object.entries(data).filter(([_, option]) => [
+      "int", "float", "boolean", "enum", "role", "text_channel", "voice_channel",
+      "category", "color", "levelup_channel",
+    ].includes(option.type))
   );
 
   if (Object.keys(optionsMap).length === 0) {
@@ -109,6 +113,8 @@ function GenericConfigComponent({ optionId, option, guildId }: { optionId: strin
     return <CategoryConfigComponent optionId={optionId} option={option} guildId={guildId} />;
   case "color":
     return <ColorConfigComponent optionId={optionId} option={option} />;
+  case "levelup_channel":
+    return <LevelupChannelConfigComponent optionId={optionId} option={option} guildId={guildId} />;
   default:
     return null;
   }
