@@ -1,5 +1,5 @@
 import FolderIcon from "@mui/icons-material/Folder";
-import { Stack } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
 import { styled } from "@mui/system";
 import { ChannelType } from "discord-api-types/v10";
 
@@ -29,14 +29,15 @@ export default function ChannelMention({ channel, disabled, indent, onDelete }: 
       backgroundColor: disabled ? undefined : `#${backgroundColor.toString(16).padStart(8, "0")}`,
       borderRadius: "5px",
       alignItems: "center",
+      overflow: indent ? undefined : "hidden",
       padding: onDelete ? "2px 4px" : "0 2px",
       marginLeft: (indent ? indentationLevel / 8 : 0) + (onDelete ? 0.5 : 0),
       marginRight: onDelete ? 0.5 : 0,
     }}
     >
-      <span>
+      <Typography noWrap={!indent} component="span">
         {Icon}{channel.name}
-      </span>
+      </Typography>
       {onDelete && <DeleteCircleButton onClick={onDelete} />}
     </Stack>
   );

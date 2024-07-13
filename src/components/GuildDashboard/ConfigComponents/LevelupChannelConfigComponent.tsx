@@ -4,7 +4,7 @@ import { ComponentProps, useState } from "react";
 import { getGuildDashboardTranslations } from "../../../i18n/i18n";
 import { useGuildConfigEditionContext } from "../../../repository/context/GuildConfigEditionContext";
 import { LevelupChannelOptionRepresentation } from "../../../repository/types/guild-config-types";
-import { SimpleConfiguration } from "./shared/SharedConfigComponents";
+import { LargeConfiguration } from "./shared/SharedConfigComponents";
 import TextChannelPicker from "./shared/TextChannelPicker";
 import useIsConfigEdited from "./shared/useIsConfigEdited";
 
@@ -28,7 +28,7 @@ export default function LevelupChannelConfigComponent({ optionId, option, guildI
   const [showChannelSelector, setShowChannelSelector] = useState(valueIsChannelId);
 
   if (typeof option.value !== "string") {
-    console.error("TextChannelConfigComponent: option value is not a string", option.value);
+    console.error("LevelupChannelConfigComponent: option value is not a string", option.value);
     return null;
   }
 
@@ -60,7 +60,7 @@ export default function LevelupChannelConfigComponent({ optionId, option, guildI
   };
 
   return (
-    <SimpleConfiguration optionId={optionId}>
+    <LargeConfiguration optionId={optionId}>
       <Stack gap={1}>
         <StyledSelect
           value={currentEnumValue}
@@ -75,7 +75,7 @@ export default function LevelupChannelConfigComponent({ optionId, option, guildI
         </StyledSelect>
         {showChannelSelector && <TextChannelPicker optionId={optionId} option={textChannelOption} guildId={guildId} />}
       </Stack>
-    </SimpleConfiguration>
+    </LargeConfiguration>
   );
 }
 

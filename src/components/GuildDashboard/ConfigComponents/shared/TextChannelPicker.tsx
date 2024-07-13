@@ -84,7 +84,7 @@ export default function TextChannelPicker({ optionId, option, guildId }: TextCha
         options={channels}
         value={currentChannel}
         onChange={(_, newValue) => onChange(newValue)}
-        sx={{ width: 250 }}
+        sx={{ width: { md: 250, lg: 300 } }}
         loading={isLoading || !channels}
         isOptionEqualToValue={(opt, value) => opt.id === value.id}
         getOptionLabel={(channel) => channel.name}
@@ -112,7 +112,14 @@ interface ReadonlyChannelPickerProps {
 
 function ReadonlyChannelPicker({ currentChannel, onClick }: ReadonlyChannelPickerProps) {
   return (
-    <Button onClick={onClick} endIcon={<EditIcon />} sx={{ textTransform: "none", fontSize: "1rem", height: "32px" }}>
+    <Button onClick={onClick} endIcon={<EditIcon />} sx={{
+      textTransform: "none",
+      fontSize: "1rem",
+      height: "32px",
+      maxWidth: { md: "250px", lg: "300px" },
+      overflow: "hidden",
+      justifyContent: "space-between",
+    }}>
       {
         currentChannel === null
           ? <Typography color="gray" fontStyle="italic">Pick a channel</Typography>
