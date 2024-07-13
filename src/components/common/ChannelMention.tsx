@@ -1,6 +1,9 @@
 import FolderIcon from "@mui/icons-material/Folder";
+import { Stack } from "@mui/material";
 import { styled } from "@mui/system";
 import { ChannelType } from "discord-api-types/v10";
+
+import DeleteCircleButton from "./DeleteCircleButton";
 
 
 interface ChannelMentionProps {
@@ -11,25 +14,31 @@ interface ChannelMentionProps {
   };
   disabled?: boolean;
   indent?: boolean;
+  onDelete?: (event: unknown) => void;
 }
 
-export default function ChannelMention({ channel, disabled, indent }: ChannelMentionProps) {
+export default function ChannelMention({ channel, disabled, indent, onDelete }: ChannelMentionProps) {
   const mentionColor = 0xc9cdfb;
   const backgroundColor = 0x5865f24d;
   const Icon = getIconComponent(channel.type);
   const indentationLevel = getIdentationLevel(channel) * 12;
 
   return (
-    <span style={{
+    <Stack direction="row" gap={0.5} sx={{
       color: disabled ? undefined : `#${mentionColor.toString(16).padStart(6, "0")}`,
       backgroundColor: disabled ? undefined : `#${backgroundColor.toString(16).padStart(8, "0")}`,
-      borderRadius: "3px",
-      padding: "0 2px",
-      marginLeft: indent ? indentationLevel : undefined,
+      borderRadius: "5px",
+      alignItems: "center",
+      padding: onDelete ? "2px 4px" : "0 2px",
+      marginLeft: (indent ? indentationLevel / 8 : 0) + (onDelete ? 0.5 : 0),
+      marginRight: onDelete ? 0.5 : 0,
     }}
     >
-      {Icon}{channel.name}
-    </span>
+      <span>
+        {Icon}{channel.name}
+      </span>
+      {onDelete && <DeleteCircleButton onClick={onDelete} />}
+    </Stack>
   );
 }
 
