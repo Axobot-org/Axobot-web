@@ -151,7 +151,7 @@ function NavigationDrawerContent({ open, activePage, toggleOpen }: NavigationDra
   return (
     <Fragment>
       <Toolbar sx={{ display: { xs: "none", md: "initial" } }} />
-      <Box>
+      <Box sx={{ width: open ? undefined : "64px" }}>
         <DrawerHeader>
           <IconButton onClick={toggleOpen}>
             {open ? <ChevronLeftIcon /> : <ChevronRightIcon />}
@@ -209,7 +209,7 @@ export default function NavigationDrawer() {
   }
 
   return (
-    <Drawer variant="permanent" open={open}>
+    <Drawer variant="permanent" open={open} sx={{ "& .MuiPaper-root": { scrollbarWidth: "thin" } }}>
       <NavigationDrawerContent open={open} activePage={activePage} toggleOpen={toggleOpen} />
     </Drawer>
   );
