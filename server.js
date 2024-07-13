@@ -35,6 +35,21 @@ if (!isProduction) {
   app.use(base, sirv("./build/client", { extensions: [] }));
 }
 
+// Define static HTTP headers
+const defaultSrcPolicy = env.PUBLIC_URL.startsWith("http://localhost") ? "" : "default-src https:";
+const scriptSrcPolicy = `script-src-elem ${env.PUBLIC_URL} ${env.VITE_API_URL} https://zrunner.me`;
+const headers = {
+  "Content-Security-Policy": `frame-ancestors 'none'; upgrade-insecure-requests; ${defaultSrcPolicy}; ${scriptSrcPolicy}; style-src 'sha256-47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU='; img-src 'self' https://cdn.discordapp.com`,
+  "Cross-Origin-Embedder-Policy": "credentialless",
+  "Cross-Origin-Opener-Policy": "same-origin",
+  "Cross-Origin-Resource-Policy": "same-site",
+  "Referrer-Policy": "no-referrer, strict-origin",
+  "Strict-Transport-Security": "max-age=63072000; includeSubDomains; preload",
+  "X-Content-Type-Options": "nosniff",
+  "X-Frame-Options": "DENY",
+};
+
+
 // Serve HTML
 app.use("*", async (req, res) => {
   try {
@@ -56,7 +71,7 @@ app.use("*", async (req, res) => {
 
     const html = template.replace("<!--app-head-->", rendered.head ?? "");
 
-    res.status(200).set({ "Content-Type": "text/html" }).send(html);
+    res.status(200).header(headers).set({ "Content-Type": "text/html" }).send(html);
   } catch (e) {
     vite?.ssrFixStacktrace(e);
     console.log(e.stack);

@@ -2,7 +2,7 @@ import { Button, Typography } from "@mui/material";
 import { Fragment } from "react";
 
 import { ExternalRoutesURLs } from "../../router/router";
-import DiscordMarkWhite from "../../svg/discord-mark-white.svg?react";
+import DiscordMarkWhite from "../../svg/discord-mark.svg?react";
 
 export default function NeedsLoginErrorPage() {
   return (
@@ -16,7 +16,7 @@ export default function NeedsLoginErrorPage() {
         color="blurple"
         href={ExternalRoutesURLs.discordAuth}
         sx={{ marginTop: 3 }}
-        startIcon={<DiscordMarkWhite width={20} />}
+        startIcon={<DiscordMarkWhite fill="white" width={20} />}
       >
         Login with Discord
       </Button>
