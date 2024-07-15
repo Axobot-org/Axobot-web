@@ -36,10 +36,11 @@ if (!isProduction) {
 }
 
 // Define static HTTP headers
-const defaultSrcPolicy = env.PUBLIC_URL.startsWith("http://localhost") ? "" : "default-src https:";
-const scriptSrcPolicy = `script-src-elem ${env.PUBLIC_URL} ${env.VITE_API_URL} https://zrunner.me`;
+const defaultSrcPolicy = isProduction ? "default-src https:" : "";
+const scriptSrcPolicy = isProduction ? `script-src-elem ${env.PUBLIC_URL} ${env.VITE_API_URL} https://zrunner.me` : "";
+const styleSrcPolicy = isProduction ? "style-src 'sha256-47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU='" : "";
 const headers = {
-  "Content-Security-Policy": `frame-ancestors 'none'; upgrade-insecure-requests; ${defaultSrcPolicy}; ${scriptSrcPolicy}; style-src 'sha256-47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU='; img-src 'self' https://cdn.discordapp.com`,
+  "Content-Security-Policy": `frame-ancestors 'none'; upgrade-insecure-requests; ${defaultSrcPolicy}; ${scriptSrcPolicy}; ${styleSrcPolicy}; img-src 'self' https://cdn.discordapp.com`,
   "Cross-Origin-Embedder-Policy": "credentialless",
   "Cross-Origin-Opener-Policy": "same-origin",
   "Cross-Origin-Resource-Policy": "same-site",
