@@ -19,11 +19,7 @@ function GuildsGrid() {
     })
   ), [guilds]);
 
-  if (loading || sortedGuilds === undefined) {
-    return <CircularProgress color="primary" aria-label="Loading guilds" />;
-  }
-
-  if (error) {
+  if (error && !loading) {
     console.error(error);
     return (
       <Fragment>
@@ -35,6 +31,10 @@ function GuildsGrid() {
         </Typography>
       </Fragment>
     );
+  }
+
+  if (loading || sortedGuilds === undefined) {
+    return <CircularProgress color="primary" aria-label="Loading guilds" />;
   }
 
   if (sortedGuilds.length === 0) {
