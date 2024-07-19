@@ -13,6 +13,10 @@ export const publicRoutes: RouteObject[] = [
     lazy: () => import("../../pages/legal/TOS"),
   },
   {
+    path: "/privacy",
+    lazy: () => import("../../pages/legal/PrivacyPolicy"),
+  },
+  {
     path: "/leaderboard/global",
     lazy: () => import("../../pages/Leaderboard"),
   },

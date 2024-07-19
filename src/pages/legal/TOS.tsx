@@ -1,10 +1,11 @@
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
-import { Box, Collapse, IconButton, Link, Paper, Stack, styled, Typography } from "@mui/material";
-import { PropsWithChildren, useState } from "react";
+import { Box, Collapse, IconButton, Link, Paper, Stack, Typography } from "@mui/material";
+import { useState } from "react";
 import { Fragment } from "react/jsx-runtime";
 
 import { ExternalRoutesURLs } from "../../router/router";
 import { useIsOnMobile } from "../../styles/useIsOnMobile";
+import { ExternalLink, Subtitle2Section, SubtitleSection, TitleSection } from "./shared";
 
 const TOSSummary = () => {
   const isOnMobile = useIsOnMobile();
@@ -219,79 +220,3 @@ export default function TOS() {
 
 export const Component = TOS;
 
-function titleToSectionId(title: string) {
-  let result = title.toLowerCase().replace(/\W/g, "-");
-  while (result.includes("--")) {
-    result = result.replace("--", "-");
-  }
-  return result;
-}
-
-const TitleSection = ({ title, children }: PropsWithChildren<{title: string}>) => (
-  <section id={titleToSectionId(title)}>
-    <TitleTypography variant="h4" mt={8} fontWeight="bold" textTransform="uppercase">
-      {title}
-      <HeaderLink title={title} />
-    </TitleTypography>
-    <Box mt={2} pl={2} textAlign="justify">
-      {children}
-    </Box>
-  </section>
-);
-
-const SubtitleSection = ({ title, children }: PropsWithChildren<{title: string}>) => (
-  <section id={titleToSectionId(title)}>
-    <TitleTypography variant="h5" mt={3} fontWeight="bold">
-      {title}
-      <HeaderLink title={title} />
-    </TitleTypography>
-    <Box mt={1} mb={3} pl={2}>
-      {children}
-    </Box>
-  </section>
-);
-
-const Subtitle2Section = ({ title, children }: PropsWithChildren<{title: string}>) => (
-  <section id={titleToSectionId(title)}>
-    <TitleTypography variant="h6" mt={3} fontWeight="bold">
-      {title}
-      <HeaderLink title={title} />
-    </TitleTypography>
-    <Box mt={1} mb={3} pl={2}>
-      {children}
-    </Box>
-  </section>
-);
-
-const TitleTypography = styled(Typography)({
-  fontWeight: "bold",
-  "&:hover .header-link": {
-    visibility: "visible",
-  },
-});
-
-const HeaderLink = ({ title }: {title: string}) => (
-  <Link
-    href={`#${titleToSectionId(title)}`}
-    className="header-link"
-    underline="none"
-    title="Link to this heading"
-    ml={1}
-    fontWeight="light"
-    onClick={() => {
-      window.location.hash = titleToSectionId(title);
-    }}
-    sx={{
-      opacity: 0.7,
-      visibility: "hidden",
-      "&:hover": {
-        opacity: 1,
-      },
-    }}>
-    #
-  </Link>
-);
-
-const ExternalLink = ({ href }: {href: string}) => (
-  <Link href={href} target="_blank">{href}</Link>
-);
