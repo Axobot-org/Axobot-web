@@ -16,6 +16,7 @@ import TextChannelConfigComponent from "./ConfigComponents/TextChannelConfigComp
 import TextChannelsListConfigComponent from "./ConfigComponents/TextChannelsListConfigComponent";
 import TextConfigComponent from "./ConfigComponents/TextConfigComponent";
 import VoiceChannelConfigComponent from "./ConfigComponents/VoiceChannelConfigComponent";
+import XpCategoryComponent from "./SpecialCategoryComponents/XpCategoryComponent";
 
 interface ConfigurationCategoryPageProps {
   guildId: string;
@@ -54,6 +55,7 @@ export default function ConfigurationCategoryPage({ guildId, activePage }: Confi
       {Object.entries(optionsMap).map(([optionName, option]) => (
         <GenericConfigComponent key={optionName} optionId={optionName} option={option} guildId={guildId} />
       ))}
+      <SpecialCategoryComponent guildId={guildId} activePage={activePage} />
     </ComponentsContainer>
   );
 }
@@ -124,6 +126,15 @@ function GenericConfigComponent({ optionId, option, guildId }: { optionId: strin
     return <ColorConfigComponent optionId={optionId} option={option} />;
   case "levelup_channel":
     return <LevelupChannelConfigComponent optionId={optionId} option={option} guildId={guildId} />;
+  default:
+    return null;
+  }
+}
+
+function SpecialCategoryComponent({ guildId, activePage }: {guildId: string, activePage: GuildConfigOptionCategory}) {
+  switch (activePage) {
+  case "xp":
+    return <XpCategoryComponent guildId={guildId} />;
   default:
     return null;
   }
