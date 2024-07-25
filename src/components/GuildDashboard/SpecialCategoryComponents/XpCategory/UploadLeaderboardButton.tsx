@@ -1,50 +1,15 @@
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import DownloadIcon from "@mui/icons-material/Download";
-import LaunchIcon from "@mui/icons-material/Launch";
-import { Button, Divider, Link, Stack, Typography } from "@mui/material";
+import { Button } from "@mui/material";
 import { ChangeEvent, useRef, useState } from "react";
 import { Fragment } from "react/jsx-runtime";
 
-import csvToJson from "../../../repository/convertCsvToJson";
-import { usePutGuildLeaderboardMutation } from "../../../repository/redux/api/api";
-import { isLeaderboardImport, parseLeaderboardImport } from "../../../repository/types/checks";
-import { LeaderboardImport, LeaderboardPutData, LeaderboardUserImport } from "../../../repository/types/leaderboard";
+import csvToJson from "../../../../repository/convertCsvToJson";
+import { usePutGuildLeaderboardMutation } from "../../../../repository/redux/api/api";
+import { LeaderboardAsJson } from "../../../../repository/types/api";
+import { isLeaderboardImport, parseLeaderboardImport } from "../../../../repository/types/checks";
+import { LeaderboardImport, LeaderboardUserImport } from "../../../../repository/types/leaderboard";
 
-interface XpCategoryComponentProps {
-  guildId: string;
-}
-
-export default function XpCategoryComponent({ guildId }: XpCategoryComponentProps) {
-  return (
-    <Fragment>
-      <Divider sx={{ my: 1 }} />
-      <Stack px={2} gap={1}>
-        <Typography fontSize="1.2rem">Leaderboard actions</Typography>
-        <Stack gap={2} direction={{ xs: "column", sm: "row" }}>
-          <Button
-            component={Link}
-            target="_blank"
-            variant="outlined"
-            href={`/leaderboard/${guildId}`}
-            endIcon={<LaunchIcon />}
-          >
-            View Leaderboard
-          </Button>
-          <Button
-            variant="outlined"
-            color="secondary"
-            startIcon={<DownloadIcon />}
-          >
-            Download as JSON
-          </Button>
-          <UploadButton guildId={guildId} />
-        </Stack>
-      </Stack>
-    </Fragment>
-  );
-}
-
-function UploadButton({ guildId }: XpCategoryComponentProps) {
+export default function UploadLeaderboardButton({ guildId }: {guildId: string}) {
   const [readingFile, setReadingFile] = useState(false);
   const inputFile = useRef<HTMLInputElement | null>(null);
   const { loading: sending, sendNewLeaderboard } = useSendNewLeaderboard(guildId);
@@ -142,7 +107,7 @@ function useSendNewLeaderboard(guildId: string) {
     return { "user_id": player.id, xp };
   }
 
-  function formatData(data: LeaderboardImport): LeaderboardPutData {
+  function formatData(data: LeaderboardImport): LeaderboardAsJson {
     if (Array.isArray(data)) {
       return data.map(formatPlayerData);
     }

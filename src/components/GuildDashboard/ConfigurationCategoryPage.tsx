@@ -16,7 +16,7 @@ import TextChannelConfigComponent from "./ConfigComponents/TextChannelConfigComp
 import TextChannelsListConfigComponent from "./ConfigComponents/TextChannelsListConfigComponent";
 import TextConfigComponent from "./ConfigComponents/TextConfigComponent";
 import VoiceChannelConfigComponent from "./ConfigComponents/VoiceChannelConfigComponent";
-import XpCategoryComponent from "./SpecialCategoryComponents/XpCategoryComponent";
+import XpCategoryComponent from "./SpecialCategoryComponents/XpCategory/XpCategoryComponent";
 
 interface ConfigurationCategoryPageProps {
   guildId: string;

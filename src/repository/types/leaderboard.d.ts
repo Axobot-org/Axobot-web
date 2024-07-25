@@ -47,8 +47,3 @@ export type LeaderboardImport = LeaderboardUserImport[]
 } | {
   levels: LeaderboardUserImport[];
 }
-
-export type LeaderboardPutData = {
-  user_id: string;
-  xp: number;
-}[];

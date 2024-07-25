@@ -1,9 +1,9 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-import { LeaderboardResponse, LoginJSONResponse } from "../../types/api";
+import { LeaderboardAsJson, LeaderboardResponse, LoginJSONResponse } from "../../types/api";
 import { GuildChannel, GuildConfig, GuildData, GuildRole } from "../../types/guild";
 import { GuildConfigOptionCategory, GuildConfigOptionsMapType } from "../../types/guild-config-types";
-import { LeaderboardData, LeaderboardPutData, RankedPlayer } from "../../types/leaderboard";
+import { LeaderboardData, RankedPlayer } from "../../types/leaderboard";
 import { AuthenticatedUserObject } from "../../types/users";
 import { RootState } from "../store";
 
@@ -63,6 +63,9 @@ export const axoApi = createApi({
       forceRefetch({ currentArg, previousArg }) {
         return currentArg !== previousArg;
       },
+    }),
+    fetchLeaderboardAsJson: builder.query<LeaderboardAsJson, string >({
+      query: (guildId) => `discord/guild/${guildId}/leaderboard.json`,
     }),
     fetchDefaultGuildConfig: builder.query<GuildConfigOptionsMapType, void>({
       query: () => "discord/default-guild-config",
@@ -136,7 +139,7 @@ export const axoApi = createApi({
         } catch { /* don't update cache on error */ }
       },
     }),
-    putGuildLeaderboard: builder.mutation<undefined, {guildId: string, players: LeaderboardPutData}>({
+    putGuildLeaderboard: builder.mutation<undefined, {guildId: string, players: LeaderboardAsJson}>({
       query: ({ guildId, players }) => ({
         url: `discord/guild/${guildId}/leaderboard`,
         method: "PUT",
@@ -151,6 +154,7 @@ export const {
   useFetchGuildsQuery,
   useFetchGuildQuery,
   useFetchLeaderboardQuery,
+  useLazyFetchLeaderboardAsJsonQuery,
   useFetchDefaultGuildConfigQuery,
   useFetchGuildConfigQuery,
   useFetchGuildRolesQuery,

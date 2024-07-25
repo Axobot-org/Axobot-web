@@ -29,3 +29,8 @@ export interface LeaderboardResponse {
     } | null,
   }[] | undefined,
 }
+
+export type LeaderboardAsJson = {
+  user_id: string;
+  xp: number;
+}[];
