@@ -5,7 +5,7 @@ export function getMetaTagsFromURL(url: string) {
   case "leaderboard/global":
     return (
       <>
-        <title>Axobot: {pageTitle}</title>
+        <title>{"Axobot: " + pageTitle}</title>
         <meta property="og:title" content={pageTitle} {...helmetProps} />
         <meta property="og:url" content="https://axobot.xyz/leaderboard/global" {...helmetProps} />
       </>
@@ -13,7 +13,7 @@ export function getMetaTagsFromURL(url: string) {
   case url.match(/^leaderboard\/\d{17,20}$/)?.[0]:
     return (
       <>
-        <title>Axobot: {pageTitle}</title>
+        <title>{"Axobot: " + pageTitle}</title>
         <meta property="og:title" content={pageTitle} {...helmetProps} />
         <meta property="og:url" content="https://axobot.xyz/leaderboard/global" {...helmetProps} />
       </>
@@ -21,7 +21,7 @@ export function getMetaTagsFromURL(url: string) {
   case "dashboard":
     return (
       <>
-        <title>Axobot: {pageTitle}</title>
+        <title>{"Axobot: " + pageTitle}</title>
         <meta property="og:title" content={pageTitle} {...helmetProps} />
         <meta property="og:url" content="https://axobot.xyz/dashboard" {...helmetProps} />
       </>
@@ -29,7 +29,7 @@ export function getMetaTagsFromURL(url: string) {
   case url.match(/^dashboard\/\d{17,20}$/)?.[0]:
     return (
       <>
-        <title>Axobot: {pageTitle}</title>
+        <title>{"Axobot: " + pageTitle}</title>
         <meta property="og:title" content={pageTitle} {...helmetProps} />
       </>
     );
@@ -38,6 +38,13 @@ export function getMetaTagsFromURL(url: string) {
       <>
         <title>Axobot: Terms of Use</title>
         <meta property="og:title" content="Terms of Use" {...helmetProps} />
+      </>
+    );
+  case "privacy":
+    return (
+      <>
+        <title>Axobot: Privacy Policy</title>
+        <meta property="og:title" content="Privacy Policy" {...helmetProps} />
       </>
     );
   default:
