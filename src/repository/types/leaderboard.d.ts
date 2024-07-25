@@ -32,3 +32,18 @@ export interface RoleReward {
     color: number,
   } | null,
 }
+
+type LeaderboardUserImport = (
+  (
+    {userId: string}
+    | {user_id: string}
+    | {id: string}
+  ) & { xp: number | string }
+);
+
+export type LeaderboardImport = LeaderboardUserImport[]
+| {
+  players: LeaderboardUserImport[];
+} | {
+  levels: LeaderboardUserImport[];
+}

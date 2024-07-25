@@ -5,6 +5,9 @@ import { Button, Divider, Link, Stack, Typography } from "@mui/material";
 import { ChangeEvent, useRef, useState } from "react";
 import { Fragment } from "react/jsx-runtime";
 
+import csvToJson from "../../../repository/convertCsvToJson";
+import { isLeaderboardImport, parseLeaderboardImport } from "../../../repository/types/checks";
+
 interface XpCategoryComponentProps {
   guildId: string;
 }
@@ -69,10 +72,11 @@ function UploadButton({ guildId }: XpCategoryComponentProps) {
           return;
         }
         try {
-          const content = JSON.parse(rawContent);
+          const content = parseImportFile(file, rawContent);
           console.log(`leaderboard of guild ${guildId}`, content);
         } catch (err) {
           console.error(err);
+          alert("Invalid file format!");
         }
       }
       setLoading(false);
@@ -105,4 +109,18 @@ function UploadButton({ guildId }: XpCategoryComponentProps) {
       />
     </Fragment>
   );
+}
+
+function parseImportFile(file: File, rawContent: string) {
+  if (file.name.endsWith(".json")) {
+    return parseLeaderboardImport(rawContent);
+  }
+  if (file.name.endsWith(".csv")) {
+    const data = csvToJson(rawContent);
+    console.log(data);
+    if (isLeaderboardImport(data)) {
+      return data;
+    }
+  }
+  throw new Error("Unsupported file format");
 }
