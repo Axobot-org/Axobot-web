@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { LeaderboardResponse, LoginJSONResponse } from "../../types/api";
 import { GuildChannel, GuildConfig, GuildData, GuildRole } from "../../types/guild";
 import { GuildConfigOptionCategory, GuildConfigOptionsMapType } from "../../types/guild-config-types";
-import { LeaderboardData, RankedPlayer } from "../../types/leaderboard";
+import { LeaderboardData, LeaderboardPutData, RankedPlayer } from "../../types/leaderboard";
 import { AuthenticatedUserObject } from "../../types/users";
 import { RootState } from "../store";
 
@@ -136,6 +136,13 @@ export const axoApi = createApi({
         } catch { /* don't update cache on error */ }
       },
     }),
+    putGuildLeaderboard: builder.mutation<undefined, {guildId: string, players: LeaderboardPutData}>({
+      query: ({ guildId, players }) => ({
+        url: `discord/guild/${guildId}/leaderboard`,
+        method: "PUT",
+        body: players,
+      }),
+    }),
   }),
 });
 
@@ -151,4 +158,5 @@ export const {
 
   useLoginMutation,
   usePatchGuildConfigMutation,
+  usePutGuildLeaderboardMutation,
 } = axoApi;

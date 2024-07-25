@@ -6,7 +6,9 @@ import { ChangeEvent, useRef, useState } from "react";
 import { Fragment } from "react/jsx-runtime";
 
 import csvToJson from "../../../repository/convertCsvToJson";
+import { usePutGuildLeaderboardMutation } from "../../../repository/redux/api/api";
 import { isLeaderboardImport, parseLeaderboardImport } from "../../../repository/types/checks";
+import { LeaderboardImport, LeaderboardPutData, LeaderboardUserImport } from "../../../repository/types/leaderboard";
 
 interface XpCategoryComponentProps {
   guildId: string;
@@ -43,8 +45,9 @@ export default function XpCategoryComponent({ guildId }: XpCategoryComponentProp
 }
 
 function UploadButton({ guildId }: XpCategoryComponentProps) {
-  const [loading, setLoading] = useState(false);
+  const [readingFile, setReadingFile] = useState(false);
   const inputFile = useRef<HTMLInputElement | null>(null);
+  const { loading: sending, sendNewLeaderboard } = useSendNewLeaderboard(guildId);
 
   const onButtonClick = () => {
     if (inputFile.current) {
@@ -58,7 +61,7 @@ function UploadButton({ guildId }: XpCategoryComponentProps) {
     if (!file) {
       return;
     }
-    setLoading(true);
+    setReadingFile(true);
 
     const reader = new FileReader();
     reader.onload = (e) => {
@@ -68,22 +71,22 @@ function UploadButton({ guildId }: XpCategoryComponentProps) {
         // check that content is less than 1MB
         if (rawContent.length > 1024 * 1024) {
           alert("File is too large. Max size is 1MB.");
-          setLoading(false);
+          setReadingFile(false);
           return;
         }
         try {
           const content = parseImportFile(file, rawContent);
-          console.log(`leaderboard of guild ${guildId}`, content);
+          sendNewLeaderboard(content);
         } catch (err) {
           console.error(err);
           alert("Invalid file format!");
         }
       }
-      setLoading(false);
+      setReadingFile(false);
     };
     reader.onerror = (e) => {
       console.error(e);
-      setLoading(false);
+      setReadingFile(false);
     };
     reader.readAsText(file);
   };
@@ -95,7 +98,7 @@ function UploadButton({ guildId }: XpCategoryComponentProps) {
         color="secondary"
         startIcon={<CloudUploadIcon />}
         onClick={onButtonClick}
-        disabled={loading}
+        disabled={readingFile || sending}
       >
         Upload to database
       </Button>
@@ -112,15 +115,49 @@ function UploadButton({ guildId }: XpCategoryComponentProps) {
 }
 
 function parseImportFile(file: File, rawContent: string) {
-  if (file.name.endsWith(".json")) {
+  const fileExtension = file.name.toLowerCase().split(".").pop();
+  if (fileExtension === "json") {
     return parseLeaderboardImport(rawContent);
   }
-  if (file.name.endsWith(".csv")) {
+  if (fileExtension === "csv") {
     const data = csvToJson(rawContent);
-    console.log(data);
     if (isLeaderboardImport(data)) {
       return data;
     }
   }
   throw new Error("Unsupported file format");
+}
+
+function useSendNewLeaderboard(guildId: string) {
+  const [putMutation, { error, isLoading }] = usePutGuildLeaderboardMutation();
+
+  function formatPlayerData(player: LeaderboardUserImport) {
+    const xp = Number(player.xp);
+    if ("user_id" in player) {
+      return { "user_id": player.user_id, xp };
+    }
+    if ("userId" in player) {
+      return { "user_id": player.userId, xp };
+    }
+    return { "user_id": player.id, xp };
+  }
+
+  function formatData(data: LeaderboardImport): LeaderboardPutData {
+    if (Array.isArray(data)) {
+      return data.map(formatPlayerData);
+    }
+    if ("players" in data) {
+      return data.players.map(formatPlayerData);
+    }
+    if ("levels" in data) {
+      return data.levels.map(formatPlayerData);
+    }
+    throw new Error("Invalid data format");
+  }
+
+  function sendNewLeaderboard(data: LeaderboardImport) {
+    putMutation({ guildId, players: formatData(data) });
+  }
+
+  return { sendNewLeaderboard, error, loading: isLoading };
 }
