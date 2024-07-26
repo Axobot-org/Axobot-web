@@ -1,5 +1,5 @@
 import DownloadIcon from "@mui/icons-material/Download";
-import { Button } from "@mui/material";
+import { Button, CircularProgress } from "@mui/material";
 import { useRef } from "react";
 import { Fragment } from "react/jsx-runtime";
 
@@ -7,7 +7,7 @@ import { useLazyFetchLeaderboardAsJsonQuery } from "../../../../repository/redux
 
 export default function DownloadLeaderboardButton({ guildId }: {guildId: string}) {
   const linkElement = useRef<HTMLAnchorElement | null>(null);
-  const [trigger] = useLazyFetchLeaderboardAsJsonQuery();
+  const [trigger, { isLoading }] = useLazyFetchLeaderboardAsJsonQuery();
 
   async function onClick() {
     if (linkElement.current === null) return;
@@ -24,8 +24,9 @@ export default function DownloadLeaderboardButton({ guildId }: {guildId: string}
       <Button
         variant="outlined"
         color="secondary"
-        startIcon={<DownloadIcon />}
+        startIcon={isLoading ? <CircularProgress size={20} color="secondary" /> : <DownloadIcon />}
         onClick={onClick}
+        disabled={isLoading}
       >
         Download as JSON
       </Button>
