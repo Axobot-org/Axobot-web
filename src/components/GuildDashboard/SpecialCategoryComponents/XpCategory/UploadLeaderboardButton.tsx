@@ -41,7 +41,9 @@ export default function UploadLeaderboardButton({ guildId }: {guildId: string}) 
         }
         try {
           const content = parseImportFile(file, rawContent);
-          sendNewLeaderboard(content);
+          if (window.confirm("Are you sure you want to upload this leaderboard? This will overwrite the current leaderboard.")) {
+            sendNewLeaderboard(content);
+          }
         } catch (err) {
           console.error(err);
           alert("Invalid file format!");
