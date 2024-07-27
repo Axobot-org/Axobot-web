@@ -1,25 +1,33 @@
-import LaunchIcon from "@mui/icons-material/Launch";
-import { IconButton, Link, Stack } from "@mui/material";
+import { Link, Stack } from "@mui/material";
 import { PropsWithChildren } from "react";
 
-import DiscordMarkWhite from "../../svg/discord-mark.svg?react";
+import { ExternalRoutesURLs } from "../../router/router";
 
 export default function Footer() {
   return (
     <Stack
       direction={{ xs: "column", sm: "row" }}
       rowGap={0.5}
-      columnGap={3}
+      columnGap={6}
       justifyContent="center"
       alignItems="center"
       py={2}
       mt={2}
-      fontSize="0.9rem"
+      fontSize="0.85rem"
+      color="lightgray"
     >
-      <span>© 2024 Axobot</span>
-      <LinkInNewTab href="/tos">Terms of Service</LinkInNewTab>
-      <LinkInNewTab href="/privacy">Privacy Policy</LinkInNewTab>
-      <DiscordServerButton />
+      <Stack direction="column" columnGap={{ xs: 2, sm: 3 }} alignItems="center">
+        <LinkInNewTab href={ExternalRoutesURLs.supportServer}>Invite Axobot</LinkInNewTab>
+        <LinkInNewTab href={ExternalRoutesURLs.supportServer}>Support server</LinkInNewTab>
+      </Stack>
+      <Stack direction="column" columnGap={{ xs: 2, sm: 3 }} order={{ xs: -1, sm: 0 }} alignItems="center">
+        <span>© 2024 Axobot</span>
+        <span>All rights reserved.</span>
+      </Stack>
+      <Stack direction="column" columnGap={{ xs: 2, sm: 3 }} alignItems="center">
+        <LinkInNewTab href="/terms">Terms of Use</LinkInNewTab>
+        <LinkInNewTab href="/privacy">Privacy Policy</LinkInNewTab>
+      </Stack>
     </Stack>
   );
 }
@@ -42,31 +50,6 @@ function LinkInNewTab({ href, children }: PropsWithChildren<{href: string}>) {
       })}
     >
       {children}
-      <LaunchIcon sx={{ fontSize: "1rem" }}/>
     </Link>
   );
 }
-
-function DiscordServerButton() {
-  return (
-    <IconButton
-      href="https://discord.gg/axobot"
-      target="_blank"
-      rel="noopener"
-      color="inherit"
-      aria-label="Discord server"
-      sx={(theme) => ({
-        "& svg": {
-          fill: "lightgray",
-          transition: "fill 0.2s",
-        },
-        "&:hover svg": {
-          fill: theme.palette.blurple.main,
-        },
-      })}
-    >
-      <DiscordMarkWhite width={20} />
-    </IconButton>
-  );
-}
-
