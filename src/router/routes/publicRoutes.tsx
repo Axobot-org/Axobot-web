@@ -9,7 +9,7 @@ export const publicRoutes: RouteObject[] = [
     Component: Home,
   },
   {
-    path: "/tos",
+    path: "/terms",
     lazy: () => import("../../pages/legal/TOS"),
   },
   {
