@@ -17,7 +17,7 @@ export default function Footer() {
       color="lightgray"
     >
       <Stack direction="column" columnGap={{ xs: 2, sm: 3 }} alignItems="center">
-        <LinkInNewTab href={ExternalRoutesURLs.supportServer}>Invite Axobot</LinkInNewTab>
+        <LinkInNewTab href={ExternalRoutesURLs.botInvite}>Invite Axobot</LinkInNewTab>
         <LinkInNewTab href={ExternalRoutesURLs.supportServer}>Support server</LinkInNewTab>
       </Stack>
       <Stack direction="column" columnGap={{ xs: 2, sm: 3 }} order={{ xs: -1, sm: 0 }} alignItems="center">
