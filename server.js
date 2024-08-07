@@ -22,7 +22,7 @@ const app = express();
 // Create the global rate limit (max 100 requests per 15min)
 const limiter = RateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 100,
+  max: isProduction ? 100 : 100000,
   standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
 });
 app.use(limiter);
