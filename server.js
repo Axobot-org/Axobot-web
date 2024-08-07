@@ -1,6 +1,7 @@
 import fs from "node:fs/promises";
 
 import express from "express";
+import RateLimit from "express-rate-limit";
 import { loadEnv } from "vite";
 
 const env = loadEnv(process.env.NODE_ENV || "development", process.cwd(), "");
@@ -17,6 +18,15 @@ const templateHtml = isProduction
 
 // Create http server
 const app = express();
+
+// Create the global rate limit (max 100 requests per 15min)
+const limiter = RateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+  standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+});
+app.use(limiter);
+
 
 // Add Vite or respective production middlewares
 let vite;
@@ -76,7 +86,7 @@ app.use("*", async (req, res) => {
   } catch (e) {
     vite?.ssrFixStacktrace(e);
     console.log(e.stack);
-    res.status(500).end(e.stack);
+    res.sendStatus(500);
   }
 });
 
