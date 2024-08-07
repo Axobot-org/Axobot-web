@@ -7,7 +7,7 @@ import { loadEnv } from "vite";
 const env = loadEnv(process.env.NODE_ENV || "development", process.cwd(), "");
 
 // Constants
-const isProduction = process.env.NODE_ENV === "production";
+const isProduction = env.NODE_ENV === "production";
 const port = env.PORT || 5173;
 const base = env.BASE || "/";
 
@@ -18,6 +18,11 @@ const templateHtml = isProduction
 
 // Create http server
 const app = express();
+
+// Use the Proxy level config
+if (env.PROXY_LEVEL && Number(env.PROXY_LEVEL) > 0) {
+  app.set("trust proxy", Number(env.PROXY_LEVEL));
+}
 
 // Create the global rate limit (max 100 requests per 15min)
 const limiter = RateLimit({
