@@ -34,3 +34,7 @@ export type LeaderboardAsJson = {
   user_id: string;
   xp: number;
 }[];
+
+export interface BotInfoResponse {
+  approximate_guild_count: number;
+}

@@ -1,6 +1,8 @@
-import { Typography } from "@mui/material";
+import { Box, Button, Stack, Typography } from "@mui/material";
 import { Fragment } from "react";
 
+import BotGuildCounter from "../components/Home/BotGuildCounter";
+import { ExternalRoutesURLs } from "../router/router";
 
 export default function Home() {
   return (
@@ -12,6 +14,20 @@ export default function Home() {
       Meet Axobot, your Discord's best friend!<br/><br/>
       This versatile bot combines moderation, RSS tracking, XP systems, Twitch alerts, games, and wayyy more. With a fun-loving axolotl personality and interactive features, Axobot is here to elevate your server's potential!
       </Typography>
+
+      <Box mt={8}>
+        <BotGuildCounter />
+      </Box>
+
+      <Stack direction={{ xs: "column", sm: "row" }} gap={3} mt={5} mb={8}>
+        <Button variant="contained" href={ExternalRoutesURLs.botInvite}>
+          Invite Axobot
+        </Button>
+
+        <Button variant="contained" color="secondary" href="/dashboard">
+          Open Dashboard
+        </Button>
+      </Stack>
     </Fragment>
   );
 }

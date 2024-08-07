@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-import { LeaderboardAsJson, LeaderboardResponse, LoginJSONResponse } from "../../types/api";
+import { BotInfoResponse, LeaderboardAsJson, LeaderboardResponse, LoginJSONResponse } from "../../types/api";
 import { GuildChannel, GuildConfig, GuildData, GuildRole } from "../../types/guild";
 import { GuildConfigOptionCategory, GuildConfigOptionsMapType } from "../../types/guild-config-types";
 import { LeaderboardData, RankedPlayer } from "../../types/leaderboard";
@@ -24,6 +24,9 @@ export const axoApi = createApi({
     // ----- QUERIES ----- //
     fetchMe: builder.query<AuthenticatedUserObject, void>({
       query: () => "auth/me",
+    }),
+    fetchBotInfo: builder.query<BotInfoResponse, void>({
+      query: () => "discord/bot-info",
     }),
     fetchGuilds: builder.query<GuildData[], void>({
       query: () => "discord/@me/guilds",
@@ -151,6 +154,7 @@ export const axoApi = createApi({
 
 export const {
   useFetchMeQuery,
+  useFetchBotInfoQuery,
   useFetchGuildsQuery,
   useFetchGuildQuery,
   useFetchLeaderboardQuery,
