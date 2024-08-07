@@ -16,6 +16,9 @@
         "plugin:@typescript-eslint/recommended",
         "plugin:react-hooks/recommended"
     ],
+    "ignorePatterns": [
+        "src/repository/types/checks/generated/"
+    ],
     "rules": {
         "arrow-body-style": "warn",
         "arrow-spacing": [
