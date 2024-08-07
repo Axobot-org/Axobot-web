@@ -11,30 +11,30 @@ export default function PrivacyPolicy() {
 
       <Box mt={{ xs: 2, md: 4 }} mb={6}>
         <Typography variant="body2" fontStyle="italic">
-          Date of the latest revision: July 19th, 2024.
+          Date of the latest revision: August 8th, 2024.
         </Typography>
 
         <TitleSection title="1. Object">
           <p>
-            This document (hereinafter the "<b>Privacy Policy</b>") aims to describe the conditions under which Axobot (hereinafter "<b>Axobot</b>" "we" "our" "us") collects and processes personal data (hereinafter the "Data") of users using the service provided by Axobot (hereinafter the "<b>User</b>" or "you") during its use.
+            This document (hereinafter the "<b>Privacy Policy</b>") aims to describe the conditions under which Axobot (hereinafter "<b>Axobot</b>" "we" "our" "us") collects and processes data (hereinafter the "<b>Data</b>" or "Usage Data") of users (hereinafter the "<b>User</b>" or "you") during the use of the service provided by Axobot.
           </p>
           <p>
-            Any individual using Axobot acknowledges having fully understood the Privacy Policy at the time of its implementation or use.
+            By using Axobot, you acknowledge that you have fully understood and agree to this Privacy Policy at the time of its implementation or use.
           </p>
           <p>
-            Axobot is available in its official version on the website <ExternalLink href="https://axobot.xyz" />. It may also occasionally be accessible on mirror sites or listing sites.
+            Axobot is officially available on our website at <ExternalLink href="https://axobot.xyz" />. It may also be accessible on mirror or listing sites occasionally.
           </p>
           <p>
-            The service(s) offered by Axobot (hereinafter the "<b>Service</b>") consist of adding additional features to the Discord platform, all detailed in the documentation available at <ExternalLink href="https://axobot.readthedocs.io" />.
+            The service(s) offered by Axobot (hereinafter the "<b>Service</b>") consist of adding additional features to the Discord platform. Detailed information about these features can be found in our documentation at <ExternalLink href="https://axobot.readthedocs.io" />.
           </p>
           <p>
-            This page explains our policies regarding the collection, use, and disclosure of personal data when you use our Service and the choices you have regarding these data.
+            This page outlines our policies regarding the collection, use, and disclosure of usage or personal data when you use our Service, as well as the choices you have concerning your data.
           </p>
           <p>
-            We use your data to provide and improve the Service. By using the Service, you consent to the collection and use of information in accordance with this policy.
+            We use your data to provide and enhance our Service. By using the Service, you consent to the collection and use of your data in accordance with this Privacy Policy.
           </p>
           <p><b>
-            Since Axobot relies on the DISCORD platform, it is the User's responsibility to inquire about the security policy implemented by DISCORD (<ExternalLink href="https://discord.com" />) and any exceptions this policy may bring to our Privacy Policy, particularly by recording certain data collected by Axobot in a way that is transparent to us.
+            Since Axobot relies on the Discord platform, it is the User's responsibility to inquire about the security policy implemented by Discord (<ExternalLink href="https://discord.com" />) and any exceptions this policy may bring to our Privacy Policy, particularly by recording certain data collected by Axobot in a way that is transparent to us.
           </b></p>
         </TitleSection>
 
@@ -47,7 +47,7 @@ export default function PrivacyPolicy() {
               <p>Discord is a service providing a chat function and a social platform accessible at <ExternalLink href="https://discord.com" />. All rights and terms of use for this platform are available at the same address.</p>
             </li>
             <li><b>Personal Data</b><br />
-              <p>Personal Data refers to data about a living individual who can be identified from those data (or from those data and other information in our possession or likely to come into our possession).</p>
+              <p>Personal Data refers to any information that relates to an identified or identifiable natural person, as defined by the European General Data Protection Regulation (GDPR).</p>
             </li>
             <li><b>Usage Data</b><br />
               <p>Usage Data is collected automatically and generated either by the use of the Service or voluntarily by the Users of the Service (e.g., Service configuration, usage statistics).</p>
@@ -57,35 +57,38 @@ export default function PrivacyPolicy() {
 
         <TitleSection title="3. Data collection and use">
           <p>
-            We collect several types of data for different purposes but solely to provide you with our Service and improve it. These Data are detailed in the following section.
+            We collect various types of data solely to provide and enhance our Service. The details of these data are outlined in the following sections.
           </p>
 
           <SubtitleSection title="3.1 Types of Data Collected">
             <p>
-              The Data collected by the Service are those posted by Users in channels defined by Users when administering a server and generally any information communicated through Discord's services.
+              The Data collected by the Service include information posted by Users in channels they define when administering a server, and any information communicated through Discord's services.
             </p>
             <p>
-              Some of the Data is stored in databases hosted on our servers to provide our Service optimally, either directly entered by the User (e.g., Service configuration) or automatically during your use of the Discord platform (e.g., experience level system related to your activity in text channels) following the activation of a Service feature.
+              Some of the Data is stored in databases on our servers to optimally provide our Service. These Data can be directly entered by the User (e.g., Service configuration) or collected automatically during your use of the Discord platform (e.g., experience level system related to your activity in text channels) after activating a Service feature.
             </p>
             <p>
-              Other Data may be loaded into the RAM of the server hosting the Axobot Service for smooth and responsive operation of the Axobot application. These Data loaded into RAM are in no case collected, recorded in databases, or exported to files.
+              Other Data may be temporarily loaded into the RAM of the server hosting the Axobot Service to ensure smooth and responsive operation. These Data are never collected, stored in databases, or exported to files, and are regularly purged from the server's memory.
             </p>
             <p>
               No use of the Data is made for commercial purposes.
             </p>
             <p>
-              Data collection is carried out solely for support purposes, Service improvement, or statistical purposes. These uses are detailed in Article 5 below. This statistical information is accessible through the Discord platform. The commands made available to the User to view the statistics are available in the Service's general documentation at <ExternalLink href="https://axobot.readthedocs.io" />.
+              Data collection is carried out solely for support purposes, Service improvement, or statistical purposes. These uses are detailed in Article 3.2 below.
+            </p>
+            <p>
+              The only type of Personal Data we may store is your User ID, a numerical identifier generated by the Discord API that identifies your Discord account. This ID does not grant us access to other personal information such as your name or phone number.
             </p>
           </SubtitleSection>
 
           <SubtitleSection title="3.2 Use of Data">
             <p>Axobot uses the collected Data to:</p>
             <ul>
-              <li>Provide and ensure our Service</li>
+              <li>Provide and maintain our Service</li>
               <li>Inform you of changes to our Service</li>
               <li>Allow you to use interactive features of our Service when you choose to</li>
               <li>Provide customer support</li>
-              <li>Gather analysis data to improve our Service</li>
+              <li>Gather analytical data to improve our Service</li>
               <li>Monitor the usage of our Service</li>
               <li>Detect, prevent, and address technical issues</li>
             </ul>
@@ -98,11 +101,29 @@ export default function PrivacyPolicy() {
               <li>Will be subject to precautions to ensure the security and confidentiality of the Data to prevent them from being damaged, modified, destroyed, or disclosed to unauthorized third parties.</li>
             </ul>
           </SubtitleSection>
+
+          <SubtitleSection title="3.3 How long do we store your Data?">
+            <p>
+              We do not keep your Data indefinitely: we delete your Data when it is no longer required. We use your User ID only as long as it is active, i.e. as long as Discord has not deleted your account, and no longer than three (3) years after that date.
+            </p>
+            <p>
+              We may retain such Data longer if it is necessary to establish a claim or is required by law. In such cases, the Data will be kept in archive form, separate from other data, and for a period of time that complies with legal obligations or statutory time limits.
+            </p>
+          </SubtitleSection>
+
+          <SubtitleSection title="3.4 Your rights regarding your Data">
+            <p>
+              You may request access to or deletion of your data if necessary. See Article 11 for contact details.
+            </p>
+            <p>
+              If you believe we are not respecting your rights or our obligations, you can lodge a complaint directly with the CNIL at <ExternalLink href="https://cnil.fr" />.
+            </p>
+          </SubtitleSection>
         </TitleSection>
 
         <TitleSection title="4. Data transfer">
           <p>
-            Data collected by Axobot are only stored on our server hosted by Hetzner in Germany (<ExternalLink href="https://www.hetzner.com" />).
+            Data collected by Axobot are only stored on our server hosted by Hetzner in Germany (<ExternalLink href="https://hetzner.com" />).
           </p>
           <p>
             Axobot will take all reasonably necessary measures to ensure that your data are treated securely and in accordance with this Privacy Policy and that your Personal Data will not be transferred to any organization or country unless adequate controls are in place, including the security of your data and other personal information.
@@ -164,12 +185,18 @@ export default function PrivacyPolicy() {
 
         <TitleSection title="11. Contact us">
           <p>
-            If you have any questions about this Privacy Policy, please contact us:
+            If you wish to exercise your rights or ask us a question about this privacy policy, please contact us at:
           </p>
           <ul>
             <li>By email: <Link href="mailto:z.runner.mc@gmail.com">z.runner.mc@gmail.com</Link></li>
             <li>On Discord: <ExternalLink href={ExternalRoutesURLs.supportServer} /></li>
           </ul>
+          <p>
+            If you wish to exercise any of the above rights, please contact the Bot support server at <ExternalLink href={ExternalRoutesURLs.supportServer} />. Log in with the User account for which you wish to exercise your right to access or delete data in order to provide us with proof of your identity.
+          </p>
+          <p>
+            We commit to handling your requests as promptly as possible.
+          </p>
         </TitleSection>
 
       </Box>
