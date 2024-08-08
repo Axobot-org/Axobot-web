@@ -78,6 +78,7 @@ function XpRateInfo({ xpType, xpRate }: {xpType: LeaderboardConfigInfoProps["xpT
       return <>The XP rate is <b>x{formatedRate}</b>: each message will reward less XP than the default value, based on its length</>;
     }
   }
+  return null;
 }
 
 function XpDecayInfo({ xpDecay }: {xpDecay: LeaderboardConfigInfoProps["xpDecay"]}) {

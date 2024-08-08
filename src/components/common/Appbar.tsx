@@ -1,5 +1,6 @@
-import { AppBar, Box, Button, Container, Divider, IconButton, Link, Menu, MenuItem, Stack, Toolbar, Tooltip, Typography } from "@mui/material";
+import { AppBar, Box, Button, Container, Divider, IconButton, Menu, MenuItem, Stack, Toolbar, Tooltip, Typography } from "@mui/material";
 import React, { useMemo } from "react";
+import { Link as RouterLink } from "react-router-dom";
 
 import { useGetorFetchMe } from "../../repository/commands/useGetOrFetchMe";
 import useLogout from "../../repository/redux/dispatchs/useLogout";
@@ -73,7 +74,8 @@ export default function Appbar() {
             {Object.keys(pages).map((key) => (
               <Button
                 key={key}
-                href={pages[key]}
+                component={RouterLink}
+                to={pages[key]}
                 sx={{ color: "white", display: "block" }}
                 {...getExternalParams(key, pages[key])}
               >
@@ -106,7 +108,7 @@ export default function Appbar() {
               onClose={handleCloseUserMenu}
             >
               {Object.keys(settings).map((key) => (
-                <MenuItem key={key} component={Link} href={settings[key]} {...getExternalParams(key, settings[key])}>
+                <MenuItem key={key} component={RouterLink} to={settings[key]} {...getExternalParams(key, settings[key])}>
                   <Typography textAlign="center">{key}</Typography>
                 </MenuItem>
               ))}
@@ -117,7 +119,7 @@ export default function Appbar() {
               )}
               <Divider sx={{ display: { xs: "flex", md: "none" }, mx: 3 }} />
               {mobilePagesKeys.map((key) => (
-                <MenuItem key={key} component={Link} href={pages[key]} sx={{ display: { xs: "flex", md: "none" } }} {...getExternalParams(key, pages[key])}>
+                <MenuItem key={key} component={RouterLink} to={pages[key]} sx={{ display: { xs: "flex", md: "none" } }} {...getExternalParams(key, pages[key])}>
                   <Typography textAlign="center">{key}</Typography>
                 </MenuItem>
               ))}

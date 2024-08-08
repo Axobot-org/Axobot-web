@@ -14,7 +14,7 @@ export default function Footer() {
       py={2}
       mt={2}
       fontSize="0.85rem"
-      color="lightgray"
+      color="#D3D3D3"
     >
       <Stack direction="column" columnGap={{ xs: 2, sm: 3 }} alignItems="center">
         <LinkInNewTab href={ExternalRoutesURLs.botInvite}>Invite Axobot</LinkInNewTab>
@@ -38,7 +38,7 @@ function LinkInNewTab({ href, children }: PropsWithChildren<{href: string}>) {
       href={href}
       target="_blank"
       rel="noopener"
-      color="lightgray"
+      color="#D3D3D3"
       sx={(theme) => ({
         display: "flex",
         gap: 0.5,

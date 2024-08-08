@@ -1,12 +1,12 @@
-import { Box, Button, Link, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
+import { Link } from "react-router-dom";
 
 const LogoAndTitle = () => (
   <Button
     component={Link}
-    href="/"
+    to="/"
     color="inherit"
-    mr={2}
-    sx={{ display: "flex", flexDirection: "row", alignItems: "center", textDecoration: "none", padding: "0px 8px" }}
+    sx={{ display: "flex", flexDirection: "row", alignItems: "center", textDecoration: "none", mr: 2, padding: "0px 8px" }}
   >
     <Box sx={{ marginRight: "1rem", height: { xs: "2rem", sm: "3rem" } }}>
       <img
