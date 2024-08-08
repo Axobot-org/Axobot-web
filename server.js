@@ -78,6 +78,10 @@ const headers = {
   "X-Frame-Options": "DENY",
 };
 
+// Define URL aliases for the /terms route
+app.get("/tos", (req, res) => res.redirect(301, "/terms"));
+app.get("/legal-notices", (req, res) => res.redirect(301, "/terms"));
+
 
 // Serve HTML
 app.use("*", async (req, res) => {
