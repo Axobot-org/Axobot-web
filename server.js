@@ -2,6 +2,7 @@ import fs from "node:fs/promises";
 
 import express from "express";
 import RateLimit from "express-rate-limit";
+import morgan from "morgan"; // console log every request
 import { loadEnv } from "vite";
 
 const env = loadEnv(process.env.NODE_ENV || "development", process.cwd(), "");
@@ -31,6 +32,18 @@ const limiter = RateLimit({
   standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
 });
 app.use(limiter);
+
+// log every request to the console
+morgan.token("date", (req) => {
+  const date = req._startTime;
+  const paddedDay = date.getDate().toString().padStart(2, "0");
+  const paddedMonth = (date.getMonth() + 1).toString().padStart(2, "0");
+  const paddedHours = date.getHours().toString().padStart(2, "0");
+  const paddedMinutes = date.getMinutes().toString().padStart(2, "0");
+  const paddedSeconds = date.getSeconds().toString().padStart(2, "0");
+  return `${paddedDay}/${paddedMonth}/${date.getFullYear()} ${paddedHours}:${paddedMinutes}:${paddedSeconds}`;
+});
+app.use(morgan("\x1b[94m[:date]\x1b[0m \x1b[93m:remote-addr\x1b[0m :method :status :url - :response-time ms"));
 
 
 // Add Vite or respective production middlewares
