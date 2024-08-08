@@ -24,11 +24,11 @@ const TOSSummary = () => {
       <Collapse in={isOpen}>
         <p><b>Disclaimer:</b> This is a human readable summary of Axobot Terms of Use, not a substitute for them. To read the full Terms of Use, please scroll down.</p>
         <ul>
-          <li><b>Free updates:</b> Axobot is provided to users free of charge (Section 1), and additional functionalities can be added at any time (Section 2.3).</li>
+          <li><b>Free updates:</b> Axobot is provided to users free of charge (Section 1), and additional functionalities can be added at any time (Section 2.4).</li>
           <li><b>Service Security:</b> Users are encouraged to report any security breaches, and we take prompt action to remedy them (Section 2.4).</li>
           <li><b>Right to Terminate:</b> Users can terminate the use of the Features at any time (Section 2.5.1).</li>
           <li><b>Terms Modification:</b> The Terms may be modified or replaced at any time without notice, and continued use constitutes acceptance (Section 1, Section 5.2).</li>
-          <li><b>Compliance Responsibility:</b> Users are responsible for compliance with all applicable laws in their jurisdiction and must adhere to Discord's General Terms of Use. (Section 2.2, Section 2.4)</li>
+          <li><b>Compliance Responsibility:</b> Users are responsible for compliance with all applicable laws in their jurisdiction and must adhere to Discord's General Terms of Use. (Section 2.3, Section 2.5)</li>
           <li><b>Content Liability:</b> Users are solely liable for any content they upload, and the Owner can remove content at its discretion (Section 3.2.3).</li>
           <li><b>No Warranties:</b> The Features and access to the Platform are provided "as is" and "as available," without warranties (Section 4.1).</li>
           <li><b>Platform Interruption Notices:</b> Users will be informed appropriately about interruptions for maintenance or updates (Section 5.3).</li>
@@ -45,7 +45,7 @@ export default function TOS() {
 
       <Box mt={{ xs: 2, md: 4 }} mb={6}>
         <Typography variant="body2" fontStyle="italic">
-        Date of the latest revision: May 23rd, 2024.
+        Date of the latest revision: August 8th, 2024.
         </Typography>
 
         <Typography fontWeight="bold" my={2} textAlign="justify">Please read these Terms of use carefully before using the Features. Before using any of the Features, you must first agree to these Terms. By accessing the Features or by otherwise using them, you expressly confirm that you fully and irrevocably agree to these Terms.</Typography>
@@ -71,16 +71,20 @@ export default function TOS() {
 
         <TitleSection title="2. PROVISIONS OF AND ACCESS TO FEATURES">
           <SubtitleSection title="2.1 Provider">
-            <p>Unless specified otherwise in these Terms or on the Platform, the Platform is operated, the License is granted and the Features are offered by Arthur BLAISE (the “<b>Owner</b>”, “<b>we</b>”, “<b>us</b>” or “<b>our</b>”).</p>
+            <p>Unless specified otherwise in these Terms or on the Platform, the Platform is operated, the License is granted and the Features are offered by Arthur BLAISE (the “<b>Owner</b>”, “<b>we</b>”, “<b>us</b>” or “<b>our</b>”). Some illustrative images and logos on the Website have been created by Adrien GRECO (<ExternalLink href="https://adriengreco.fr" />).</p>
             <p>Axobot is not acting as an agent or service provider of the Discord platform (available at <ExternalLink href="https://discord.com" /> (“<b>Discord</b>”) and/or its owner(s) or representative(s).</p>
           </SubtitleSection>
 
-          <SubtitleSection title="2.2 User’s Eligibility">
+          <SubtitleSection title="2.2 Hosting">
+            <p>The Website, the Bot and the related database are hosted by Hetzner Online GmbH (Industriestr. 25, 91710 Gunzenhausen, Germany, see <ExternalLink href={"https://hetzner.com"} />).</p>
+          </SubtitleSection>
+
+          <SubtitleSection title="2.3 User’s Eligibility">
             <p>You hereby represent and warrant that you are fully able and competent to enter the terms, conditions, obligations, affirmations, representations, and warranties set forth in these Terms and to abide by and comply with these Terms.</p>
             <p>You also represent and warrant that you are legally authorized in your jurisdiction to use the Features and to interact with the Features in any way. Finally, you represent and warrant that you are solely responsible for compliance with all applicable laws in your jurisdiction, and release Axobot from any liability in this regard.</p>
           </SubtitleSection>
 
-          <SubtitleSection title="2.3 Features">
+          <SubtitleSection title="2.4 Features">
             <p>User has access to the Features described on the Platform, in the form and according to the technical means and functionalities that Axobot deems most appropriate.</p>
             <p>The main Features offered by Axobot as of the day of this terms of use are the following:</p>
             <ul>
@@ -93,7 +97,7 @@ export default function TOS() {
             <p>Additional functionalities can be added at any time. Any functionality can be suppressed at any time without any prior notice, at the Owner sole discretion.</p>
           </SubtitleSection>
 
-          <SubtitleSection title="2.4 Account Usage">
+          <SubtitleSection title="2.5 Account Usage">
             <p>Use of the Service is solely via the Discord platform and must therefore comply with its General Terms of Use. In addition to these, the User undertakes, each time he or she uses the Service, to behave in a normal and reasonable manner and not to hinder, in any way whatsoever, its smooth operation.</p>
             <p>Users may also use the certain services or functionalities without registering or creating a User account, however, this may cause limited availability of certain features or functions.</p>
             <p>Certain features of the Service are only available on "servers", as defined in Discord's Terms of Use. It is the responsibility of the administrators of the said server to ensure the proper use of the Service within this server. In particular, the server administrators undertake to implement any security system necessary to prevent misuse of the Service by other server members. We cannot be held responsible for damage caused by misuse of our Service.</p>
@@ -103,17 +107,41 @@ export default function TOS() {
             <p>The Owner cannot and will not be liable for any loss or damage arising from your failure to comply with this section.</p>
           </SubtitleSection>
 
-          <SubtitleSection title="2.5 Duration of and access to the Features and the License">
-            <Subtitle2Section title="2.5.1 Termination">
+          <SubtitleSection title="2.6 Duration of and access to the Features and the License">
+            <Subtitle2Section title="2.6.1 Termination">
               <p>The Owner may at any time and without liability, terminate, suspend, or limit your use of the Features, in the event that (a) we reasonably suspect you of acting in breach of these Terms and/or all other applicable provision; (b) we are required to do so by applicable law, regulation or any court or other authority to which we are subject to in any jurisdiction; (c) we have concerns about the security of your account or we suspect the Features are being used in a fraudulent or unauthorized manner; (d) we reasonably believe that we need to do so in order to protect our reputation; (e) we decide to stop for whatever reason our activity in full or part.</p>
               <p>You shall not be entitled to any compensation or damages whatsoever from the Owner into any suspension, limitation, or termination of your use of the Features due to a breach of the Terms.</p>
               <p>Our rights of suspension, limitation and termination under these Terms shall be without prejudice to any other rights or remedies which we may have (whether under the Terms or applicable law and regulations).</p>
               <p>User may terminate the use of the Features at any time.</p>
             </Subtitle2Section>
-            <Subtitle2Section title="2.5.2 Consequences of Termination">
+            <Subtitle2Section title="2.6.2 Consequences of Termination">
               <p>You will no longer be entitled nor able to use the Features and benefit from the License concerning Axobot Software.</p>
               <p>Upon the effective date of termination, all License rights granted under the Terms prior to termination shall immediately terminate and you shall immediately cease all use of the Bot and related Features.</p>
             </Subtitle2Section>
+          </SubtitleSection>
+
+          <SubtitleSection title="2.7 Access to the Website">
+            <p>The equipment (computers, telephones, software, telecommunication means, etc.) used to access the Website are the sole responsibility of the User, as are the telecommunication costs incurred by their use.</p>
+
+            <p>When using the Website, the User undertakes to behave in a normal and reasonable manner and not to hinder its proper operation in any way whatsoever.<br />
+            In particular, the User undertakes not to:</p>
+            <ul>
+              <li>disrupt, slow down, block or alter the normal flow of data exchanged when using the Website;</li>
+              <li>speed up the scrolling of the Website's content in such a way as to modify or alter its operation;</li>
+              <li>commit any other action having an equivalent disruptive effect on the functionality of the Website;</li>
+              <li>fraudulently access, maintain, hinder or disrupt the Website's access systems.</li>
+            </ul>
+
+            <p>It is the User's responsibility to inform us as soon as he/she becomes aware of any "hacking" and in particular of any illicit or non-contractual use of all or part of the Website, whatever the means of distribution used.</p>
+          </SubtitleSection>
+
+          <SubtitleSection title="2.8 Hypertext links">
+            <p>The website may contain hypertext links to other websites over which Axobot has no control. Although Axobot regularly checks the content of these sites, it accepts no responsibility for it.<br />
+            The same applies to any information or page presented by Discord about or in connection with our Service.</p>
+
+            <p>Axobot authorizes the creation of hypertext links to any page or document on its website that is directly accessible to the public (with the exception of documents that have been transmitted after submission of a form to Axobot), provided that the creation of these links is not carried out for commercial or advertising purposes and that Axobot has not expressly forbidden the creation of this link.</p>
+
+            <p>Axobot reserves the right to remove any hypertext link to its website at any time if it considers that the link does not comply with its editorial policy.</p>
           </SubtitleSection>
         </TitleSection>
 
