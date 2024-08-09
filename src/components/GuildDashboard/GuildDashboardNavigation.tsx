@@ -38,9 +38,9 @@ export default function GuildDashboardNavigation({ guildId }: GuildDashboardNavi
 
   return (
     <GuildConfigEditionProvider>
-      <Stack direction="row" flex={1} className="GuildDashboardNavigation__Container">
+      <Stack direction="row" flex={1} maxWidth="100%" className="GuildDashboardNavigation__Container">
         <NavigationDrawer />
-        <Stack alignItems="center">
+        <Stack alignItems="center" maxWidth="100%" >
           <GuildHeader guildData={data} />
           <Routes>
             <Route path="/" element={<Navigate to={GuildConfigOptionCategoryNames[0]} replace />} />
