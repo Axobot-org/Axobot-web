@@ -21,7 +21,7 @@ export default function Home() {
       </Box>
 
       <Stack direction={{ xs: "column", sm: "row" }} gap={3} mt={5} mb={8}>
-        <Button variant="contained" href={ExternalRoutesURLs.botInvite}>
+        <Button variant="contained" target="_blank" href={ExternalRoutesURLs.botInvite}>
           Invite Axobot
         </Button>
 
