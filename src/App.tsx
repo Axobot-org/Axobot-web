@@ -25,6 +25,8 @@ function App() {
     g.src = import.meta.env.VITE_MATOMO_URL;
     if (s.parentNode) {
       s.parentNode.insertBefore(g, s);
+    } else {
+      console.warn("Could not insert Matomo script: no script tag found");
     }
   }, []);
 
