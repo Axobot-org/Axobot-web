@@ -76,6 +76,7 @@ const headers = {
   "Strict-Transport-Security": "max-age=63072000; includeSubDomains; preload",
   "X-Content-Type-Options": "nosniff",
   "X-Frame-Options": "DENY",
+  ...(env.NO_INDEX === "true" ? { "X-Robots-Tag": "noindex" } : { }),
 };
 
 // Define URL aliases for the /terms route
