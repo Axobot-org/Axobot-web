@@ -2,7 +2,7 @@ import { CircularProgress, Stack, styled, Typography } from "@mui/material";
 
 import { useFetchGuildConfigCategory } from "../../repository/commands/useFetchGuildConfigCategory";
 import { PopulatedGuildConfig } from "../../repository/types/guild";
-import { GuildConfigOptionCategory } from "../../repository/types/guild-config-types";
+import { AllRepresentation, GuildConfigOptionCategory } from "../../repository/types/guild-config-types";
 import BooleanConfigComponent from "./ConfigComponents/BooleanConfigComponent";
 import CategoryConfigComponent from "./ConfigComponents/CategoryConfigComponent";
 import ColorConfigComponent from "./ConfigComponents/ColorConfigComponent";
@@ -39,12 +39,7 @@ export default function ConfigurationCategoryPage({ guildId, activePage }: Confi
     return <LoadingPlaceholder />;
   }
 
-  const optionsMap: PopulatedGuildConfig = Object.fromEntries(
-    Object.entries(data).filter(([_, option]) => [
-      "int", "float", "boolean", "enum", "text", "role", "roles_list", "text_channel",
-      "text_channels_list", "voice_channel", "category", "color", "levelup_channel",
-    ].includes(option.type))
-  );
+  const optionsMap = filterAndSortOptions(data);
 
   if (Object.keys(optionsMap).length === 0) {
     return <ErrorPage title="No configuration options available." message="This category appears to be empty. Just be glad it exists!" />;
@@ -138,4 +133,31 @@ function SpecialCategoryComponent({ guildId, activePage }: {guildId: string, act
   default:
     return null;
   }
+}
+
+function getRequiredOptionNames(option: AllRepresentation): string[] {
+  if (option.requires === undefined) {
+    return [];
+  }
+
+  return option.requires.map(req => req.option);
+}
+
+function filterAndSortOptions(config: PopulatedGuildConfig): PopulatedGuildConfig {
+  return Object.fromEntries(
+    Object.entries(config).filter(([_, option]) => [
+      "int", "float", "boolean", "enum", "text", "role", "roles_list", "text_channel",
+      "text_channels_list", "voice_channel", "category", "color", "levelup_channel",
+    ]
+      .includes(option.type))
+      .toSorted(([firstName, firstOption], [secondName, secondOption]) => {
+        if (getRequiredOptionNames(firstOption).includes(secondName)) {
+          return 1;
+        }
+        if (getRequiredOptionNames(secondOption).includes(firstName)) {
+          return -1;
+        }
+        return firstName.localeCompare(secondName);
+      })
+  );
 }
