@@ -37,7 +37,7 @@ export default function GuildDashboardNavigation({ guildId }: GuildDashboardNavi
   if (data === undefined) return null;
 
   return (
-    <GuildConfigEditionProvider>
+    <GuildConfigEditionProvider guildId={guildId}>
       <Stack direction="row" flex={1} maxWidth="100%" className="GuildDashboardNavigation__Container">
         <NavigationDrawer />
         <Stack alignItems="center" maxWidth="100%" >

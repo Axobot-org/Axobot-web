@@ -1,8 +1,10 @@
+import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import SyncProblemIcon from "@mui/icons-material/SyncProblem";
 import { Stack, styled, Tooltip, Typography } from "@mui/material";
 import { PropsWithChildren } from "react";
 
 import { getGuildDashboardTranslations } from "../../../../i18n/i18n";
+import { useConfigComponentContext } from "../../../../repository/context/ConfigComponentContext";
 import useIsConfigEdited from "./useIsConfigEdited";
 
 interface SimpleConfigurationProps {
@@ -24,6 +26,7 @@ export function SimpleConfiguration({ optionId, children }: PropsWithChildren<Si
         <ConfigurationName>
           {optionName}
           {isEdited && <EditedBadge />}
+          <MissingRequirementLabel />
         </ConfigurationName>
         {children}
       </SimpleConfigurationRow>
@@ -46,7 +49,8 @@ export function LargeConfiguration({ optionId, children }: PropsWithChildren<Sim
       <Stack flex={1}>
         <ConfigurationName>
           {optionName}
-          {isEdited && <EditedBadge />}
+          {isEdited && <EditedBadge/>}
+          <MissingRequirementLabel />
         </ConfigurationName>
         <ConfigurationDescription>{optionDescription}</ConfigurationDescription>
       </Stack>
@@ -69,6 +73,7 @@ export function ComplexConfiguration({ optionId, children }: PropsWithChildren<S
       <ConfigurationName>
         {optionName}
         {isEdited && <EditedBadge />}
+        <MissingRequirementLabel />
       </ConfigurationName>
       <ConfigurationDescription mb={1}>{optionDescription}</ConfigurationDescription>
       {children}
@@ -79,11 +84,24 @@ export function ComplexConfiguration({ optionId, children }: PropsWithChildren<S
 function EditedBadge() {
   return (
     <Tooltip title="This configuration has been edited and needs to be saved.">
-      <Stack direction="row" gap={0.5} component="span" display="inline-flex" ml={1.5} sx={{ verticalAlign: "sub" }}>
+      <Stack direction="row" gap={0.5} component="span" display="inline-flex" sx={{ verticalAlign: "sub" }}>
         <SyncProblemIcon color="warning" fontSize="small" />
         <Typography component="span" variant="caption" color="text.secondary" sx={{ display: "inline-block" }}>Edited</Typography>
       </Stack>
     </Tooltip>
+  );
+}
+
+function MissingRequirementLabel() {
+  const { isDisabled } = useConfigComponentContext();
+  if (!isDisabled) return null;
+
+  const message = "Missign requirements";
+  return (
+    <Stack direction="row" gap={0.5} component="span" display="inline-flex" sx={{ verticalAlign: "sub" }}>
+      <ErrorOutlineIcon color="error" fontSize="small" />
+      <Typography component="span" variant="caption" color="error" sx={{ display: "inline-block" }}>{message}</Typography>
+    </Stack>
   );
 }
 
@@ -105,11 +123,15 @@ const SimpleConfigurationRow = styled(Stack)({
   gap: "1rem",
 });
 
-const ConfigurationName = styled(Typography)({
-  display: "inline-block",
+const ConfigurationName = styled(Typography)(({ theme }) => ({
+  display: "inline-flex",
+  flexWrap: "wrap",
   fontWeight: "500",
   fontSize: "1.2rem",
-});
+  alignItems: "last baseline",
+  rowGap: theme.spacing(0.5),
+  columnGap: theme.spacing(1.5),
+}));
 
 const ConfigurationDescription = styled(Typography)(({ theme }) => ({
   display: "inline-block",

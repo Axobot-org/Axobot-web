@@ -1,6 +1,7 @@
 import { CircularProgress, Stack, styled, Typography } from "@mui/material";
 
 import { useFetchGuildConfigCategory } from "../../repository/commands/useFetchGuildConfigCategory";
+import { ConfigComponentContextProvider, getMissingOptionRequirement } from "../../repository/context/ConfigComponentContext";
 import { PopulatedGuildConfig } from "../../repository/types/guild";
 import { AllRepresentation, GuildConfigOptionCategory } from "../../repository/types/guild-config-types";
 import BooleanConfigComponent from "./ConfigComponents/BooleanConfigComponent";
@@ -48,7 +49,16 @@ export default function ConfigurationCategoryPage({ guildId, activePage }: Confi
   return (
     <ComponentsContainer>
       {Object.entries(optionsMap).map(([optionName, option]) => (
-        <GenericConfigComponent key={optionName} optionId={optionName} option={option} guildId={guildId} />
+        <ConfigComponentContextProvider key={optionName} value={{
+          option: option,
+          config: optionsMap,
+          isDisabled: getMissingOptionRequirement(option, optionsMap) !== null,
+        }}>
+          <GenericConfigComponent
+            optionId={optionName}
+            option={option}
+          />
+        </ConfigComponentContextProvider>
       ))}
       <SpecialCategoryComponent guildId={guildId} activePage={activePage} />
     </ComponentsContainer>
@@ -93,7 +103,7 @@ const TextPageContainer = styled(ComponentsContainer)(({ theme }) => ({
   alignItems: "center",
 }));
 
-function GenericConfigComponent({ optionId, option, guildId }: { optionId: string, option: PopulatedGuildConfig[string], guildId: string }) {
+function GenericConfigComponent({ optionId, option }: { optionId: string, option: PopulatedGuildConfig[string]}) {
   switch (option.type) {
   case "int":
     return <IntConfigComponent optionId={optionId} option={option} />;
@@ -106,21 +116,21 @@ function GenericConfigComponent({ optionId, option, guildId }: { optionId: strin
   case "text":
     return <TextConfigComponent optionId={optionId} option={option} />;
   case "role":
-    return <RoleConfigComponent optionId={optionId} option={option} guildId={guildId} />;
+    return <RoleConfigComponent optionId={optionId} option={option} />;
   case "roles_list":
-    return <RolesListConfigComponent optionId={optionId} option={option} guildId={guildId} />;
+    return <RolesListConfigComponent optionId={optionId} option={option} />;
   case "text_channel":
-    return <TextChannelConfigComponent optionId={optionId} option={option} guildId={guildId} />;
+    return <TextChannelConfigComponent optionId={optionId} option={option} />;
   case "text_channels_list":
-    return <TextChannelsListConfigComponent optionId={optionId} option={option} guildId={guildId} />;
+    return <TextChannelsListConfigComponent optionId={optionId} option={option} />;
   case "voice_channel":
-    return <VoiceChannelConfigComponent optionId={optionId} option={option} guildId={guildId} />;
+    return <VoiceChannelConfigComponent optionId={optionId} option={option} />;
   case "category":
-    return <CategoryConfigComponent optionId={optionId} option={option} guildId={guildId} />;
+    return <CategoryConfigComponent optionId={optionId} option={option} />;
   case "color":
     return <ColorConfigComponent optionId={optionId} option={option} />;
   case "levelup_channel":
-    return <LevelupChannelConfigComponent optionId={optionId} option={option} guildId={guildId} />;
+    return <LevelupChannelConfigComponent optionId={optionId} option={option} />;
   default:
     return null;
   }

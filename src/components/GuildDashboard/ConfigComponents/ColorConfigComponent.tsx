@@ -1,5 +1,6 @@
 import { MuiColorInput } from "mui-color-input";
 
+import { useConfigComponentContext } from "../../../repository/context/ConfigComponentContext";
 import { useGuildConfigEditionContext } from "../../../repository/context/GuildConfigEditionContext";
 import { ColorOptionRepresentation } from "../../../repository/types/guild-config-types";
 import { SimpleConfiguration } from "./shared/SharedConfigComponents";
@@ -12,6 +13,7 @@ interface ColorConfigComponentProps {
 
 export default function ColorConfigComponent({ optionId, option }: ColorConfigComponentProps) {
   const { state, setValue, resetValue } = useGuildConfigEditionContext();
+  const { isDisabled } = useConfigComponentContext();
   const isEdited = useIsConfigEdited(optionId);
 
   const defaultValue = option.default ?? 0x0;
@@ -20,6 +22,7 @@ export default function ColorConfigComponent({ optionId, option }: ColorConfigCo
   const currentValueAsHex = "#" + currentValue.toString(16).padStart(6, "0");
 
   function onChange(value: string) {
+    if (isDisabled) return;
     if (value === "") {
       if (defaultValue === currentSavedValue) {
         resetValue(optionId);
@@ -39,6 +42,7 @@ export default function ColorConfigComponent({ optionId, option }: ColorConfigCo
   return (
     <SimpleConfiguration optionId={optionId}>
       <MuiColorInput
+        disabled={isDisabled}
         value={currentValueAsHex}
         onChange={onChange}
         variant="standard"

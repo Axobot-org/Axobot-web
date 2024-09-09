@@ -6,13 +6,12 @@ import TextChannelPicker from "./shared/TextChannelPicker";
 interface TextChannelConfigComponentProps {
   optionId: string;
   option: TextChannelOptionRepresentation & {value: unknown};
-  guildId: string;
 }
 
-export default function TextChannelConfigComponent({ optionId, option, guildId }: TextChannelConfigComponentProps) {
+export default function TextChannelConfigComponent({ optionId, option }: TextChannelConfigComponentProps) {
   return (
     <SimpleConfiguration optionId={optionId}>
-      <TextChannelPicker optionId={optionId} option={option} guildId={guildId} />
+      <TextChannelPicker optionId={optionId} option={option}/>
     </SimpleConfiguration>
   );
 }

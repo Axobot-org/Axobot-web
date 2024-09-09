@@ -3,6 +3,7 @@ import { Autocomplete, Button, TextField, Typography } from "@mui/material";
 import { ChannelType } from "discord-api-types/v10";
 import { useMemo, useState } from "react";
 
+import { useConfigComponentContext } from "../../../repository/context/ConfigComponentContext";
 import { useGuildConfigEditionContext } from "../../../repository/context/GuildConfigEditionContext";
 import { useFetchGuildChannelsQuery } from "../../../repository/redux/api/api";
 import { GuildChannel } from "../../../repository/types/guild";
@@ -15,11 +16,11 @@ import useIsConfigEdited from "./shared/useIsConfigEdited";
 interface CategoryConfigComponentProps {
   optionId: string;
   option: CategoryOptionRepresentation & {value: unknown};
-  guildId: string;
 }
 
-export default function CategoryConfigComponent({ optionId, option, guildId }: CategoryConfigComponentProps) {
-  const { state, setValue, resetValue } = useGuildConfigEditionContext();
+export default function CategoryConfigComponent({ optionId, option }: CategoryConfigComponentProps) {
+  const { guildId, state, setValue, resetValue } = useGuildConfigEditionContext();
+  const { isDisabled } = useConfigComponentContext();
   const isEdited = useIsConfigEdited(optionId);
   const { data, isLoading, error } = useFetchGuildChannelsQuery({ guildId });
   const [editing, setEditing] = useState(false);
@@ -68,7 +69,7 @@ export default function CategoryConfigComponent({ optionId, option, guildId }: C
   return (
     <SimpleConfiguration optionId={optionId}>
       {!error && (
-        editing
+        (editing && !isDisabled)
           ? <Autocomplete
             openOnFocus
             blurOnSelect
@@ -87,7 +88,7 @@ export default function CategoryConfigComponent({ optionId, option, guildId }: C
               </li>
             )}
           />
-          : <ReadonlyChannelPicker currentCategory={currentCategory} onClick={() => setEditing(true)} />
+          : <ReadonlyChannelPicker currentCategory={currentCategory} onClick={() => setEditing(!isDisabled)} />
       )}
     </SimpleConfiguration>
   );

@@ -1,5 +1,6 @@
 import { Slider, Stack } from "@mui/material";
 
+import { useConfigComponentContext } from "../../../repository/context/ConfigComponentContext";
 import { useGuildConfigEditionContext } from "../../../repository/context/GuildConfigEditionContext";
 import { FloatOptionRepresentation } from "../../../repository/types/guild-config-types";
 import NumericInput from "../../common/NumericInput";
@@ -13,9 +14,11 @@ interface FloatConfigComponentProps {
 
 export default function FloatConfigComponent({ optionId, option }: FloatConfigComponentProps) {
   const { state, setValue, resetValue } = useGuildConfigEditionContext();
+  const { isDisabled } = useConfigComponentContext();
   const isEdited = useIsConfigEdited(optionId);
 
   function onChange(value: number | undefined) {
+    if (isDisabled) return;
     if (value === undefined) {
       setValue(optionId, null);
     } else if (value === option.value) {
@@ -26,6 +29,7 @@ export default function FloatConfigComponent({ optionId, option }: FloatConfigCo
   }
 
   function onBlur(event: React.FocusEvent<HTMLInputElement>) {
+    if (isDisabled) return;
     const newValue = parseFloat(event.target.value);
     if (isNaN(newValue)) {
       resetValue(optionId);
@@ -74,6 +78,7 @@ export default function FloatConfigComponent({ optionId, option }: FloatConfigCo
           max={option.max}
           value={value ?? defaultValue}
           onChange={(_, newValue) => onChange(newValue as number)}
+          disabled={isDisabled}
         />
         <NumericInput
           value={value}
@@ -83,6 +88,7 @@ export default function FloatConfigComponent({ optionId, option }: FloatConfigCo
           acceptDecimals={true}
           onValueChange={onChange}
           onBlur={onBlur}
+          disabled={isDisabled}
         />
       </Stack>
     </ComplexConfiguration>

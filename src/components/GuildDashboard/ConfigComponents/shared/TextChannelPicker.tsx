@@ -3,6 +3,7 @@ import { Autocomplete, Button, TextField, Typography } from "@mui/material";
 import { ChannelType } from "discord-api-types/v10";
 import { useMemo, useState } from "react";
 
+import { useConfigComponentContext } from "../../../../repository/context/ConfigComponentContext";
 import { useGuildConfigEditionContext } from "../../../../repository/context/GuildConfigEditionContext";
 import { useFetchGuildChannelsQuery } from "../../../../repository/redux/api/api";
 import { GuildChannel } from "../../../../repository/types/guild";
@@ -14,11 +15,11 @@ import useIsConfigEdited from "./useIsConfigEdited";
 interface TextChannelPickerProps {
   optionId: string;
   option: TextChannelOptionRepresentation & {value: unknown};
-  guildId: string;
 }
 
-export default function TextChannelPicker({ optionId, option, guildId }: TextChannelPickerProps) {
-  const { state, setValue, resetValue } = useGuildConfigEditionContext();
+export default function TextChannelPicker({ optionId, option }: TextChannelPickerProps) {
+  const { guildId, state, setValue, resetValue } = useGuildConfigEditionContext();
+  const { isDisabled } = useConfigComponentContext();
   const isEdited = useIsConfigEdited(optionId);
   const { data, isLoading, error } = useFetchGuildChannelsQuery({ guildId });
   const [editing, setEditing] = useState(false);
@@ -76,7 +77,7 @@ export default function TextChannelPicker({ optionId, option, guildId }: TextCha
 
   if (error) return null;
 
-  if (editing) {
+  if (editing && !isDisabled) {
     return (
       <Autocomplete
         openOnFocus
@@ -93,7 +94,7 @@ export default function TextChannelPicker({ optionId, option, guildId }: TextCha
         renderInput={(params) => <TextField {...params} autoFocus variant="standard" placeholder="Pick a channel" />}
         renderOption={(props, opt) => (
           <li {...props} key={opt.id}>
-            <ChannelMention channel={opt} disabled={isOptionDisabled(opt)} indent />
+            <ChannelMention channel={opt} disabled={isOptionDisabled(opt)} disableColor={isOptionDisabled(opt)} indent />
           </li>
         )}
       />
@@ -101,7 +102,7 @@ export default function TextChannelPicker({ optionId, option, guildId }: TextCha
   }
 
   return (
-    <ReadonlyChannelPicker currentChannel={currentChannel} onClick={() => setEditing(true)} />
+    <ReadonlyChannelPicker currentChannel={currentChannel} onClick={() => setEditing(!isDisabled)} />
   );
 }
 

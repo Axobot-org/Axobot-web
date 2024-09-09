@@ -1,5 +1,6 @@
 import { TextField } from "@mui/material";
 
+import { useConfigComponentContext } from "../../../repository/context/ConfigComponentContext";
 import { useGuildConfigEditionContext } from "../../../repository/context/GuildConfigEditionContext";
 import { TextOptionRepresentation } from "../../../repository/types/guild-config-types";
 import { ComplexConfiguration } from "./shared/SharedConfigComponents";
@@ -12,6 +13,7 @@ interface TextConfigComponentProps {
 
 export default function TextConfigComponent({ optionId, option }: TextConfigComponentProps) {
   const { state, setValue, resetValue } = useGuildConfigEditionContext();
+  const { isDisabled } = useConfigComponentContext();
   const isEdited = useIsConfigEdited(optionId);
 
   function onChange(value: string) {
@@ -48,6 +50,7 @@ export default function TextConfigComponent({ optionId, option }: TextConfigComp
         multiline={option.max_length > 150}
         maxRows={5}
         inputProps={{ minLength: option.min_length, maxLength: option.max_length }}
+        disabled={isDisabled}
       />
     </ComplexConfiguration>
   );

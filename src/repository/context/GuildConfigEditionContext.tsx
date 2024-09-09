@@ -4,6 +4,7 @@ type EditionValueType = number | boolean | string | string[] | null;
 type GuildConfigEdition = Record<string, EditionValueType>;
 
 interface ContextType {
+  guildId: string;
   state: GuildConfigEdition;
   setValue: (optionId: string, value: EditionValueType) => void;
   resetValue: (optionId: string) => void;
@@ -11,6 +12,7 @@ interface ContextType {
 }
 
 const GuildConfigEditionContext = createContext<ContextType>({
+  guildId: "",
   state: {},
   setValue: () => {
     throw new Error("GuildConfigEditionContext is not provided");
@@ -27,7 +29,7 @@ export function useGuildConfigEditionContext() {
   return useContext(GuildConfigEditionContext);
 }
 
-export function GuildConfigEditionProvider({ children }: PropsWithChildren) {
+export function GuildConfigEditionProvider({ guildId, children }: PropsWithChildren<{guildId: string}>) {
   const [state, setState] = useState<GuildConfigEdition>({});
 
   const setValue = useCallback((optionId: string, value: EditionValueType) => {
@@ -47,7 +49,7 @@ export function GuildConfigEditionProvider({ children }: PropsWithChildren) {
   }, []);
 
   return (
-    <GuildConfigEditionContext.Provider value={{ state, setValue, resetValue, resetState }}>
+    <GuildConfigEditionContext.Provider value={{ guildId, state, setValue, resetValue, resetState }}>
       {children}
     </GuildConfigEditionContext.Provider>
   );
