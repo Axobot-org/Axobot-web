@@ -17,7 +17,7 @@ declare namespace NodeJS {
 }
 
 declare module "*.svg" {
-  import React = require("react");
+  import React from "react";
   export const ReactComponent: React.FC<React.SVGProps<SVGSVGElement>>;
   const src: string;
   export default src;
