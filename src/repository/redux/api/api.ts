@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-import { BotInfoResponse, LeaderboardAsJson, LeaderboardResponse, LoginJSONResponse } from "../../types/api";
+import { BotInfoResponse, LeaderboardAsJson, LeaderboardResponse, LoginJSONResponse, RoleReward } from "../../types/api";
 import { GuildChannel, GuildConfig, GuildData, GuildRole } from "../../types/guild";
 import { GuildConfigOptionCategory, GuildConfigOptionsMapType } from "../../types/guild-config-types";
 import { LeaderboardData, RankedPlayer } from "../../types/leaderboard";
@@ -103,6 +103,9 @@ export const axoApi = createApi({
         return false;
       },
     }),
+    fetchGuildRoleRewards: builder.query<RoleReward[], { guildId: string }>({
+      query: ({ guildId }) => `discord/guild/${guildId}/role-rewards`,
+    }),
     fetchGuildRoles: builder.query<GuildRole[], { guildId: string }>({
       query: ({ guildId }) => `discord/guild/${guildId}/roles`,
     }),
@@ -161,6 +164,7 @@ export const {
   useLazyFetchLeaderboardAsJsonQuery,
   useFetchDefaultGuildConfigQuery,
   useFetchGuildConfigQuery,
+  useFetchGuildRoleRewardsQuery,
   useFetchGuildRolesQuery,
   useFetchGuildChannelsQuery,
 
