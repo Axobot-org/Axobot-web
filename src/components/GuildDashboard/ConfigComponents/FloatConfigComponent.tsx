@@ -2,6 +2,7 @@ import { Slider, Stack } from "@mui/material";
 
 import { useConfigComponentContext } from "../../../repository/context/ConfigComponentContext";
 import { useGuildConfigEditionContext } from "../../../repository/context/GuildConfigEditionContext";
+import { PopulatedOption } from "../../../repository/types/guild";
 import { FloatOptionRepresentation } from "../../../repository/types/guild-config-types";
 import NumericInput from "../../common/NumericInput";
 import { ComplexConfiguration } from "./shared/SharedConfigComponents";
@@ -9,7 +10,7 @@ import useIsConfigEdited from "./shared/useIsConfigEdited";
 
 interface FloatConfigComponentProps {
   optionId: string;
-  option: FloatOptionRepresentation & {value: unknown};
+  option: PopulatedOption<FloatOptionRepresentation>;
 }
 
 export default function FloatConfigComponent({ optionId, option }: FloatConfigComponentProps) {

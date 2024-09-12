@@ -47,21 +47,24 @@ export default function ConfigurationCategoryPage({ guildId, activePage }: Confi
   }
 
   return (
-    <ComponentsContainer>
-      {Object.entries(optionsMap).map(([optionName, option]) => (
-        <ConfigComponentContextProvider key={optionName} value={{
-          option: option,
-          config: optionsMap,
-          isDisabled: getMissingOptionRequirement(option, optionsMap) !== null,
-        }}>
-          <GenericConfigComponent
-            optionId={optionName}
-            option={option}
-          />
-        </ConfigComponentContextProvider>
-      ))}
+    <PageContainer>
+      <ComponentsContainer>
+        {Object.entries(optionsMap).map(([optionName, option]) => (
+          <ConfigComponentContextProvider key={optionName} value={{
+            option: option,
+            config: optionsMap,
+            isDisabled: getMissingOptionRequirement(option, optionsMap) !== null,
+          }}>
+            <GenericConfigComponent
+              optionId={optionName}
+              option={option}
+            />
+          </ConfigComponentContextProvider>
+        ))}
+
+      </ComponentsContainer>
       <SpecialCategoryComponent guildId={guildId} activePage={activePage} />
-    </ComponentsContainer>
+    </PageContainer>
   );
 }
 
@@ -86,8 +89,8 @@ function LoadingPlaceholder() {
   );
 }
 
-const ComponentsContainer = styled(Stack)(({ theme }) => ({
-  gap: theme.spacing(1),
+const PageContainer = styled(Stack)(({ theme }) => ({
+  gap: theme.spacing(2),
   marginTop: theme.spacing(4),
   marginBottom: theme.spacing(4),
   width: "60vw",
@@ -96,6 +99,10 @@ const ComponentsContainer = styled(Stack)(({ theme }) => ({
   [theme.breakpoints.down("md")]: {
     width: "85vw",
   },
+}));
+
+const ComponentsContainer = styled(Stack)(({ theme }) => ({
+  gap: theme.spacing(1),
 }));
 
 const TextPageContainer = styled(ComponentsContainer)(({ theme }) => ({

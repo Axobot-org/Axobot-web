@@ -2,13 +2,14 @@ import { Switch } from "@mui/material";
 
 import { useConfigComponentContext } from "../../../repository/context/ConfigComponentContext";
 import { useGuildConfigEditionContext } from "../../../repository/context/GuildConfigEditionContext";
+import { PopulatedOption } from "../../../repository/types/guild";
 import { BooleanOptionRepresentation } from "../../../repository/types/guild-config-types";
 import { SimpleConfiguration } from "./shared/SharedConfigComponents";
 import useIsConfigEdited from "./shared/useIsConfigEdited";
 
 interface BooleanConfigComponentProps {
   optionId: string;
-  option: BooleanOptionRepresentation & {value: unknown};
+  option: PopulatedOption<BooleanOptionRepresentation>;
 }
 
 export default function BooleanConfigComponent({ optionId, option }: BooleanConfigComponentProps) {

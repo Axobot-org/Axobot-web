@@ -5,7 +5,7 @@ import { useMemo } from "react";
 import { useConfigComponentContext } from "../../../repository/context/ConfigComponentContext";
 import { useGuildConfigEditionContext } from "../../../repository/context/GuildConfigEditionContext";
 import { useFetchGuildChannelsQuery } from "../../../repository/redux/api/api";
-import { GuildChannel } from "../../../repository/types/guild";
+import { GuildChannel, PopulatedOption } from "../../../repository/types/guild";
 import { TextChannelsListOptionRepresentation } from "../../../repository/types/guild-config-types";
 import ChannelMention from "../../common/ChannelMention";
 import { ComplexConfiguration } from "./shared/SharedConfigComponents";
@@ -13,7 +13,7 @@ import useIsConfigEdited from "./shared/useIsConfigEdited";
 
 interface TextChannelsListConfigComponentProps {
   optionId: string;
-  option: TextChannelsListOptionRepresentation & {value: unknown};
+  option: PopulatedOption<TextChannelsListOptionRepresentation>;
 }
 
 function isArrayOfString(value: unknown): value is string[] {

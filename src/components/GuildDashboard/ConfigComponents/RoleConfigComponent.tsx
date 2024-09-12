@@ -5,7 +5,7 @@ import { useMemo, useState } from "react";
 import { useConfigComponentContext } from "../../../repository/context/ConfigComponentContext";
 import { useGuildConfigEditionContext } from "../../../repository/context/GuildConfigEditionContext";
 import { useFetchGuildRolesQuery } from "../../../repository/redux/api/api";
-import { GuildRole } from "../../../repository/types/guild";
+import { GuildRole, PopulatedOption } from "../../../repository/types/guild";
 import { RoleOptionRepresentation } from "../../../repository/types/guild-config-types";
 import RoleMention from "../../common/RoleMention";
 import { SimpleConfiguration } from "./shared/SharedConfigComponents";
@@ -13,7 +13,7 @@ import useIsConfigEdited from "./shared/useIsConfigEdited";
 
 interface RoleConfigComponentProps {
   optionId: string;
-  option: RoleOptionRepresentation & {value: unknown};
+  option: PopulatedOption<RoleOptionRepresentation>;
 }
 
 export default function RoleConfigComponent({ optionId, option }: RoleConfigComponentProps) {

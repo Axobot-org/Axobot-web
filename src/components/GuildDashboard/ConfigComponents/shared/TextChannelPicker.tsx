@@ -14,7 +14,7 @@ import useIsConfigEdited from "./useIsConfigEdited";
 
 interface TextChannelPickerProps {
   optionId: string;
-  option: TextChannelOptionRepresentation & {value: unknown};
+  option: PopulatedOption<TextChannelOptionRepresentation>;
 }
 
 export default function TextChannelPicker({ optionId, option }: TextChannelPickerProps) {

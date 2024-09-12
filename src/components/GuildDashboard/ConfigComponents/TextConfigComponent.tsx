@@ -2,13 +2,14 @@ import { TextField } from "@mui/material";
 
 import { useConfigComponentContext } from "../../../repository/context/ConfigComponentContext";
 import { useGuildConfigEditionContext } from "../../../repository/context/GuildConfigEditionContext";
+import { PopulatedOption } from "../../../repository/types/guild";
 import { TextOptionRepresentation } from "../../../repository/types/guild-config-types";
 import { ComplexConfiguration } from "./shared/SharedConfigComponents";
 import useIsConfigEdited from "./shared/useIsConfigEdited";
 
 interface TextConfigComponentProps {
   optionId: string;
-  option: TextOptionRepresentation & {value: unknown};
+  option: PopulatedOption<TextOptionRepresentation>;
 }
 
 export default function TextConfigComponent({ optionId, option }: TextConfigComponentProps) {

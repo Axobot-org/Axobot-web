@@ -4,7 +4,7 @@ import { useMemo } from "react";
 import { useConfigComponentContext } from "../../../repository/context/ConfigComponentContext";
 import { useGuildConfigEditionContext } from "../../../repository/context/GuildConfigEditionContext";
 import { useFetchGuildRolesQuery } from "../../../repository/redux/api/api";
-import { GuildRole } from "../../../repository/types/guild";
+import { GuildRole, PopulatedOption } from "../../../repository/types/guild";
 import { RolesListOptionRepresentation } from "../../../repository/types/guild-config-types";
 import RoleMention from "../../common/RoleMention";
 import { ComplexConfiguration } from "./shared/SharedConfigComponents";
@@ -12,7 +12,7 @@ import useIsConfigEdited from "./shared/useIsConfigEdited";
 
 interface RolesListConfigComponentProps {
   optionId: string;
-  option: RolesListOptionRepresentation & {value: unknown};
+  option: PopulatedOption<RolesListOptionRepresentation>;
 }
 
 function isArrayOfString(value: unknown): value is string[] {

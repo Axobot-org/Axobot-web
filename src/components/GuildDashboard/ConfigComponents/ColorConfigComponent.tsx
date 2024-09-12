@@ -2,13 +2,14 @@ import { MuiColorInput } from "mui-color-input";
 
 import { useConfigComponentContext } from "../../../repository/context/ConfigComponentContext";
 import { useGuildConfigEditionContext } from "../../../repository/context/GuildConfigEditionContext";
+import { PopulatedOption } from "../../../repository/types/guild";
 import { ColorOptionRepresentation } from "../../../repository/types/guild-config-types";
 import { SimpleConfiguration } from "./shared/SharedConfigComponents";
 import useIsConfigEdited from "./shared/useIsConfigEdited";
 
 interface ColorConfigComponentProps {
   optionId: string;
-  option: ColorOptionRepresentation & {value: unknown};
+  option: PopulatedOption<ColorOptionRepresentation>;
 }
 
 export default function ColorConfigComponent({ optionId, option }: ColorConfigComponentProps) {

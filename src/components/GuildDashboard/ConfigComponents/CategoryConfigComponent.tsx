@@ -6,7 +6,7 @@ import { useMemo, useState } from "react";
 import { useConfigComponentContext } from "../../../repository/context/ConfigComponentContext";
 import { useGuildConfigEditionContext } from "../../../repository/context/GuildConfigEditionContext";
 import { useFetchGuildChannelsQuery } from "../../../repository/redux/api/api";
-import { GuildChannel } from "../../../repository/types/guild";
+import { GuildChannel, PopulatedOption } from "../../../repository/types/guild";
 import { CategoryOptionRepresentation } from "../../../repository/types/guild-config-types";
 import ChannelMention from "../../common/ChannelMention";
 import { SimpleConfiguration } from "./shared/SharedConfigComponents";
@@ -15,7 +15,7 @@ import useIsConfigEdited from "./shared/useIsConfigEdited";
 
 interface CategoryConfigComponentProps {
   optionId: string;
-  option: CategoryOptionRepresentation & {value: unknown};
+  option: PopulatedOption<CategoryOptionRepresentation>;
 }
 
 export default function CategoryConfigComponent({ optionId, option }: CategoryConfigComponentProps) {

@@ -4,6 +4,7 @@ import { ComponentProps, useState } from "react";
 import { getGuildDashboardTranslations } from "../../../i18n/i18n";
 import { useConfigComponentContext } from "../../../repository/context/ConfigComponentContext";
 import { useGuildConfigEditionContext } from "../../../repository/context/GuildConfigEditionContext";
+import { PopulatedOption } from "../../../repository/types/guild";
 import { LevelupChannelOptionRepresentation } from "../../../repository/types/guild-config-types";
 import { LargeConfiguration } from "./shared/SharedConfigComponents";
 import TextChannelPicker from "./shared/TextChannelPicker";
@@ -11,7 +12,7 @@ import useIsConfigEdited from "./shared/useIsConfigEdited";
 
 interface LevelupChannelConfigComponentProps {
   optionId: string;
-  option: LevelupChannelOptionRepresentation & {value: unknown};
+  option: PopulatedOption<LevelupChannelOptionRepresentation>;
 }
 
 type TextChannelPickerOption = ComponentProps<typeof TextChannelPicker>["option"];
