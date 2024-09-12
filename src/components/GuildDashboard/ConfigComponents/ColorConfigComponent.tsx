@@ -1,4 +1,5 @@
-import { MuiColorInput } from "mui-color-input";
+import { matchIsValidColor, MuiColorInput } from "mui-color-input";
+import { useState } from "react";
 
 import { useConfigComponentContext } from "../../../repository/context/ConfigComponentContext";
 import { useGuildConfigEditionContext } from "../../../repository/context/GuildConfigEditionContext";
@@ -22,6 +23,8 @@ export default function ColorConfigComponent({ optionId, option }: ColorConfigCo
   const currentValue = isEdited ? (state[optionId] as number ?? defaultValue) : currentSavedValue;
   const currentValueAsHex = "#" + currentValue.toString(16).padStart(6, "0");
 
+  const [lastCorrectValue, setLastCorrectValue] = useState(currentValueAsHex);
+
   function onChange(value: string) {
     if (isDisabled) return;
     if (value === "") {
@@ -38,6 +41,9 @@ export default function ColorConfigComponent({ optionId, option }: ColorConfigCo
     } else {
       setValue(optionId, parsedValue);
     }
+    if (matchIsValidColor(value)) {
+      setLastCorrectValue(value);
+    }
   }
 
   return (
@@ -45,6 +51,7 @@ export default function ColorConfigComponent({ optionId, option }: ColorConfigCo
       <MuiColorInput
         disabled={isDisabled}
         value={currentValueAsHex}
+        fallbackValue={lastCorrectValue}
         onChange={onChange}
         variant="standard"
         format="hex"
