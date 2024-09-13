@@ -4,6 +4,7 @@ import { Fragment } from "react/jsx-runtime";
 
 import { useFetchGuildConfigCategory } from "../../../../repository/commands/useFetchGuildConfigCategory";
 import { useFetchGuildConfigQuery, useFetchGuildRoleRewardsQuery } from "../../../../repository/redux/api/api";
+import { ExternalRoutesURLs } from "../../../../router/router";
 import DownloadLeaderboardButton from "./DownloadLeaderboardButton";
 import RoleRewardsList from "./RoleRewardsList";
 import UploadLeaderboardButton from "./UploadLeaderboardButton";
@@ -77,7 +78,7 @@ function RolesRewardsSection({ guildId }: {guildId: string}) {
       <Stack px={2} gap={1}>
         <SectionTitle>{title}</SectionTitle>
         <Description>
-          Roles rewards are roles given to your members when they reach a certain level of XP. This is a great way to encourage your members to be active!
+          Roles rewards are roles given to your members when they reach a certain level of XP. This is a great way to encourage your members to be active! <Link href={`${ExternalRoutesURLs.documentation}/en/latest/xp.html#roles-rewards`} target="_blank" sx={{ fontStyle: "normal" }}>[Read more]</Link>
         </Description>
         <RoleRewardsList guildId={guildId} roleRewards={roleRewards ?? []} />
       </Stack>
@@ -90,4 +91,3 @@ const Description = styled(Typography)(({ theme }) => ({
   fontStyle: "italic",
   color: theme.palette.text.secondary,
 }));
-
