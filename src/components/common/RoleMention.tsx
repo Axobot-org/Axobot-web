@@ -5,10 +5,11 @@ import DeleteCircleButton from "./DeleteCircleButton";
 interface RoleMentionProps {
   name: string;
   color: number | undefined;
+  disabled?: boolean;
   onDelete?: (event: unknown) => void;
 }
 
-export default function RoleMention({ name, color, onDelete }: RoleMentionProps) {
+export default function RoleMention({ name, color, disabled, onDelete }: RoleMentionProps) {
   const mentionColor = color || 0x99aab5;
   const mentionColorAsHex = `#${mentionColor.toString(16).padStart(6, "0")}`;
   const backgroundColorAsRGBA = `rgba(${(mentionColor >> 16) & 255}, ${(mentionColor >> 8) & 255}, ${mentionColor & 255}, 0.1)`;
@@ -28,7 +29,7 @@ export default function RoleMention({ name, color, onDelete }: RoleMentionProps)
       }}
     >
       @{name}
-      {onDelete && <DeleteCircleButton onClick={onDelete} />}
+      {onDelete && !disabled && <DeleteCircleButton onClick={onDelete} />}
     </Stack>
   );
 }

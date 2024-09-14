@@ -1,8 +1,9 @@
 import { CircularProgress, Stack, styled, Typography } from "@mui/material";
 
 import { useFetchGuildConfigCategory } from "../../repository/commands/useFetchGuildConfigCategory";
+import { ConfigComponentContextProvider, getMissingOptionRequirement } from "../../repository/context/ConfigComponentContext";
 import { PopulatedGuildConfig } from "../../repository/types/guild";
-import { GuildConfigOptionCategory } from "../../repository/types/guild-config-types";
+import { AllRepresentation, GuildConfigOptionCategory } from "../../repository/types/guild-config-types";
 import BooleanConfigComponent from "./ConfigComponents/BooleanConfigComponent";
 import CategoryConfigComponent from "./ConfigComponents/CategoryConfigComponent";
 import ColorConfigComponent from "./ConfigComponents/ColorConfigComponent";
@@ -39,24 +40,31 @@ export default function ConfigurationCategoryPage({ guildId, activePage }: Confi
     return <LoadingPlaceholder />;
   }
 
-  const optionsMap: PopulatedGuildConfig = Object.fromEntries(
-    Object.entries(data).filter(([_, option]) => [
-      "int", "float", "boolean", "enum", "text", "role", "roles_list", "text_channel",
-      "text_channels_list", "voice_channel", "category", "color", "levelup_channel",
-    ].includes(option.type))
-  );
+  const optionsMap = filterAndSortOptions(data);
 
   if (Object.keys(optionsMap).length === 0) {
     return <ErrorPage title="No configuration options available." message="This category appears to be empty. Just be glad it exists!" />;
   }
 
   return (
-    <ComponentsContainer>
-      {Object.entries(optionsMap).map(([optionName, option]) => (
-        <GenericConfigComponent key={optionName} optionId={optionName} option={option} guildId={guildId} />
-      ))}
+    <PageContainer>
+      <ComponentsContainer>
+        {Object.entries(optionsMap).map(([optionName, option]) => (
+          <ConfigComponentContextProvider key={optionName} value={{
+            option: option,
+            config: optionsMap,
+            isDisabled: getMissingOptionRequirement(option, optionsMap) !== null,
+          }}>
+            <GenericConfigComponent
+              optionId={optionName}
+              option={option}
+            />
+          </ConfigComponentContextProvider>
+        ))}
+
+      </ComponentsContainer>
       <SpecialCategoryComponent guildId={guildId} activePage={activePage} />
-    </ComponentsContainer>
+    </PageContainer>
   );
 }
 
@@ -81,8 +89,8 @@ function LoadingPlaceholder() {
   );
 }
 
-const ComponentsContainer = styled(Stack)(({ theme }) => ({
-  gap: theme.spacing(1),
+const PageContainer = styled(Stack)(({ theme }) => ({
+  gap: theme.spacing(2),
   marginTop: theme.spacing(4),
   marginBottom: theme.spacing(4),
   width: "60vw",
@@ -93,12 +101,16 @@ const ComponentsContainer = styled(Stack)(({ theme }) => ({
   },
 }));
 
+const ComponentsContainer = styled(Stack)(({ theme }) => ({
+  gap: theme.spacing(1),
+}));
+
 const TextPageContainer = styled(ComponentsContainer)(({ theme }) => ({
   gap: theme.spacing(2),
   alignItems: "center",
 }));
 
-function GenericConfigComponent({ optionId, option, guildId }: { optionId: string, option: PopulatedGuildConfig[string], guildId: string }) {
+function GenericConfigComponent({ optionId, option }: { optionId: string, option: PopulatedGuildConfig[string]}) {
   switch (option.type) {
   case "int":
     return <IntConfigComponent optionId={optionId} option={option} />;
@@ -111,21 +123,21 @@ function GenericConfigComponent({ optionId, option, guildId }: { optionId: strin
   case "text":
     return <TextConfigComponent optionId={optionId} option={option} />;
   case "role":
-    return <RoleConfigComponent optionId={optionId} option={option} guildId={guildId} />;
+    return <RoleConfigComponent optionId={optionId} option={option} />;
   case "roles_list":
-    return <RolesListConfigComponent optionId={optionId} option={option} guildId={guildId} />;
+    return <RolesListConfigComponent optionId={optionId} option={option} />;
   case "text_channel":
-    return <TextChannelConfigComponent optionId={optionId} option={option} guildId={guildId} />;
+    return <TextChannelConfigComponent optionId={optionId} option={option} />;
   case "text_channels_list":
-    return <TextChannelsListConfigComponent optionId={optionId} option={option} guildId={guildId} />;
+    return <TextChannelsListConfigComponent optionId={optionId} option={option} />;
   case "voice_channel":
-    return <VoiceChannelConfigComponent optionId={optionId} option={option} guildId={guildId} />;
+    return <VoiceChannelConfigComponent optionId={optionId} option={option} />;
   case "category":
-    return <CategoryConfigComponent optionId={optionId} option={option} guildId={guildId} />;
+    return <CategoryConfigComponent optionId={optionId} option={option} />;
   case "color":
     return <ColorConfigComponent optionId={optionId} option={option} />;
   case "levelup_channel":
-    return <LevelupChannelConfigComponent optionId={optionId} option={option} guildId={guildId} />;
+    return <LevelupChannelConfigComponent optionId={optionId} option={option} />;
   default:
     return null;
   }
@@ -138,4 +150,31 @@ function SpecialCategoryComponent({ guildId, activePage }: {guildId: string, act
   default:
     return null;
   }
+}
+
+function getRequiredOptionNames(option: AllRepresentation): string[] {
+  if (option.requires === undefined) {
+    return [];
+  }
+
+  return option.requires.map(req => req.option);
+}
+
+function filterAndSortOptions(config: PopulatedGuildConfig): PopulatedGuildConfig {
+  return Object.fromEntries(
+    Object.entries(config).filter(([_, option]) => [
+      "int", "float", "boolean", "enum", "text", "role", "roles_list", "text_channel",
+      "text_channels_list", "voice_channel", "category", "color", "levelup_channel",
+    ]
+      .includes(option.type))
+      .toSorted(([firstName, firstOption], [secondName, secondOption]) => {
+        if (getRequiredOptionNames(firstOption).includes(secondName)) {
+          return 1;
+        }
+        if (getRequiredOptionNames(secondOption).includes(firstName)) {
+          return -1;
+        }
+        return firstName.localeCompare(secondName);
+      })
+  );
 }

@@ -1,68 +1,73 @@
-export interface IntOptionRepresentation {
+type OptionRequirement = {
+  option: string;
+  to_be: boolean | number | string | string[] | null;
+} | {
+  option: string;
+  to_be_defined: true;
+}
+
+interface BaseOptionRepresentation {
+  is_listed: boolean;
+  requires?: OptionRequirement[];
+}
+
+export interface IntOptionRepresentation extends BaseOptionRepresentation {
   type: "int";
   min: number;
   max: number | null;
   default: number | null;
-  is_listed: boolean;
 }
 
-export interface FloatOptionRepresentation {
+export interface FloatOptionRepresentation extends BaseOptionRepresentation {
   type: "float";
   min: number;
   max: number;
   default: number | null;
-  is_listed: boolean;
 }
 
-export interface BooleanOptionRepresentation {
+export interface BooleanOptionRepresentation extends BaseOptionRepresentation {
   type: "boolean";
   default: boolean | null;
-  is_listed: boolean;
 }
 
-export interface EnumOptionRepresentation {
+export interface EnumOptionRepresentation extends BaseOptionRepresentation {
   type: "enum";
   values: string[];
   default: string | null;
-  is_listed: boolean;
 }
 
-export interface TextOptionRepresentation {
+export interface TextOptionRepresentation extends BaseOptionRepresentation {
   type: "text";
   min_length: number;
   max_length: number;
   default: string | null;
-  is_listed: boolean;
 }
 
-export interface RoleOptionRepresentation {
+export interface RoleOptionRepresentation extends BaseOptionRepresentation {
   type: "role";
   allow_integrated_roles: boolean;
   allow_everyone: boolean;
   default: null;
-  is_listed: boolean;
 }
 
-export interface RolesListOptionRepresentation {
+export interface RolesListOptionRepresentation extends BaseOptionRepresentation {
   type: "roles_list";
   min_count: number;
   max_count: number;
   allow_integrated_roles: boolean;
   allow_everyone: boolean;
   default: null;
-  is_listed: boolean;
 }
 
-export interface TextChannelOptionRepresentation {
+export interface TextChannelOptionRepresentation extends BaseOptionRepresentation {
   type: "text_channel";
   allow_threads: boolean;
   allow_announcement_channels: boolean;
   allow_non_nsfw_channels: boolean;
   default: null;
-  is_listed: boolean;
 }
 
-export interface TextChannelsListOptionRepresentation {
+export interface TextChannelsListOptionRepresentation extends BaseOptionRepresentation {
   type: "text_channels_list";
   min_count: number;
   max_count: number;
@@ -70,41 +75,35 @@ export interface TextChannelsListOptionRepresentation {
   allow_announcement_channels: boolean;
   allow_non_nsfw_channels: boolean;
   default: null;
-  is_listed: boolean;
 }
 
-export interface VoiceChannelOptionRepresentation {
+export interface VoiceChannelOptionRepresentation extends BaseOptionRepresentation {
   type: "voice_channel";
   allow_stage_channels: boolean;
   allow_non_nsfw_channels: boolean;
   default: null;
-  is_listed: boolean;
 }
 
-export interface CategoryOptionRepresentation {
+export interface CategoryOptionRepresentation extends BaseOptionRepresentation {
   type: "category";
   default: null;
-  is_listed: boolean;
 }
 
-export interface EmojisListOptionRepresentation {
+export interface EmojisListOptionRepresentation extends BaseOptionRepresentation {
   type: "emojis_list";
   min_count: number;
   max_count: number;
   default: string[] | null;
-  is_listed: boolean;
 }
 
-export interface ColorOptionRepresentation {
+export interface ColorOptionRepresentation extends BaseOptionRepresentation {
   type: "color";
   default: number | null;
-  is_listed: boolean;
 }
 
-export interface LevelupChannelOptionRepresentation {
+export interface LevelupChannelOptionRepresentation extends BaseOptionRepresentation {
   type: "levelup_channel";
   default: string | null;
-  is_listed: boolean;
 }
 
 export type AllRepresentation = IntOptionRepresentation

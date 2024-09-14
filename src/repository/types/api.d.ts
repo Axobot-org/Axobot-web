@@ -6,6 +6,14 @@ export interface LoginJSONResponse {
   avatar: string;
 }
 
+export interface RoleReward {
+  id: string,
+  guildId: string,
+  roleId: string,
+  level: string,
+  addedAt: string,
+}
+
 export interface LeaderboardResponse {
   guild: {
     id: string;
@@ -17,17 +25,14 @@ export interface LeaderboardResponse {
   xp_type: string,
   xp_rate: number,
   xp_decay: number,
-  role_rewards: {
-    id: string,
-    guildId: string,
-    roleId: string,
-    level: string,
-    addedAt: string,
-    role: {
-      name: string,
-      color: number,
-    } | null,
-  }[] | undefined,
+  role_rewards: (
+    RoleReward & {
+      role: {
+        name: string,
+        color: number,
+      } | null,
+    }
+  )[] | undefined,
 }
 
 export type LeaderboardAsJson = {

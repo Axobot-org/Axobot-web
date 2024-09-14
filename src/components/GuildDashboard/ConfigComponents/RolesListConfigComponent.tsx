@@ -1,9 +1,10 @@
 import { Autocomplete, TextField } from "@mui/material";
 import { useMemo } from "react";
 
+import { useConfigComponentContext } from "../../../repository/context/ConfigComponentContext";
 import { useGuildConfigEditionContext } from "../../../repository/context/GuildConfigEditionContext";
 import { useFetchGuildRolesQuery } from "../../../repository/redux/api/api";
-import { GuildRole } from "../../../repository/types/guild";
+import { GuildRole, PopulatedOption } from "../../../repository/types/guild";
 import { RolesListOptionRepresentation } from "../../../repository/types/guild-config-types";
 import RoleMention from "../../common/RoleMention";
 import { ComplexConfiguration } from "./shared/SharedConfigComponents";
@@ -11,8 +12,7 @@ import useIsConfigEdited from "./shared/useIsConfigEdited";
 
 interface RolesListConfigComponentProps {
   optionId: string;
-  option: RolesListOptionRepresentation & {value: unknown};
-  guildId: string;
+  option: PopulatedOption<RolesListOptionRepresentation>;
 }
 
 function isArrayOfString(value: unknown): value is string[] {
@@ -30,8 +30,9 @@ function findRole(roles: GuildRole[], roleId: string): GuildRole {
   };
 }
 
-export default function RolesListConfigComponent({ optionId, option, guildId }: RolesListConfigComponentProps) {
-  const { state, setValue, resetValue } = useGuildConfigEditionContext();
+export default function RolesListConfigComponent({ optionId, option }: RolesListConfigComponentProps) {
+  const { guildId, state, setValue, resetValue } = useGuildConfigEditionContext();
+  const { isDisabled } = useConfigComponentContext();
   const isEdited = useIsConfigEdited(optionId);
   const { data, isLoading, error } = useFetchGuildRolesQuery({ guildId });
 
@@ -55,6 +56,7 @@ export default function RolesListConfigComponent({ optionId, option, guildId }: 
   const currentRoles = currentValue?.map((roleId) => findRole(roles, roleId)) ?? [];
 
   function onChange(value: GuildRole[]) {
+    if (isDisabled) return;
     if (value.length === 0) {
       if (option.value === null) {
         resetValue(optionId);
@@ -74,6 +76,7 @@ export default function RolesListConfigComponent({ optionId, option, guildId }: 
         <Autocomplete
           multiple
           openOnFocus
+          disabled={isDisabled}
           options={roles}
           value={currentRoles}
           loading={isLoading || !roles}
@@ -93,7 +96,7 @@ export default function RolesListConfigComponent({ optionId, option, guildId }: 
             </li>
           )}
           renderTags={(value, getTagProps) => value.map((role, index) => (
-            <RoleMention name={role.name} color={role.color} {...getTagProps({ index })} />
+            <RoleMention name={role.name} color={role.color} {...getTagProps({ index })} key={role.id} />
           ))}
           sx={{
             "& .MuiInput-root": {

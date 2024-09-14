@@ -14,10 +14,11 @@ interface ChannelMentionProps {
   };
   disabled?: boolean;
   indent?: boolean;
+  disableColor?: boolean;
   onDelete?: (event: unknown) => void;
 }
 
-export default function ChannelMention({ channel, disabled, indent, onDelete }: ChannelMentionProps) {
+export default function ChannelMention({ channel, disabled, indent, disableColor, onDelete }: ChannelMentionProps) {
   const mentionColor = 0xc9cdfb;
   const backgroundColor = 0x5865f24d;
   const Icon = getIconComponent(channel.type);
@@ -25,8 +26,8 @@ export default function ChannelMention({ channel, disabled, indent, onDelete }: 
 
   return (
     <Stack direction="row" gap={0.5} sx={{
-      color: disabled ? undefined : `#${mentionColor.toString(16).padStart(6, "0")}`,
-      backgroundColor: disabled ? undefined : `#${backgroundColor.toString(16).padStart(8, "0")}`,
+      color: disableColor ? undefined : `#${mentionColor.toString(16).padStart(6, "0")}`,
+      backgroundColor: disableColor ? undefined : `#${backgroundColor.toString(16).padStart(8, "0")}`,
       borderRadius: "5px",
       alignItems: "center",
       overflow: indent ? undefined : "hidden",
@@ -38,7 +39,7 @@ export default function ChannelMention({ channel, disabled, indent, onDelete }: 
       <Typography noWrap={!indent} component="span">
         {Icon}{channel.name}
       </Typography>
-      {onDelete && <DeleteCircleButton onClick={onDelete} />}
+      {onDelete && !disabled && <DeleteCircleButton onClick={onDelete} />}
     </Stack>
   );
 }

@@ -1,3 +1,4 @@
+import { MatomoManager } from "../../matomo";
 import { axoApi, useLoginMutation } from "../api/api";
 import { useAppDispatch } from "../hooks";
 import { setToken } from "../tokenStorage/tokenSlice";
@@ -11,9 +12,7 @@ export function useLogin() {
   async function loginCommand(discordCode: string) {
     const response = await loginMutation(discordCode).unwrap();
     dispatch(setToken(response.token));
-    if (window._mtm) {
-      window._mtm.push({ event: "login", userId: response.id });
-    }
+    MatomoManager.setUserId(response.id);
     dispatch(axoApi.util.resetApiState());
   }
 

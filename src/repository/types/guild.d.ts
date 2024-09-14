@@ -17,7 +17,11 @@ export interface GuildData {
 
 export type GuildConfig = Record<string, Record<string, unknown>>
 
-export type PopulatedGuildConfig = Record<string, AllRepresentation & { value: unknown }>
+export type PopulatedOption<T extends AllRepresentation> = T & { value: unknown };
+
+export type PopulatedGuildConfig = Record<string, PopulatedOption<AllRepresentation>>;
+
+export type OptionRequirement = Exclude<AllRepresentation["requires"], undefined>[0];
 
 export interface GuildRole {
   id: string;

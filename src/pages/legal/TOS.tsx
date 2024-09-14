@@ -43,7 +43,7 @@ export default function TOS() {
     <Fragment>
       <Typography my={2} variant="h3" textAlign="center">Axobot – Terms of Use</Typography>
 
-      <Box mt={{ xs: 2, md: 4 }} mb={6}>
+      <Box mt={{ xs: 2, md: 4 }} mb={6} width="100%">
         <Typography variant="body2" fontStyle="italic">
         Date of the latest revision: August 8th, 2024.
         </Typography>

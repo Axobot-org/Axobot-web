@@ -2,9 +2,10 @@ import { Autocomplete, TextField } from "@mui/material";
 import { ChannelType } from "discord-api-types/v10";
 import { useMemo } from "react";
 
+import { useConfigComponentContext } from "../../../repository/context/ConfigComponentContext";
 import { useGuildConfigEditionContext } from "../../../repository/context/GuildConfigEditionContext";
 import { useFetchGuildChannelsQuery } from "../../../repository/redux/api/api";
-import { GuildChannel } from "../../../repository/types/guild";
+import { GuildChannel, PopulatedOption } from "../../../repository/types/guild";
 import { TextChannelsListOptionRepresentation } from "../../../repository/types/guild-config-types";
 import ChannelMention from "../../common/ChannelMention";
 import { ComplexConfiguration } from "./shared/SharedConfigComponents";
@@ -12,8 +13,7 @@ import useIsConfigEdited from "./shared/useIsConfigEdited";
 
 interface TextChannelsListConfigComponentProps {
   optionId: string;
-  option: TextChannelsListOptionRepresentation & {value: unknown};
-  guildId: string;
+  option: PopulatedOption<TextChannelsListOptionRepresentation>;
 }
 
 function isArrayOfString(value: unknown): value is string[] {
@@ -34,8 +34,9 @@ function findChannel(channels: GuildChannel[], channelId: string): GuildChannel 
   };
 }
 
-export default function TextChannelsListConfigComponent({ optionId, option, guildId }: TextChannelsListConfigComponentProps) {
-  const { state, setValue, resetValue } = useGuildConfigEditionContext();
+export default function TextChannelsListConfigComponent({ optionId, option }: TextChannelsListConfigComponentProps) {
+  const { guildId, state, setValue, resetValue } = useGuildConfigEditionContext();
+  const { isDisabled } = useConfigComponentContext();
   const isEdited = useIsConfigEdited(optionId);
   const { data, isLoading, error } = useFetchGuildChannelsQuery({ guildId });
 
@@ -81,6 +82,7 @@ export default function TextChannelsListConfigComponent({ optionId, option, guil
         <Autocomplete
           multiple
           openOnFocus
+          disabled={isDisabled}
           options={channels}
           value={currentChannels}
           loading={isLoading || !channels}
@@ -96,11 +98,11 @@ export default function TextChannelsListConfigComponent({ optionId, option, guil
           )}
           renderOption={(props, opt) => (
             <li {...props} key={opt.id}>
-              <ChannelMention channel={opt} disabled={isOptionDisabled(opt)} indent />
+              <ChannelMention channel={opt} disabled={isOptionDisabled(opt)} disableColor={isOptionDisabled(opt)} indent />
             </li>
           )}
           renderTags={(value, getTagProps) => value.map((channel, index) => (
-            <ChannelMention channel={channel} {...getTagProps({ index })}/>
+            <ChannelMention channel={channel} {...getTagProps({ index })} key={channel.id} />
           ))}
           sx={{
             "& .MuiInput-root": {

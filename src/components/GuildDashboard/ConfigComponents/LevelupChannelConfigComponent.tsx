@@ -2,7 +2,9 @@ import { MenuItem, Select, Stack, styled } from "@mui/material";
 import { ComponentProps, useState } from "react";
 
 import { getGuildDashboardTranslations } from "../../../i18n/i18n";
+import { useConfigComponentContext } from "../../../repository/context/ConfigComponentContext";
 import { useGuildConfigEditionContext } from "../../../repository/context/GuildConfigEditionContext";
+import { PopulatedOption } from "../../../repository/types/guild";
 import { LevelupChannelOptionRepresentation } from "../../../repository/types/guild-config-types";
 import { LargeConfiguration } from "./shared/SharedConfigComponents";
 import TextChannelPicker from "./shared/TextChannelPicker";
@@ -10,15 +12,15 @@ import useIsConfigEdited from "./shared/useIsConfigEdited";
 
 interface LevelupChannelConfigComponentProps {
   optionId: string;
-  option: LevelupChannelOptionRepresentation & {value: unknown};
-  guildId: string;
+  option: PopulatedOption<LevelupChannelOptionRepresentation>;
 }
 
 type TextChannelPickerOption = ComponentProps<typeof TextChannelPicker>["option"];
 const SpecificChannelEnum = "specific channel";
 
-export default function LevelupChannelConfigComponent({ optionId, option, guildId }: LevelupChannelConfigComponentProps) {
+export default function LevelupChannelConfigComponent({ optionId, option }: LevelupChannelConfigComponentProps) {
   const { state, setValue, resetValue } = useGuildConfigEditionContext();
+  const { isDisabled } = useConfigComponentContext();
   const isEdited = useIsConfigEdited(optionId);
 
   const staticValues = ["none", "any", "dm"];
@@ -66,6 +68,7 @@ export default function LevelupChannelConfigComponent({ optionId, option, guildI
           value={currentEnumValue}
           onChange={(e) => onChange(e.target.value as string)}
           variant="standard"
+          disabled={isDisabled}
         >
           {
             [...staticValues, SpecificChannelEnum].map(value => (
@@ -73,7 +76,7 @@ export default function LevelupChannelConfigComponent({ optionId, option, guildI
             ))
           }
         </StyledSelect>
-        {showChannelSelector && <TextChannelPicker optionId={optionId} option={textChannelOption} guildId={guildId} />}
+        {showChannelSelector && <TextChannelPicker optionId={optionId} option={textChannelOption} />}
       </Stack>
     </LargeConfiguration>
   );
