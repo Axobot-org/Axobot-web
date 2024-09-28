@@ -32,3 +32,5 @@ export default function Home() {
     </Fragment>
   );
 }
+
+export const Component = Home;

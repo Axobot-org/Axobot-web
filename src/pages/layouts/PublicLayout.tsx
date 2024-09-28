@@ -3,7 +3,7 @@ import { PropsWithChildren } from "react";
 import { Helmet } from "react-helmet-async";
 import { Outlet, useLocation } from "react-router-dom";
 
-import Appbar from "../../components/common/Appbar";
+import Appbar from "../../components/common/Appbar/Appbar";
 import Footer from "../../components/common/Footer";
 import { getMetaTagsFromURL } from "../../router/getMetaTags";
 
