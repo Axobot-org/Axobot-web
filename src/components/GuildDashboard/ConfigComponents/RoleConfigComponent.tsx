@@ -67,7 +67,7 @@ export default function RoleConfigComponent({ optionId, option }: RoleConfigComp
   return (
     <SimpleConfiguration optionId={optionId}>
       {!error && (
-        (editing && isDisabled)
+        (editing && !isDisabled)
           ? <Autocomplete
             openOnFocus
             blurOnSelect
