@@ -25,10 +25,10 @@ if (env.PROXY_LEVEL && Number(env.PROXY_LEVEL) > 0) {
   app.set("trust proxy", Number(env.PROXY_LEVEL));
 }
 
-// Create the global rate limit (max 100 requests per 15min)
+// Create the global rate limit (max 300 requests per 15min)
 const limiter = RateLimit({
   windowMs: 15 * 60 * 1000,
-  max: isProduction ? 100 : 100000,
+  max: isProduction ? 300 : 100000,
   standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
 });
 app.use(limiter);
