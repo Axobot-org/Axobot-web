@@ -14,11 +14,8 @@ interface SimpleConfigurationProps {
 export function SimpleConfiguration({ optionId, children }: PropsWithChildren<SimpleConfigurationProps>) {
   const isEdited = useIsConfigEdited(optionId);
 
-  const translatedName = getGuildDashboardTranslations("option_name." + optionId);
-  const translatedDescription = getGuildDashboardTranslations("option_description." + optionId);
-
-  const optionName = translatedName.includes("option_name.") ? optionId : translatedName;
-  const optionDescription = translatedDescription.includes("option_description.") ? undefined : translatedDescription;
+  const optionName = getGuildDashboardTranslations("option_name." + optionId, optionId);
+  const optionDescription = getGuildDashboardTranslations("option_description." + optionId, "");
 
   return (
     <ConfigComponentContainer>
@@ -38,11 +35,8 @@ export function SimpleConfiguration({ optionId, children }: PropsWithChildren<Si
 export function LargeConfiguration({ optionId, children }: PropsWithChildren<SimpleConfigurationProps>) {
   const isEdited = useIsConfigEdited(optionId);
 
-  const translatedName = getGuildDashboardTranslations("option_name." + optionId);
-  const translatedDescription = getGuildDashboardTranslations("option_description." + optionId);
-
-  const optionName = translatedName.includes("option_name.") ? optionId : translatedName;
-  const optionDescription = translatedDescription.includes("option_description.") ? undefined : translatedDescription;
+  const optionName = getGuildDashboardTranslations("option_name." + optionId, optionId);
+  const optionDescription = getGuildDashboardTranslations("option_description." + optionId, "");
 
   return (
     <ConfigComponentContainer direction={{ xs: "column", md: "row" }}>
@@ -62,11 +56,8 @@ export function LargeConfiguration({ optionId, children }: PropsWithChildren<Sim
 export function ComplexConfiguration({ optionId, children }: PropsWithChildren<SimpleConfigurationProps>) {
   const isEdited = useIsConfigEdited(optionId);
 
-  const translatedName = getGuildDashboardTranslations("option_name." + optionId);
-  const translatedDescription = getGuildDashboardTranslations("option_description." + optionId);
-
-  const optionName = translatedName.includes("option_name.") ? optionId : translatedName;
-  const optionDescription = translatedDescription.includes("option_description.") ? undefined : translatedDescription;
+  const optionName = getGuildDashboardTranslations("option_name." + optionId, optionId);
+  const optionDescription = getGuildDashboardTranslations("option_description." + optionId, "");
 
   return (
     <ConfigComponentContainer>
