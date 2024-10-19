@@ -1,5 +1,8 @@
+import { Skeleton } from "@mui/material";
 import { Stack } from "@mui/system";
 
+import { useGuildConfigEditionContext } from "../../repository/context/GuildConfigEditionContext";
+import { useFetchGuildRolesQuery } from "../../repository/redux/api/api";
 import DeleteCircleButton from "./DeleteCircleButton";
 
 interface RoleMentionProps {
@@ -32,4 +35,20 @@ export default function RoleMention({ name, color, disabled, onDelete }: RoleMen
       {onDelete && !disabled && <DeleteCircleButton onClick={onDelete} />}
     </Stack>
   );
+}
+
+interface RoleMentionFromIdProps {
+  id: string;
+}
+export function RoleMentionFromId({ id }: RoleMentionFromIdProps) {
+  const { guildId } = useGuildConfigEditionContext();
+  const { data: roles } = useFetchGuildRolesQuery({ guildId });
+
+  if (roles === undefined) {
+    return <Skeleton variant="text" width="5rem" sx={{ display: "inline-block" }} />;
+  }
+
+  const role = roles.find((r) => r.id === id);
+
+  return <RoleMention name={role?.name ?? id} color={role?.color} />;
 }

@@ -43,3 +43,14 @@ export type LeaderboardAsJson = {
 export interface BotInfoResponse {
   approximate_guild_count: number;
 }
+
+export interface ConfigEditionLog {
+  id: number,
+  user_id: string;
+  username: string | null;
+  avatar: string;
+  type: string;
+  origin: "bot" | "website" | null;
+  date: string;
+  data: unknown;
+}

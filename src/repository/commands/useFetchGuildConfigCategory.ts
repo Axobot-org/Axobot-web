@@ -13,6 +13,8 @@ export function useFetchGuildConfigCategory({ guildId, category }: MethodParamet
   const { data: configData, isLoading: isLoadingConfig, error: errorConfig } = useFetchGuildConfigQuery({
     guildId: guildId,
     categories: [category],
+  }, {
+    skip: category === "edition-logs",
   });
   const { data: defaultConfig, isLoading: isLoadingDefault, error: errorDefault } = useFetchDefaultGuildConfigQuery();
 
