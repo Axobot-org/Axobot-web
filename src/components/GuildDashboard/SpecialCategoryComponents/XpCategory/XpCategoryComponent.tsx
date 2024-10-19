@@ -36,25 +36,27 @@ function LeaderboardActionsSection({ guildId }: {guildId: string}) {
   const { data: xpData } = useFetchGuildConfigCategory({ guildId, category: "xp" });
 
   const isNotGlobalXp = xpData?.["xp_type"].value !== "global";
-  return ( <Fragment>
-    <DividerWithMargins />
-    <Stack px={2} gap={2}>
-      <SectionTitle>Leaderboard actions</SectionTitle>
-      <Stack gap={2} direction={{ xs: "column", sm: "row" }}>
-        <Button
-          component={Link}
-          target="_blank"
-          variant="outlined"
-          href={`/leaderboard/${guildId}`}
-          endIcon={<LaunchIcon />}
-        >
+  return (
+    <Fragment>
+      <DividerWithMargins />
+      <Stack px={2} gap={2}>
+        <SectionTitle>Leaderboard actions</SectionTitle>
+        <Stack gap={2} direction={{ xs: "column", sm: "row" }}>
+          <Button
+            component={Link}
+            target="_blank"
+            variant="outlined"
+            href={`/leaderboard/${guildId}`}
+            endIcon={<LaunchIcon />}
+          >
           View Leaderboard
-        </Button>
-        <DownloadLeaderboardButton guildId={guildId} />
-        {isNotGlobalXp && <UploadLeaderboardButton guildId={guildId} />}
+          </Button>
+          <DownloadLeaderboardButton guildId={guildId} />
+          {isNotGlobalXp && <UploadLeaderboardButton guildId={guildId} />}
+        </Stack>
       </Stack>
-    </Stack>
-  </Fragment>);
+    </Fragment>
+  );
 }
 
 

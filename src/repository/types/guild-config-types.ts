@@ -121,8 +121,20 @@ export type AllRepresentation = IntOptionRepresentation
   | ColorOptionRepresentation
   | LevelupChannelOptionRepresentation;
 
-export const GuildConfigOptionCategoryNames = ["core", "info", "moderation", "partners", "poll-channels", "streamers", "voice-channels", "welcome", "xp"] as const;
+export const GuildConfigOptionCategoryNames = [
+  "core",
+  "info",
+  "moderation",
+  "partners",
+  "poll-channels",
+  "streamers",
+  "voice-channels",
+  "welcome",
+  "xp",
+  "edition-logs",
+] as const;
 export type GuildConfigOptionCategory = typeof GuildConfigOptionCategoryNames[number];
+export const EmptyCategories: GuildConfigOptionCategory[] = ["edition-logs"];
 export type GuildConfigOptionsMapType = Record<GuildConfigOptionCategory, Record<string, AllRepresentation>>;
 export type GuildConfigOptionValueType = AllRepresentation["default"] | bigint;
 export type PartialGuildConfig = Partial<Record<GuildConfigOptionCategory, Record<string, unknown>>>;
