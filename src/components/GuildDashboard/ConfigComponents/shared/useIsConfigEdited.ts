@@ -1,7 +1,7 @@
-import { useGuildConfigEditionContext } from "../../../../repository/context/GuildConfigEditionContext";
+import { useGuildConfigBaseOptionEditionContext } from "../../../../repository/context/GuildConfigEditionContext";
 
 export default function useIsConfigEdited(optionId: string) {
-  const { state } = useGuildConfigEditionContext();
+  const { state } = useGuildConfigBaseOptionEditionContext();
 
   return state[optionId] !== undefined;
 }

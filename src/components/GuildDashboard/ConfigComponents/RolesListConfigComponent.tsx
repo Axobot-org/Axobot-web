@@ -2,7 +2,7 @@ import { Autocomplete, TextField } from "@mui/material";
 import { useMemo } from "react";
 
 import { useConfigComponentContext } from "../../../repository/context/ConfigComponentContext";
-import { useGuildConfigEditionContext } from "../../../repository/context/GuildConfigEditionContext";
+import { useGuildConfigBaseOptionEditionContext } from "../../../repository/context/GuildConfigEditionContext";
 import { useFetchGuildRolesQuery } from "../../../repository/redux/api/api";
 import { GuildRole, PopulatedOption } from "../../../repository/types/guild";
 import { RolesListOptionRepresentation } from "../../../repository/types/guild-config-types";
@@ -31,7 +31,7 @@ function findRole(roles: GuildRole[], roleId: string): GuildRole {
 }
 
 export default function RolesListConfigComponent({ optionId, option }: RolesListConfigComponentProps) {
-  const { guildId, state, setValue, resetValue } = useGuildConfigEditionContext();
+  const { guildId, state, setValue, resetValue } = useGuildConfigBaseOptionEditionContext();
   const { isDisabled } = useConfigComponentContext();
   const isEdited = useIsConfigEdited(optionId);
   const { data, isLoading, error } = useFetchGuildRolesQuery({ guildId });

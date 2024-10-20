@@ -4,9 +4,9 @@ import { ChannelType } from "discord-api-types/v10";
 import { useMemo, useState } from "react";
 
 import { useConfigComponentContext } from "../../../../repository/context/ConfigComponentContext";
-import { useGuildConfigEditionContext } from "../../../../repository/context/GuildConfigEditionContext";
+import { useGuildConfigBaseOptionEditionContext } from "../../../../repository/context/GuildConfigEditionContext";
 import { useFetchGuildChannelsQuery } from "../../../../repository/redux/api/api";
-import { GuildChannel } from "../../../../repository/types/guild";
+import { GuildChannel, PopulatedOption } from "../../../../repository/types/guild";
 import { TextChannelOptionRepresentation } from "../../../../repository/types/guild-config-types";
 import ChannelMention from "../../../common/ChannelMention";
 import useIsConfigEdited from "./useIsConfigEdited";
@@ -18,7 +18,7 @@ interface TextChannelPickerProps {
 }
 
 export default function TextChannelPicker({ optionId, option }: TextChannelPickerProps) {
-  const { guildId, state, setValue, resetValue } = useGuildConfigEditionContext();
+  const { guildId, state, setValue, resetValue } = useGuildConfigBaseOptionEditionContext();
   const { isDisabled } = useConfigComponentContext();
   const isEdited = useIsConfigEdited(optionId);
   const { data, isLoading, error } = useFetchGuildChannelsQuery({ guildId });

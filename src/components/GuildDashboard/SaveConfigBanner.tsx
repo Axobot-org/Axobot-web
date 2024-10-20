@@ -17,7 +17,7 @@ export default function SaveConfigBanner({ guildId }: SaveConfigBannerProps) {
   const isOnMobile = useIsOnMobile();
 
   function saveConfiguration() {
-    patchCommand(guildId, state);
+    patchCommand(guildId, state.baseOptions);
   }
 
   useEffect(() => {

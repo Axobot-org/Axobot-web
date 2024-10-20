@@ -1,7 +1,7 @@
 import { Slider, Stack } from "@mui/material";
 
 import { useConfigComponentContext } from "../../../repository/context/ConfigComponentContext";
-import { useGuildConfigEditionContext } from "../../../repository/context/GuildConfigEditionContext";
+import { useGuildConfigBaseOptionEditionContext } from "../../../repository/context/GuildConfigEditionContext";
 import { PopulatedOption } from "../../../repository/types/guild";
 import { FloatOptionRepresentation } from "../../../repository/types/guild-config-types";
 import NumericInput from "../../common/NumericInput";
@@ -14,7 +14,7 @@ interface FloatConfigComponentProps {
 }
 
 export default function FloatConfigComponent({ optionId, option }: FloatConfigComponentProps) {
-  const { state, setValue, resetValue } = useGuildConfigEditionContext();
+  const { state, setValue, resetValue } = useGuildConfigBaseOptionEditionContext();
   const { isDisabled } = useConfigComponentContext();
   const isEdited = useIsConfigEdited(optionId);
 

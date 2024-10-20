@@ -1,25 +1,33 @@
 import { createContext, PropsWithChildren, useCallback, useContext, useState } from "react";
 
 type EditionValueType = number | boolean | string | string[] | null;
-type GuildConfigEdition = Record<string, EditionValueType>;
+interface GuildConfigEdition {
+  baseOptions: Record<string, EditionValueType>;
+  roleRewards?: {
+    roleId: string;
+    level: string;
+  }[];
+}
 
 interface ContextType {
   guildId: string;
   state: GuildConfigEdition;
   hasAnyUnsavedChange: boolean;
-  setValue: (optionId: string, value: EditionValueType) => void;
-  resetValue: (optionId: string) => void;
+  setBaseOptionValue: (optionId: string, value: EditionValueType) => void;
+  resetBaseOptionValue: (optionId: string) => void;
   resetState: () => void;
 }
 
+const getDefaultState = (): ContextType["state"] => ({ baseOptions: {} });
+
 const GuildConfigEditionContext = createContext<ContextType>({
   guildId: "",
-  state: {},
+  state: getDefaultState(),
   hasAnyUnsavedChange: false,
-  setValue: () => {
+  setBaseOptionValue: () => {
     throw new Error("GuildConfigEditionContext is not provided");
   },
-  resetValue: () => {
+  resetBaseOptionValue: () => {
     throw new Error("GuildConfigEditionContext is not provided");
   },
   resetState: () => {
@@ -27,36 +35,60 @@ const GuildConfigEditionContext = createContext<ContextType>({
   },
 });
 
-export function useGuildConfigEditionContext() {
-  return useContext(GuildConfigEditionContext);
-}
-
 export function GuildConfigEditionProvider({ guildId, children }: PropsWithChildren<{guildId: string}>) {
-  const [state, setState] = useState<GuildConfigEdition>({});
+  const [state, setState] = useState<GuildConfigEdition>(getDefaultState());
 
-  const setValue = useCallback((optionId: string, value: EditionValueType) => {
+  const setBaseOptionValue = useCallback((optionId: string, value: EditionValueType) => {
     setState(prevState => ({
       ...prevState,
-      [optionId]: value,
+      baseOptions: {
+        ...prevState.baseOptions,
+        [optionId]: value,
+      },
     }));
   }, []);
 
-  const resetValue = useCallback((optionId: string) => {
+  const resetBaseOptionValue = useCallback((optionId: string) => {
     setState(prevState => {
-      const rest = Object.entries(prevState).filter(([key]) => key !== optionId);
-      return Object.fromEntries(rest);
+      const rest = Object.entries(prevState.baseOptions).filter(([key]) => key !== optionId);
+      return {
+        ...prevState,
+        baseOptions: Object.fromEntries(rest),
+      };
     });
   }, []);
 
   const resetState = useCallback(() => {
-    setState({});
+    setState(getDefaultState());
   }, []);
 
-  const hasAnyUnsavedChange = Object.keys(state).length !== 0;
+  const hasAnyUnsavedChange = Object.keys(state.baseOptions).length !== 0 || state.roleRewards !== undefined;
 
   return (
-    <GuildConfigEditionContext.Provider value={{ guildId, state, hasAnyUnsavedChange, setValue, resetValue, resetState }}>
+    <GuildConfigEditionContext.Provider value={{
+      guildId,
+      state,
+      hasAnyUnsavedChange,
+      setBaseOptionValue,
+      resetBaseOptionValue,
+      resetState,
+    }}>
       {children}
     </GuildConfigEditionContext.Provider>
   );
 }
+
+export function useGuildConfigEditionContext() {
+  return useContext(GuildConfigEditionContext);
+}
+
+export function useGuildConfigBaseOptionEditionContext() {
+  const { guildId, state, setBaseOptionValue, resetBaseOptionValue } = useGuildConfigEditionContext();
+  return {
+    guildId,
+    state: state.baseOptions,
+    setValue: setBaseOptionValue,
+    resetValue: resetBaseOptionValue,
+  };
+}
+

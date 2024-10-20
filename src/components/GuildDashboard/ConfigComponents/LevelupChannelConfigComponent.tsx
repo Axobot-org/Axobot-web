@@ -3,7 +3,7 @@ import { ComponentProps, useState } from "react";
 
 import { getGuildDashboardTranslations } from "../../../i18n/i18n";
 import { useConfigComponentContext } from "../../../repository/context/ConfigComponentContext";
-import { useGuildConfigEditionContext } from "../../../repository/context/GuildConfigEditionContext";
+import { useGuildConfigBaseOptionEditionContext } from "../../../repository/context/GuildConfigEditionContext";
 import { PopulatedOption } from "../../../repository/types/guild";
 import { LevelupChannelOptionRepresentation } from "../../../repository/types/guild-config-types";
 import { LargeConfiguration } from "./shared/SharedConfigComponents";
@@ -19,7 +19,7 @@ type TextChannelPickerOption = ComponentProps<typeof TextChannelPicker>["option"
 const SpecificChannelEnum = "specific channel";
 
 export default function LevelupChannelConfigComponent({ optionId, option }: LevelupChannelConfigComponentProps) {
-  const { state, setValue, resetValue } = useGuildConfigEditionContext();
+  const { state, setValue, resetValue } = useGuildConfigBaseOptionEditionContext();
   const { isDisabled } = useConfigComponentContext();
   const isEdited = useIsConfigEdited(optionId);
 

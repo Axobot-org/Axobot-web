@@ -3,7 +3,7 @@ import { Autocomplete, Button, TextField, Typography } from "@mui/material";
 import { useMemo, useState } from "react";
 
 import { useConfigComponentContext } from "../../../repository/context/ConfigComponentContext";
-import { useGuildConfigEditionContext } from "../../../repository/context/GuildConfigEditionContext";
+import { useGuildConfigBaseOptionEditionContext } from "../../../repository/context/GuildConfigEditionContext";
 import { useFetchGuildRolesQuery } from "../../../repository/redux/api/api";
 import { GuildRole, PopulatedOption } from "../../../repository/types/guild";
 import { RoleOptionRepresentation } from "../../../repository/types/guild-config-types";
@@ -17,7 +17,7 @@ interface RoleConfigComponentProps {
 }
 
 export default function RoleConfigComponent({ optionId, option }: RoleConfigComponentProps) {
-  const { guildId, state, setValue, resetValue } = useGuildConfigEditionContext();
+  const { guildId, state, setValue, resetValue } = useGuildConfigBaseOptionEditionContext();
   const { isDisabled } = useConfigComponentContext();
   const isEdited = useIsConfigEdited(optionId);
   const { data, isLoading, error } = useFetchGuildRolesQuery({ guildId });
