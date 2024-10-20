@@ -3,7 +3,7 @@ import { ChannelType } from "discord-api-types/v10";
 import { useMemo } from "react";
 
 import { useConfigComponentContext } from "../../../repository/context/ConfigComponentContext";
-import { useGuildConfigEditionContext } from "../../../repository/context/GuildConfigEditionContext";
+import { useGuildConfigBaseOptionEditionContext } from "../../../repository/context/GuildConfigEditionContext";
 import { useFetchGuildChannelsQuery } from "../../../repository/redux/api/api";
 import { GuildChannel, PopulatedOption } from "../../../repository/types/guild";
 import { TextChannelsListOptionRepresentation } from "../../../repository/types/guild-config-types";
@@ -35,7 +35,7 @@ function findChannel(channels: GuildChannel[], channelId: string): GuildChannel 
 }
 
 export default function TextChannelsListConfigComponent({ optionId, option }: TextChannelsListConfigComponentProps) {
-  const { guildId, state, setValue, resetValue } = useGuildConfigEditionContext();
+  const { guildId, state, setValue, resetValue } = useGuildConfigBaseOptionEditionContext();
   const { isDisabled } = useConfigComponentContext();
   const isEdited = useIsConfigEdited(optionId);
   const { data, isLoading, error } = useFetchGuildChannelsQuery({ guildId });

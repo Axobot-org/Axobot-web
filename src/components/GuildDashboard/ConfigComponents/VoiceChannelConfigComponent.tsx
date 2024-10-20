@@ -4,7 +4,7 @@ import { ChannelType } from "discord-api-types/v10";
 import { useMemo, useState } from "react";
 
 import { useConfigComponentContext } from "../../../repository/context/ConfigComponentContext";
-import { useGuildConfigEditionContext } from "../../../repository/context/GuildConfigEditionContext";
+import { useGuildConfigBaseOptionEditionContext } from "../../../repository/context/GuildConfigEditionContext";
 import { useFetchGuildChannelsQuery } from "../../../repository/redux/api/api";
 import { GuildChannel, PopulatedOption } from "../../../repository/types/guild";
 import { VoiceChannelOptionRepresentation } from "../../../repository/types/guild-config-types";
@@ -19,7 +19,7 @@ interface VoiceChannelConfigComponentProps {
 }
 
 export default function VoiceChannelConfigComponent({ optionId, option }: VoiceChannelConfigComponentProps) {
-  const { guildId, state, setValue, resetValue } = useGuildConfigEditionContext();
+  const { guildId, state, setValue, resetValue } = useGuildConfigBaseOptionEditionContext();
   const { isDisabled } = useConfigComponentContext();
   const isEdited = useIsConfigEdited(optionId);
   const { data, isLoading, error } = useFetchGuildChannelsQuery({ guildId });

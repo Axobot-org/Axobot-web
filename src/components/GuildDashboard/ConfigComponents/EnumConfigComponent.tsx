@@ -1,7 +1,7 @@
 import { MenuItem, Select, styled } from "@mui/material";
 
 import { useConfigComponentContext } from "../../../repository/context/ConfigComponentContext";
-import { useGuildConfigEditionContext } from "../../../repository/context/GuildConfigEditionContext";
+import { useGuildConfigBaseOptionEditionContext } from "../../../repository/context/GuildConfigEditionContext";
 import { PopulatedOption } from "../../../repository/types/guild";
 import { EnumOptionRepresentation } from "../../../repository/types/guild-config-types";
 import { SimpleConfiguration } from "./shared/SharedConfigComponents";
@@ -14,7 +14,7 @@ interface EnumConfigComponentProps {
 }
 
 export default function EnumConfigComponent({ optionId, option }: EnumConfigComponentProps) {
-  const { state, setValue, resetValue } = useGuildConfigEditionContext();
+  const { state, setValue, resetValue } = useGuildConfigBaseOptionEditionContext();
   const { isDisabled } = useConfigComponentContext();
   const isEdited = useIsConfigEdited(optionId);
 
