@@ -12,19 +12,24 @@ interface SaveConfigBannerProps {
 }
 
 export default function SaveConfigBanner({ guildId }: SaveConfigBannerProps) {
-  const { patchCommand, loading, data } = usePatchGuildConfig();
+  const { patchGuildConfigCommand, putRoleRewardsCommand, loading, success } = usePatchGuildConfig();
   const { state, hasAnyUnsavedChange, resetState } = useGuildConfigEditionContext();
   const isOnMobile = useIsOnMobile();
 
   function saveConfiguration() {
-    patchCommand(guildId, state.baseOptions);
+    if (Object.keys(state.baseOptions).length > 0) {
+      patchGuildConfigCommand(guildId, state.baseOptions);
+    }
+    if (state.roleRewards !== undefined) {
+      putRoleRewardsCommand(guildId, state.roleRewards);
+    }
   }
 
   useEffect(() => {
-    if (data) {
+    if (success) {
       resetState();
     }
-  }, [data, resetState]);
+  }, [success, resetState]);
 
   const buttonSize = isOnMobile ? "small" : "medium";
 

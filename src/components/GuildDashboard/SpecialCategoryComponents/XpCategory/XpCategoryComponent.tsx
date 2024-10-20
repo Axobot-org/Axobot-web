@@ -3,6 +3,7 @@ import { Button, Divider, Link, Stack, styled, Typography } from "@mui/material"
 import { Fragment } from "react/jsx-runtime";
 
 import { useFetchGuildConfigCategory } from "../../../../repository/commands/useFetchGuildConfigCategory";
+import { useGuildConfigRoleRewardsEditionContext } from "../../../../repository/context/GuildConfigEditionContext";
 import { useFetchGuildConfigQuery, useFetchGuildRoleRewardsQuery } from "../../../../repository/redux/api/api";
 import { ExternalRoutesURLs } from "../../../../router/router";
 import DownloadLeaderboardButton from "./DownloadLeaderboardButton";
@@ -32,7 +33,7 @@ const SectionTitle = styled(Typography)({
   fontWeight: 500,
 });
 
-function LeaderboardActionsSection({ guildId }: {guildId: string}) {
+function LeaderboardActionsSection({ guildId }: { guildId: string }) {
   const { data: xpData } = useFetchGuildConfigCategory({ guildId, category: "xp" });
 
   const isNotGlobalXp = xpData?.["xp_type"].value !== "global";
@@ -49,7 +50,7 @@ function LeaderboardActionsSection({ guildId }: {guildId: string}) {
             href={`/leaderboard/${guildId}`}
             endIcon={<LaunchIcon />}
           >
-          View Leaderboard
+            View Leaderboard
           </Button>
           <DownloadLeaderboardButton guildId={guildId} />
           {isNotGlobalXp && <UploadLeaderboardButton guildId={guildId} />}
@@ -60,10 +61,17 @@ function LeaderboardActionsSection({ guildId }: {guildId: string}) {
 }
 
 
-function RolesRewardsSection({ guildId }: {guildId: string}) {
+function RolesRewardsSection({ guildId }: { guildId: string }) {
   const { data: configData } = useFetchGuildConfigQuery({ guildId: guildId, categories: ["core"] });
-  const { data: roleRewards } = useFetchGuildRoleRewardsQuery({ guildId });
+  const { data: rawRoleRewardsFromApi } = useFetchGuildRoleRewardsQuery({ guildId });
+  const { state: editedRoleRewards, setValue, resetValue } = useGuildConfigRoleRewardsEditionContext();
 
+  const roleRewardsFromApi = rawRoleRewardsFromApi?.map(rr => ({ id: rr.id, roleId: rr.roleId, level: rr.level })).toSorted((a, b) => Number(a.level) - Number(b.level));
+
+  const roleRewards = (
+    editedRoleRewards?.map(rr => ({ ...rr, id: rr.id ?? rr.roleId }))
+    ?? roleRewardsFromApi?.map(rr => ({ id: rr.id, roleId: rr.roleId, level: rr.level }))
+  );
   const maxRoles = configData?.core?.rr_max_number as number | undefined;
   let title = "Role Rewards";
   if (roleRewards !== undefined) {
@@ -74,6 +82,16 @@ function RolesRewardsSection({ guildId }: {guildId: string}) {
     }
   }
 
+  const editRewardLevel = (roleRewardId: string, level: number) => {
+    if (!roleRewards) return;
+    const newRewards = roleRewards.map(rr => (rr.id === roleRewardId ? { ...rr, level: String(level) } : rr));
+    if (roleRewardsFromApi !== undefined && compareRoleRewards(newRewards, roleRewardsFromApi)) {
+      resetValue();
+    } else {
+      setValue(roleRewards.map(rr => (rr.id === roleRewardId ? { ...rr, level: String(level) } : rr)));
+    }
+  };
+
   return (
     <Fragment>
       <DividerWithMargins />
@@ -82,10 +100,17 @@ function RolesRewardsSection({ guildId }: {guildId: string}) {
         <Description>
           Roles rewards are roles given to your members when they reach a certain level of XP. This is a great way to encourage your members to be active! <Link href={`${ExternalRoutesURLs.documentation}/en/latest/xp.html#roles-rewards`} target="_blank" sx={{ fontStyle: "normal" }}>[Read more]</Link>
         </Description>
-        <RoleRewardsList guildId={guildId} roleRewards={roleRewards ?? []} />
+        <RoleRewardsList guildId={guildId} roleRewards={roleRewards ?? []} editRewardLevel={editRewardLevel} />
       </Stack>
     </Fragment>
   );
+
+  function compareRoleRewards(a: { id: string, roleId: string, level: string }[], b: { id: string, roleId: string, level: string }[]) {
+    if (a.length !== b.length) return false;
+    if (a.some((rr => !b.find(rr2 => rr2.roleId === rr.roleId && rr2.level === rr.level)))) return false;
+    if (b.some((rr => !a.find(rr2 => rr2.roleId === rr.roleId && rr2.level === rr.level)))) return false;
+    return true;
+  }
 }
 
 const Description = styled(Typography)(({ theme }) => ({

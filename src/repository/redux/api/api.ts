@@ -155,6 +155,22 @@ export const axoApi = createApi({
         body: players,
       }),
     }),
+    putGuildRoleRewards: builder.mutation<RoleReward[], {guildId: string, roleRewards: Pick<RoleReward, "roleId" | "level">[]}>({
+      query: ({ guildId, roleRewards }) => ({
+        url: `discord/guild/${guildId}/role-rewards`,
+        method: "PUT",
+        body: roleRewards,
+      }),
+      async onQueryStarted({ guildId }, { dispatch, queryFulfilled }) {
+        // update fetchGuildRoleRewards cache with returned updated data
+        try {
+          const { data } = await queryFulfilled;
+          dispatch(
+            axoApi.util.updateQueryData("fetchGuildRoleRewards", { guildId }, () => data)
+          );
+        } catch { /* don't update cache on error */ }
+      },
+    }),
   }),
 });
 
@@ -175,4 +191,5 @@ export const {
   useLoginMutation,
   usePatchGuildConfigMutation,
   usePutGuildLeaderboardMutation,
+  usePutGuildRoleRewardsMutation,
 } = axoApi;
