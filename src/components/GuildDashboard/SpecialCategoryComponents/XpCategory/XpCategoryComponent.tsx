@@ -92,6 +92,16 @@ function RolesRewardsSection({ guildId }: { guildId: string }) {
     }
   };
 
+  const deleteRoleReward = (roleRewardId: string) => {
+    if (!roleRewards) return;
+    const newRewards = roleRewards.filter(rr => rr.id !== roleRewardId);
+    if (roleRewardsFromApi !== undefined && compareRoleRewards(newRewards, roleRewardsFromApi)) {
+      resetValue();
+    } else {
+      setValue(newRewards);
+    }
+  };
+
   return (
     <Fragment>
       <DividerWithMargins />
@@ -100,7 +110,7 @@ function RolesRewardsSection({ guildId }: { guildId: string }) {
         <Description>
           Roles rewards are roles given to your members when they reach a certain level of XP. This is a great way to encourage your members to be active! <Link href={`${ExternalRoutesURLs.documentation}/en/latest/xp.html#roles-rewards`} target="_blank" sx={{ fontStyle: "normal" }}>[Read more]</Link>
         </Description>
-        <RoleRewardsList guildId={guildId} roleRewards={roleRewards ?? []} editRewardLevel={editRewardLevel} />
+        <RoleRewardsList guildId={guildId} roleRewards={roleRewards ?? []} editRewardLevel={editRewardLevel} deleteReward={deleteRoleReward} />
       </Stack>
     </Fragment>
   );
