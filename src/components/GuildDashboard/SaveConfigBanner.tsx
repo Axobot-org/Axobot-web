@@ -13,7 +13,7 @@ interface SaveConfigBannerProps {
 
 export default function SaveConfigBanner({ guildId }: SaveConfigBannerProps) {
   const { patchCommand, loading, data } = usePatchGuildConfig();
-  const { state, resetState } = useGuildConfigEditionContext();
+  const { state, hasAnyUnsavedChange, resetState } = useGuildConfigEditionContext();
   const isOnMobile = useIsOnMobile();
 
   function saveConfiguration() {
@@ -26,15 +26,13 @@ export default function SaveConfigBanner({ guildId }: SaveConfigBannerProps) {
     }
   }, [data, resetState]);
 
-  const isVisible = Object.keys(state).length !== 0;
-
   const buttonSize = isOnMobile ? "small" : "medium";
 
   return (
     <Snackbar
       // somehow 'horizontal: left' with sticky position centers the banner
       anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
-      open={isVisible}
+      open={hasAnyUnsavedChange}
       sx={{
         width: { xs: "95vw", md: "70vw" },
         maxWidth: "900px",
