@@ -6,6 +6,7 @@ type GuildConfigEdition = Record<string, EditionValueType>;
 interface ContextType {
   guildId: string;
   state: GuildConfigEdition;
+  hasAnyUnsavedChange: boolean;
   setValue: (optionId: string, value: EditionValueType) => void;
   resetValue: (optionId: string) => void;
   resetState: () => void;
@@ -14,6 +15,7 @@ interface ContextType {
 const GuildConfigEditionContext = createContext<ContextType>({
   guildId: "",
   state: {},
+  hasAnyUnsavedChange: false,
   setValue: () => {
     throw new Error("GuildConfigEditionContext is not provided");
   },
@@ -33,23 +35,27 @@ export function GuildConfigEditionProvider({ guildId, children }: PropsWithChild
   const [state, setState] = useState<GuildConfigEdition>({});
 
   const setValue = useCallback((optionId: string, value: EditionValueType) => {
-    setState({
-      ...state,
+    setState(prevState => ({
+      ...prevState,
       [optionId]: value,
-    });
-  }, [state]);
+    }));
+  }, []);
 
   const resetValue = useCallback((optionId: string) => {
-    const rest = Object.entries(state).filter(([key]) => key !== optionId);
-    setState(Object.fromEntries(rest));
-  }, [state]);
+    setState(prevState => {
+      const rest = Object.entries(prevState).filter(([key]) => key !== optionId);
+      return Object.fromEntries(rest);
+    });
+  }, []);
 
   const resetState = useCallback(() => {
     setState({});
   }, []);
 
+  const hasAnyUnsavedChange = Object.keys(state).length !== 0;
+
   return (
-    <GuildConfigEditionContext.Provider value={{ guildId, state, setValue, resetValue, resetState }}>
+    <GuildConfigEditionContext.Provider value={{ guildId, state, hasAnyUnsavedChange, setValue, resetValue, resetState }}>
       {children}
     </GuildConfigEditionContext.Provider>
   );
