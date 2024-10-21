@@ -61,9 +61,7 @@ function RoleRewardRow({ roleReward, role, editRewardLevel, deleteReward }: Role
 
   return (
     <Stack direction="row" height="48px" alignItems="center">
-      <Stack direction="row" py={1} minWidth="18rem" alignItems="first baseline">
-        <RoleMention name={role?.name ?? roleReward.roleId} color={role?.color ?? 0} />
-        <Typography color="gray" whiteSpace="preserve"> given at level </Typography>
+      <Stack direction="row" py={1} gap={1} minWidth="18rem" alignItems="first baseline">
         {isEditing
           ? <NumericInput
             value={roleReward.level}
@@ -74,8 +72,9 @@ function RoleRewardRow({ roleReward, role, editRewardLevel, deleteReward }: Role
             autoFocus
             onBlur={() => setIsEditing(false)}
           />
-          : <Typography fontWeight="bold">{roleReward.level}</Typography>
+          : <Typography fontWeight="bold" minWidth="4.5rem">LVL {roleReward.level}</Typography>
         }
+        <RoleMention name={role?.name ?? roleReward.roleId} color={role?.color ?? 0} />
       </Stack>
       {!isEditing && <>
         <Tooltip title="Edit" arrow>
