@@ -53,11 +53,14 @@ export default function ConfigurationCategoryPage({ guildId, activePage }: Confi
     <PageContainer>
       <ComponentsContainer>
         {Object.entries(optionsMap).map(([optionName, option]) => (
-          <ConfigComponentContextProvider key={optionName} value={{
-            option: option,
-            config: optionsMap,
-            isDisabled: getMissingOptionRequirement(option, optionsMap) !== null,
-          }}>
+          <ConfigComponentContextProvider
+            key={optionName}
+            value={{
+              option: option,
+              config: optionsMap,
+              isDisabled: getMissingOptionRequirement(option, optionsMap) !== null,
+            }}
+          >
             <GenericConfigComponent
               optionId={optionName}
               option={option}
@@ -87,47 +90,47 @@ const ComponentsContainer = styled(Stack)(({ theme }) => ({
   gap: theme.spacing(1),
 }));
 
-function GenericConfigComponent({ optionId, option }: { optionId: string, option: PopulatedGuildConfig[string]}) {
+function GenericConfigComponent({ optionId, option }: { optionId: string; option: PopulatedGuildConfig[string] }) {
   switch (option.type) {
-  case "int":
-    return <IntConfigComponent optionId={optionId} option={option} />;
-  case "float":
-    return <FloatConfigComponent optionId={optionId} option={option} />;
-  case "boolean":
-    return <BooleanConfigComponent optionId={optionId} option={option} />;
-  case "enum":
-    return <EnumConfigComponent optionId={optionId} option={option} />;
-  case "text":
-    return <TextConfigComponent optionId={optionId} option={option} />;
-  case "role":
-    return <RoleConfigComponent optionId={optionId} option={option} />;
-  case "roles_list":
-    return <RolesListConfigComponent optionId={optionId} option={option} />;
-  case "text_channel":
-    return <TextChannelConfigComponent optionId={optionId} option={option} />;
-  case "text_channels_list":
-    return <TextChannelsListConfigComponent optionId={optionId} option={option} />;
-  case "voice_channel":
-    return <VoiceChannelConfigComponent optionId={optionId} option={option} />;
-  case "category":
-    return <CategoryConfigComponent optionId={optionId} option={option} />;
-  case "color":
-    return <ColorConfigComponent optionId={optionId} option={option} />;
-  case "levelup_channel":
-    return <LevelupChannelConfigComponent optionId={optionId} option={option} />;
-  default:
-    return null;
+    case "int":
+      return <IntConfigComponent optionId={optionId} option={option} />;
+    case "float":
+      return <FloatConfigComponent optionId={optionId} option={option} />;
+    case "boolean":
+      return <BooleanConfigComponent optionId={optionId} option={option} />;
+    case "enum":
+      return <EnumConfigComponent optionId={optionId} option={option} />;
+    case "text":
+      return <TextConfigComponent optionId={optionId} option={option} />;
+    case "role":
+      return <RoleConfigComponent optionId={optionId} option={option} />;
+    case "roles_list":
+      return <RolesListConfigComponent optionId={optionId} option={option} />;
+    case "text_channel":
+      return <TextChannelConfigComponent optionId={optionId} option={option} />;
+    case "text_channels_list":
+      return <TextChannelsListConfigComponent optionId={optionId} option={option} />;
+    case "voice_channel":
+      return <VoiceChannelConfigComponent optionId={optionId} option={option} />;
+    case "category":
+      return <CategoryConfigComponent optionId={optionId} option={option} />;
+    case "color":
+      return <ColorConfigComponent optionId={optionId} option={option} />;
+    case "levelup_channel":
+      return <LevelupChannelConfigComponent optionId={optionId} option={option} />;
+    default:
+      return null;
   }
 }
 
-function SpecialCategoryComponent({ guildId, activePage }: {guildId: string, activePage: GuildConfigOptionCategory}) {
+function SpecialCategoryComponent({ guildId, activePage }: { guildId: string; activePage: GuildConfigOptionCategory }) {
   switch (activePage) {
-  case "edition-logs":
-    return <ConfigEditionLogsComponent guildId={guildId} />;
-  case "xp":
-    return <XpCategoryComponent guildId={guildId} />;
-  default:
-    return null;
+    case "edition-logs":
+      return <ConfigEditionLogsComponent guildId={guildId} />;
+    case "xp":
+      return <XpCategoryComponent guildId={guildId} />;
+    default:
+      return null;
   }
 }
 
@@ -136,7 +139,7 @@ function getRequiredOptionNames(option: AllRepresentation): string[] {
     return [];
   }
 
-  return option.requires.map(req => req.option);
+  return option.requires.map((req) => req.option);
 }
 
 function filterAndSortOptions(config: PopulatedGuildConfig): PopulatedGuildConfig {

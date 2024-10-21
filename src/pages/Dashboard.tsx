@@ -40,7 +40,11 @@ function GuildsGrid() {
   if (sortedGuilds.length === 0) {
     return (
       <Typography my={4}>
-        You have no server to manage. The <b>Administrator</b> permission is required to manage Axobot in a server.
+        You have no server to manage. The
+        {" "}
+        <b>Administrator</b>
+        {" "}
+        permission is required to manage Axobot in a server.
       </Typography>
     );
   }
@@ -52,12 +56,10 @@ function GuildsGrid() {
       ))}
     </Stack>
   );
-
 }
 
 
 export default function GuildSelection() {
-
   return (
     <Fragment>
       <PageTitle text="Select your server" />

@@ -33,7 +33,7 @@ export default function Footer() {
   );
 }
 
-function CustomLink({ href, newTab, children }: PropsWithChildren<{href: string, newTab?: boolean}>) {
+function CustomLink({ href, newTab, children }: PropsWithChildren<{ href: string; newTab?: boolean }>) {
   return (
     <MUILink
       component={RouterLink}

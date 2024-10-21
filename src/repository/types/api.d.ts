@@ -7,11 +7,11 @@ export interface LoginJSONResponse {
 }
 
 export interface RoleReward {
-  id: string,
-  guildId: string,
-  roleId: string,
-  level: string,
-  addedAt: string,
+  id: string;
+  guildId: string;
+  roleId: string;
+  level: string;
+  addedAt: string;
 }
 
 export interface LeaderboardResponse {
@@ -19,20 +19,20 @@ export interface LeaderboardResponse {
     id: string;
     name: string;
     icon: string | null;
-  } | null,
-  players: RankedPlayer[],
-  players_count: number,
-  xp_type: string,
-  xp_rate: number,
-  xp_decay: number,
+  } | null;
+  players: RankedPlayer[];
+  players_count: number;
+  xp_type: string;
+  xp_rate: number;
+  xp_decay: number;
   role_rewards: (
     RoleReward & {
       role: {
-        name: string,
-        color: number,
-      } | null,
+        name: string;
+        color: number;
+      } | null;
     }
-  )[] | undefined,
+  )[] | undefined;
 }
 
 export type LeaderboardAsJson = {
@@ -45,7 +45,7 @@ export interface BotInfoResponse {
 }
 
 export interface ConfigEditionLog {
-  id: number,
+  id: number;
   user_id: string;
   username: string | null;
   avatar: string;

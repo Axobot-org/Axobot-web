@@ -4,7 +4,7 @@ type OptionRequirement = {
 } | {
   option: string;
   to_be_defined: true;
-}
+};
 
 interface BaseOptionRepresentation {
   is_listed: boolean;

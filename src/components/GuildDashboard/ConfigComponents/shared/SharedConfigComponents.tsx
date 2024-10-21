@@ -43,7 +43,7 @@ export function LargeConfiguration({ optionId, children }: PropsWithChildren<Sim
       <Stack flex={1}>
         <ConfigurationName>
           {optionName}
-          {isEdited && <EditedBadge/>}
+          {isEdited && <EditedBadge />}
           <MissingRequirementLabel />
         </ConfigurationName>
         <ConfigurationDescription>{optionDescription}</ConfigurationDescription>

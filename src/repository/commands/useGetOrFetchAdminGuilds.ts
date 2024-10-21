@@ -8,7 +8,7 @@ export function useGetOrFetchAdminGuilds() {
   const { logoutCommand } = useLogout();
 
   const filteredGuilds = useMemo(() => (
-    data?.filter(guild => guild.isAdmin)
+    data?.filter((guild) => guild.isAdmin)
   ), [data]);
 
   useEffect(() => {

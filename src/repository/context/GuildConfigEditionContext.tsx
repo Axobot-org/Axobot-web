@@ -44,11 +44,11 @@ const GuildConfigEditionContext = createContext<ContextType>({
   },
 });
 
-export function GuildConfigEditionProvider({ guildId, children }: PropsWithChildren<{guildId: string}>) {
+export function GuildConfigEditionProvider({ guildId, children }: PropsWithChildren<{ guildId: string }>) {
   const [state, setState] = useState<GuildConfigEdition>(getDefaultState());
 
   const setBaseOptionValue = useCallback((optionId: string, value: EditionValueType) => {
-    setState(prevState => ({
+    setState((prevState) => ({
       ...prevState,
       baseOptions: {
         ...prevState.baseOptions,
@@ -58,7 +58,7 @@ export function GuildConfigEditionProvider({ guildId, children }: PropsWithChild
   }, []);
 
   const resetBaseOptionValue = useCallback((optionId: string) => {
-    setState(prevState => {
+    setState((prevState) => {
       const rest = Object.entries(prevState.baseOptions).filter(([key]) => key !== optionId);
       return {
         ...prevState,
@@ -68,14 +68,14 @@ export function GuildConfigEditionProvider({ guildId, children }: PropsWithChild
   }, []);
 
   const setRoleRewardsValue = useCallback((roleRewards: GuildConfigEdition["roleRewards"]) => {
-    setState(prevState => ({
+    setState((prevState) => ({
       ...prevState,
       roleRewards,
     }));
   }, []);
 
   const resetRoleRewardsValue = useCallback(() => {
-    setState(prevState => ({
+    setState((prevState) => ({
       ...prevState,
       roleRewards: undefined,
     }));
@@ -97,7 +97,8 @@ export function GuildConfigEditionProvider({ guildId, children }: PropsWithChild
       setRoleRewardsValue,
       resetRoleRewardsValue,
       resetState,
-    }}>
+    }}
+    >
       {children}
     </GuildConfigEditionContext.Provider>
   );

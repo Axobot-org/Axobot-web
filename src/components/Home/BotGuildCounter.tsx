@@ -25,7 +25,7 @@ export default function BotGuildCounter() {
   );
 }
 
-function GuildCount({ guildCount }: {guildCount: number}) {
+function GuildCount({ guildCount }: { guildCount: number }) {
   return (
     <Typography variant="h4" color="primary" component="span">
       {guildCount + "+"}

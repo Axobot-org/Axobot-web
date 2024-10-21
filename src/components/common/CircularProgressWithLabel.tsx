@@ -49,20 +49,22 @@ export default function CircularProgressWithLabel(
         size={40}
         thickness={3}
       />
-      {label && <Box
-        sx={{
-          top: 0,
-          left: 0,
-          bottom: 0,
-          right: 0,
-          position: "absolute",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        {Label}
-      </Box>}
+      {label && (
+        <Box
+          sx={{
+            top: 0,
+            left: 0,
+            bottom: 0,
+            right: 0,
+            position: "absolute",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          {Label}
+        </Box>
+      )}
     </Box>
   );
 }

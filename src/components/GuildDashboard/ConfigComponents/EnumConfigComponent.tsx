@@ -35,7 +35,7 @@ export default function EnumConfigComponent({ optionId, option }: EnumConfigComp
         variant="standard"
       >
         {
-          option.values.map(value => (
+          option.values.map((value) => (
             <MenuItem key={value} value={value}>{value}</MenuItem>
           ))
         }

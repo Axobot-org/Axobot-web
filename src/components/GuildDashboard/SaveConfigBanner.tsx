@@ -48,7 +48,9 @@ export default function SaveConfigBanner({ guildId }: SaveConfigBannerProps) {
       <SnackbarContent elevation={5}>
         <Stack>
           <Typography variant="h6">
-            <SyncProblemIcon color="warning" sx={{ verticalAlign: "sub" }} /> Unsaved changes
+            <SyncProblemIcon color="warning" sx={{ verticalAlign: "sub" }} />
+            {" "}
+            Unsaved changes
           </Typography>
           <Typography variant="subtitle2" color="gray">
             You have unsaved changes in the configuration. They won't be applied until you save them.
@@ -56,7 +58,7 @@ export default function SaveConfigBanner({ guildId }: SaveConfigBannerProps) {
         </Stack>
         <ActionsStack direction="row">
           <Button size={buttonSize} disabled={loading} variant="contained" onClick={saveConfiguration}>Save</Button>
-          <DiscardButton size={buttonSize} disabled={loading} onClick={resetState} >Discard</DiscardButton>
+          <DiscardButton size={buttonSize} disabled={loading} onClick={resetState}>Discard</DiscardButton>
         </ActionsStack>
       </SnackbarContent>
     </Snackbar>

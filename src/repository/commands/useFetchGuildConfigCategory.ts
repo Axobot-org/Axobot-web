@@ -5,8 +5,8 @@ import { PopulatedGuildConfig } from "../types/guild";
 import { GuildConfigOptionCategory } from "../types/guild-config-types";
 
 interface MethodParameters {
-  guildId: string,
-  category: GuildConfigOptionCategory,
+  guildId: string;
+  category: GuildConfigOptionCategory;
 }
 
 export function useFetchGuildConfigCategory({ guildId, category }: MethodParameters) {

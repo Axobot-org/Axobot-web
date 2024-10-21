@@ -1,3 +1,4 @@
+/* eslint-disable @stylistic/jsx-one-expression-per-line */
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
 import { Box, Collapse, IconButton, Link, Paper, Stack, Typography } from "@mui/material";
 import { useState } from "react";
@@ -45,7 +46,7 @@ export default function TOS() {
 
       <Box mt={{ xs: 2, md: 4 }} mb={6} width="100%">
         <Typography variant="body2" fontStyle="italic">
-        Date of the latest revision: August 8th, 2024.
+          Date of the latest revision: August 8th, 2024.
         </Typography>
 
         <Typography fontWeight="bold" my={2} textAlign="justify">Please read these Terms of use carefully before using the Features. Before using any of the Features, you must first agree to these Terms. By accessing the Features or by otherwise using them, you expressly confirm that you fully and irrevocably agree to these Terms.</Typography>
@@ -76,7 +77,7 @@ export default function TOS() {
           </SubtitleSection>
 
           <SubtitleSection title="2.2 Hosting">
-            <p>The Website, the Bot and the related database are hosted by Hetzner Online GmbH (Industriestr. 25, 91710 Gunzenhausen, Germany, see <ExternalLink href={"https://hetzner.com"} />).</p>
+            <p>The Website, the Bot and the related database are hosted by Hetzner Online GmbH (Industriestr. 25, 91710 Gunzenhausen, Germany, see <ExternalLink href="https://hetzner.com" />).</p>
           </SubtitleSection>
 
           <SubtitleSection title="2.3 User’s Eligibility">
@@ -124,7 +125,8 @@ export default function TOS() {
             <p>The equipment (computers, telephones, software, telecommunication means, etc.) used to access the Website are the sole responsibility of the User, as are the telecommunication costs incurred by their use.</p>
 
             <p>When using the Website, the User undertakes to behave in a normal and reasonable manner and not to hinder its proper operation in any way whatsoever.<br />
-            In particular, the User undertakes not to:</p>
+              In particular, the User undertakes not to:
+            </p>
             <ul>
               <li>disrupt, slow down, block or alter the normal flow of data exchanged when using the Website;</li>
               <li>speed up the scrolling of the Website's content in such a way as to modify or alter its operation;</li>
@@ -137,7 +139,8 @@ export default function TOS() {
 
           <SubtitleSection title="2.8 Hypertext links">
             <p>The website may contain hypertext links to other websites over which Axobot has no control. Although Axobot regularly checks the content of these sites, it accepts no responsibility for it.<br />
-            The same applies to any information or page presented by Discord about or in connection with our Service.</p>
+              The same applies to any information or page presented by Discord about or in connection with our Service.
+            </p>
 
             <p>Axobot authorizes the creation of hypertext links to any page or document on its website that is directly accessible to the public (with the exception of documents that have been transmitted after submission of a form to Axobot), provided that the creation of these links is not carried out for commercial or advertising purposes and that Axobot has not expressly forbidden the creation of this link.</p>
 

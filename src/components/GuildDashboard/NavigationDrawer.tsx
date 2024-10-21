@@ -64,10 +64,10 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== "open" 
 );
 
 interface PageTabProps {
-  isOpen: boolean,
-  isSelected: boolean,
-  to?: string,
-  component?: React.ElementType,
+  isOpen: boolean;
+  isSelected: boolean;
+  to?: string;
+  component?: React.ElementType;
 }
 
 const PageTab = styled(ListItemButton, {
@@ -94,28 +94,28 @@ const PageTab = styled(ListItemButton, {
 
 function TabIcon({ page }: { page: GuildConfigOptionCategory }) {
   switch (page) {
-  case "core":
-    return <Settings />;
-  case "info":
-    return <InfoOutlined />;
-  case "moderation":
-    return <Gavel />;
-  case "partners":
-    return <Handshake />;
-  case "poll-channels":
-    return <HowToVote />;
-  case "streamers":
-    return <LiveTv />;
-  case "voice-channels":
-    return <Mic />;
-  case "welcome":
-    return <WavingHand />;
-  case "xp":
-    return <Leaderboard />;
-  case "edition-logs":
-    return <Feed />;
-  default:
-    return <QuestionMark />;
+    case "core":
+      return <Settings />;
+    case "info":
+      return <InfoOutlined />;
+    case "moderation":
+      return <Gavel />;
+    case "partners":
+      return <Handshake />;
+    case "poll-channels":
+      return <HowToVote />;
+    case "streamers":
+      return <LiveTv />;
+    case "voice-channels":
+      return <Mic />;
+    case "welcome":
+      return <WavingHand />;
+    case "xp":
+      return <Leaderboard />;
+    case "edition-logs":
+      return <Feed />;
+    default:
+      return <QuestionMark />;
   }
 }
 
@@ -123,7 +123,7 @@ function getPageTitle(page: string) {
   return getGuildDashboardTranslations(`category_name.${page}`);
 }
 
-function TabContent({ page, isOpen }: { page: GuildConfigOptionCategory, isOpen: boolean }) {
+function TabContent({ page, isOpen }: { page: GuildConfigOptionCategory; isOpen: boolean }) {
   const formatedTitle = getPageTitle(page);
   return (
     <Fragment>
@@ -143,9 +143,9 @@ function TabContent({ page, isOpen }: { page: GuildConfigOptionCategory, isOpen:
 }
 
 interface NavigationDrawerContentProps {
-  open: boolean,
-  activePage?: GuildConfigOptionCategory,
-  toggleOpen: () => void,
+  open: boolean;
+  activePage?: GuildConfigOptionCategory;
+  toggleOpen: () => void;
 }
 
 function NavigationDrawerContent({ open, activePage, toggleOpen }: NavigationDrawerContentProps) {
@@ -161,7 +161,7 @@ function NavigationDrawerContent({ open, activePage, toggleOpen }: NavigationDra
         </DrawerHeader>
         <Divider />
         <List>
-          {GuildConfigOptionCategoryNames.map(page => (
+          {GuildConfigOptionCategoryNames.map((page) => (
             <ListItem key={page} disablePadding sx={{ display: "block" }}>
               <PageTab
                 isOpen={open}

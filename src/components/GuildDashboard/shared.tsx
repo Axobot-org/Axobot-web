@@ -1,6 +1,6 @@
 import { CircularProgress, Stack, styled, Typography } from "@mui/material";
 
-export function ErrorPage({ title, message }: {title: string, message: string}) {
+export function ErrorPage({ title, message }: { title: string; message: string }) {
   return (
     <TextPageContainer>
       <Typography variant="h6">

@@ -30,7 +30,7 @@ export default function RoleRewardsList({ guildId, roleRewards, editRewardLevel,
         <RoleRewardRow
           key={roleReward.id}
           roleReward={roleReward}
-          role={roles.find(r => r.id === roleReward.roleId)}
+          role={roles.find((r) => r.id === roleReward.roleId)}
           editRewardLevel={editRewardLevel}
           deleteReward={deleteReward}
         />
@@ -63,32 +63,41 @@ function RoleRewardRow({ roleReward, role, editRewardLevel, deleteReward }: Role
     <Stack direction="row" height="48px" alignItems="center">
       <Stack direction="row" py={1} gap={1} minWidth="18rem" alignItems="first baseline">
         {isEditing
-          ? <NumericInput
-            value={roleReward.level}
-            min={1}
-            max={10_000}
-            acceptDecimals={false}
-            onValueChange={onLevelChange}
-            autoFocus
-            onBlur={() => setIsEditing(false)}
-          />
-          : <Typography fontWeight="bold" minWidth="4.5rem">LVL {roleReward.level}</Typography>
-        }
+          ? (
+            <NumericInput
+              value={roleReward.level}
+              min={1}
+              max={10_000}
+              acceptDecimals={false}
+              onValueChange={onLevelChange}
+              autoFocus
+              onBlur={() => setIsEditing(false)}
+            />
+          )
+          : <Typography fontWeight="bold" minWidth="4.5rem">LVL {roleReward.level}</Typography>}
         <RoleMention name={role?.name ?? roleReward.roleId} color={role?.color ?? 0} />
       </Stack>
-      {!isEditing && <>
-        <Tooltip title="Edit" arrow>
-          <ColoredIconButton size="small" colorOnHover="orange" onClick={startEditing}><EditIcon fontSize="small" /></ColoredIconButton>
-        </Tooltip>
-        <Tooltip title="Delete" arrow>
-          <ColoredIconButton size="small" colorOnHover="red" onClick={onDelete}><HighlightOffIcon fontSize="small" /></ColoredIconButton>
-        </Tooltip>
-      </>}
+      {!isEditing && (
+        <>
+          <Tooltip title="Edit" arrow>
+            <ColoredIconButton size="small" colorOnHover="orange" onClick={startEditing}>
+              <EditIcon fontSize="small" />
+            </ColoredIconButton>
+          </Tooltip>
+          <Tooltip title="Delete" arrow>
+            <ColoredIconButton size="small" colorOnHover="red" onClick={onDelete}>
+              <HighlightOffIcon fontSize="small" />
+            </ColoredIconButton>
+          </Tooltip>
+        </>
+      )}
     </Stack>
   );
 }
 
-const ColoredIconButton = styled(IconButton, { shouldForwardProp: prop => prop !== "colorOnHover" })<{colorOnHover: string}>(({ theme, colorOnHover }) => ({
+const ColoredIconButton = styled(IconButton,
+  { shouldForwardProp: (prop) => prop !== "colorOnHover" }
+)<{ colorOnHover: string }>(({ theme, colorOnHover }) => ({
   maxHeight: "30px",
   color: theme.palette.grey[600],
   transition: "color 0.2s",

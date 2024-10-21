@@ -43,14 +43,16 @@ export default function RoleConfigComponent({ optionId, option }: RoleConfigComp
   const currentRole: GuildRole | null = (
     roles.find((role) => role.id === currentValue)
     || (
-      currentValue === null ? null : {
-        id: currentValue,
-        name: currentValue,
-        color: 0,
-        position: 0,
-        permissions: "0",
-        managed: false,
-      }
+      currentValue === null
+        ? null
+        : {
+          id: currentValue,
+          name: currentValue,
+          color: 0,
+          position: 0,
+          permissions: "0",
+          managed: false,
+        }
     )
   );
 
@@ -68,30 +70,33 @@ export default function RoleConfigComponent({ optionId, option }: RoleConfigComp
     <SimpleConfiguration optionId={optionId}>
       {!error && (
         (editing && !isDisabled)
-          ? <Autocomplete
-            openOnFocus
-            blurOnSelect
-            options={roles}
-            value={currentRole}
-            onChange={(_, newValue) => onChange(newValue)}
-            sx={{ width: 250 }}
-            loading={isLoading || !roles}
-            isOptionEqualToValue={(opt, value) => opt.id === value.id}
-            getOptionLabel={(role) => role.name}
-            onBlur={() => setEditing(false)}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                autoFocus
-                variant="standard"
-                placeholder="Pick a role" />
-            )}
-            renderOption={(props, opt) => (
-              <li {...props} key={opt.id}>
-                <RoleMention name={opt.name} color={opt.color} />
-              </li>
-            )}
-          />
+          ? (
+            <Autocomplete
+              openOnFocus
+              blurOnSelect
+              options={roles}
+              value={currentRole}
+              onChange={(_, newValue) => onChange(newValue)}
+              sx={{ width: 250 }}
+              loading={isLoading || !roles}
+              isOptionEqualToValue={(opt, value) => opt.id === value.id}
+              getOptionLabel={(role) => role.name}
+              onBlur={() => setEditing(false)}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  autoFocus
+                  variant="standard"
+                  placeholder="Pick a role"
+                />
+              )}
+              renderOption={(props, opt) => (
+                <li {...props} key={opt.id}>
+                  <RoleMention name={opt.name} color={opt.color} />
+                </li>
+              )}
+            />
+          )
           : <ReadonlyRolePicker currentRole={currentRole} onClick={() => setEditing(!isDisabled)} />
       )}
     </SimpleConfiguration>
