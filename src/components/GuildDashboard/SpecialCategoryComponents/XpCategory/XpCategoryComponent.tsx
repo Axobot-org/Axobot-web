@@ -6,6 +6,7 @@ import { useFetchGuildConfigCategory } from "../../../../repository/commands/use
 import { useGuildConfigRoleRewardsEditionContext } from "../../../../repository/context/GuildConfigEditionContext";
 import { useFetchGuildConfigQuery, useFetchGuildRoleRewardsQuery } from "../../../../repository/redux/api/api";
 import { ExternalRoutesURLs } from "../../../../router/router";
+import AddRoleRewardButton from "./AddRoleRewardButton";
 import DownloadLeaderboardButton from "./DownloadLeaderboardButton";
 import RoleRewardsList from "./RoleRewardsList";
 import UploadLeaderboardButton from "./UploadLeaderboardButton";
@@ -81,6 +82,7 @@ function RolesRewardsSection({ guildId }: { guildId: string }) {
       title = `Role Rewards (${roleRewards.length})`;
     }
   }
+  const canAddMoreRoles = maxRoles !== undefined && roleRewards !== undefined && roleRewards.length < maxRoles;
 
   const editRewardLevel = (roleRewardId: string, level: number) => {
     if (!roleRewards) return;
@@ -102,6 +104,16 @@ function RolesRewardsSection({ guildId }: { guildId: string }) {
     }
   };
 
+  const addRoleReward = (roleId: string) => {
+    if (!roleRewards) return;
+    const newRewards = [...roleRewards, { roleId, level: findNextUnusedLevel()?.toString(), id: roleId }];
+    if (roleRewardsFromApi !== undefined && compareRoleRewards(newRewards, roleRewardsFromApi)) {
+      resetValue();
+    } else {
+      setValue(newRewards);
+    }
+  };
+
   return (
     <Fragment>
       <DividerWithMargins />
@@ -111,6 +123,7 @@ function RolesRewardsSection({ guildId }: { guildId: string }) {
           Roles rewards are roles given to your members when they reach a certain level of XP. This is a great way to encourage your members to be active! <Link href={`${ExternalRoutesURLs.documentation}/en/latest/xp.html#roles-rewards`} target="_blank" sx={{ fontStyle: "normal" }}>[Read more]</Link>
         </Description>
         <RoleRewardsList guildId={guildId} roleRewards={roleRewards ?? []} editRewardLevel={editRewardLevel} deleteReward={deleteRoleReward} />
+        {canAddMoreRoles && <AddRoleRewardButton guildId={guildId} existingRoleIds={roleRewards.map(rr => rr.roleId)} addNewReward={addRoleReward} />}
       </Stack>
     </Fragment>
   );
@@ -120,6 +133,15 @@ function RolesRewardsSection({ guildId }: { guildId: string }) {
     if (a.some((rr => !b.find(rr2 => rr2.roleId === rr.roleId && rr2.level === rr.level)))) return false;
     if (b.some((rr => !a.find(rr2 => rr2.roleId === rr.roleId && rr2.level === rr.level)))) return false;
     return true;
+  }
+
+  function findNextUnusedLevel() {
+    for (let i = 1; i <= 100; i++) {
+      if (!roleRewards?.some(rr => rr.level === String(i))) {
+        return i;
+      }
+    }
+    return 1;
   }
 }
 
