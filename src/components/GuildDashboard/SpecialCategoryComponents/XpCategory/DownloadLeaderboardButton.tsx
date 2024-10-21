@@ -5,7 +5,7 @@ import { Fragment } from "react/jsx-runtime";
 
 import { useLazyFetchLeaderboardAsJsonQuery } from "../../../../repository/redux/api/api";
 
-export default function DownloadLeaderboardButton({ guildId }: {guildId: string}) {
+export default function DownloadLeaderboardButton({ guildId }: { guildId: string }) {
   const linkElement = useRef<HTMLAnchorElement | null>(null);
   const [trigger, { isLoading }] = useLazyFetchLeaderboardAsJsonQuery();
 

@@ -12,7 +12,6 @@ interface GuildBoxProps {
 const BANNER_HEIGHT = 110;
 
 export default function GuildBox({ guild }: GuildBoxProps) {
-
   const icon = guild.icon ?? undefined;
   const banner = guild.banner ?? guild.splash ?? undefined;
 
@@ -28,13 +27,15 @@ export default function GuildBox({ guild }: GuildBoxProps) {
   return (
     <Container>
       <ActionArea {...{ component: Link, to: `/dashboard/${guild.id}` }} disabled={!guild.isBotPresent}>
-        {banner ? (
-          <CardMedia component="img" height={BANNER_HEIGHT} image={banner} alt="guild banner" />
-        ) : (
-          <GuildColoredBannedContainer>
-            <GuildColoredBanned url={icon} />
-          </GuildColoredBannedContainer>
-        )}
+        {banner
+          ? (
+            <CardMedia component="img" height={BANNER_HEIGHT} image={banner} alt="guild banner" />
+          )
+          : (
+            <GuildColoredBannedContainer>
+              <GuildColoredBanned url={icon} />
+            </GuildColoredBannedContainer>
+          )}
         <GuildAvatar src={icon}>{avatarText}</GuildAvatar>
         <CardContentCentered>
           <GuildName name={guild.name} />
@@ -87,7 +88,7 @@ const GuildColoredBannedContainer = styled(Box)({
 
 const GuildColoredBanned = styled(Box, {
   shouldForwardProp: (prop) => prop !== "url",
-})<{url: string | undefined}>(({ theme, url }) => ({
+})<{ url: string | undefined }>(({ theme, url }) => ({
   height: BANNER_HEIGHT,
   ...(url
     ? {
@@ -120,7 +121,7 @@ const CardContentCentered = styled(CardContent)(({ theme }) => ({
   overflow: "hidden",
 }));
 
-function GuildName({ name }: {name: string}) {
+function GuildName({ name }: { name: string }) {
   return (
     <Typography gutterBottom variant="h6" textAlign="center" alignSelf="center">
       {name}
@@ -128,26 +129,28 @@ function GuildName({ name }: {name: string}) {
   );
 }
 
-function InviteButton({ guildId }: {guildId: string}) {
+function InviteButton({ guildId }: { guildId: string }) {
   const url = getBotInviteUrl(guildId);
 
-  return <Button
-    sx={{
-      visibility: "hidden",
-      position: "absolute",
-      opacity: 0,
-      top: "50%",
-      left: "50%",
-      transform: "translate(-50%, -50%)",
-      transition: "opacity 0.3s",
-      whiteSpace: "nowrap",
-    }}
-    className="invite-button"
-    variant="contained"
-    color="primary"
-    href={url}
-    target="_blank"
-  >
-    Invite Axobot
-  </Button>;
+  return (
+    <Button
+      sx={{
+        visibility: "hidden",
+        position: "absolute",
+        opacity: 0,
+        top: "50%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
+        transition: "opacity 0.3s",
+        whiteSpace: "nowrap",
+      }}
+      className="invite-button"
+      variant="contained"
+      color="primary"
+      href={url}
+      target="_blank"
+    >
+      Invite Axobot
+    </Button>
+  );
 }

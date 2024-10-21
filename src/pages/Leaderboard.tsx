@@ -22,16 +22,16 @@ enum ErrorMessage {
 
 function getErrorText(errorMessage: string) {
   switch (errorMessage) {
-  case ErrorMessage.InvalidToken:
-    return "Authentication failed, please refresh the page and try again.";
-  case ErrorMessage.XpNotEnabled:
-    return "XP is not enabled for this guild.";
-  case ErrorMessage.UserNotMember:
-    return "You do not have permission to view this guild's leaderboard.";
-  case ErrorMessage.GuildNotFound:
-    return "This guild does not exist.";
-  default:
-    return "Sorry, an unexpected error has occurred.";
+    case ErrorMessage.InvalidToken:
+      return "Authentication failed, please refresh the page and try again.";
+    case ErrorMessage.XpNotEnabled:
+      return "XP is not enabled for this guild.";
+    case ErrorMessage.UserNotMember:
+      return "You do not have permission to view this guild's leaderboard.";
+    case ErrorMessage.GuildNotFound:
+      return "This guild does not exist.";
+    default:
+      return "Sorry, an unexpected error has occurred.";
   }
 }
 

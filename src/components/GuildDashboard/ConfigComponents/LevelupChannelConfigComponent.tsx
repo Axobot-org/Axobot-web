@@ -71,7 +71,7 @@ export default function LevelupChannelConfigComponent({ optionId, option }: Leve
           disabled={isDisabled}
         >
           {
-            [...staticValues, SpecificChannelEnum].map(value => (
+            [...staticValues, SpecificChannelEnum].map((value) => (
               <MenuItem key={value} value={value}>{translateEnum(value)}</MenuItem>
             ))
           }

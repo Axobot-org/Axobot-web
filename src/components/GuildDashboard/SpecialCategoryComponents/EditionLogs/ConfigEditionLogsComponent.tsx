@@ -8,7 +8,7 @@ import { RoleMentionFromId } from "../../../common/RoleMention";
 import { ErrorPage, LoadingPlaceholder } from "../../shared";
 
 interface ConfigEditionLogsComponentProps {
-  guildId: string
+  guildId: string;
 }
 
 export default function ConfigEditionLogsComponent({ guildId }: ConfigEditionLogsComponentProps) {
@@ -41,7 +41,7 @@ export default function ConfigEditionLogsComponent({ guildId }: ConfigEditionLog
   );
 }
 
-function LogRow({ log }: {log: ConfigEditionLog}) {
+function LogRow({ log }: { log: ConfigEditionLog }) {
   return (
     <LogRowContainer>
       <Typography variant="body2" color="textDisabled">{new Date(log.date).toLocaleString()}</Typography>
@@ -71,12 +71,24 @@ const LogRowContainer = styled(Stack)(({ theme }) => ({
   },
 }));
 
-function LogAction({ log }: {log: ConfigEditionLog}) {
+function LogAction({ log }: { log: ConfigEditionLog }) {
   if (logIsSconfigOptionSet(log)) {
-    return <Fragment>edited option <OptionName optionId={log.data.option} /><ActionSource log={log} /></Fragment>;
+    return (
+      <Fragment>
+        edited option
+        <OptionName optionId={log.data.option} />
+        <ActionSource log={log} />
+      </Fragment>
+    );
   }
   if (logIsSconfigOptionReset(log)) {
-    return <Fragment>reset option <OptionName optionId={log.data.option} /><ActionSource log={log} /></Fragment>;
+    return (
+      <Fragment>
+        reset option
+        <OptionName optionId={log.data.option} />
+        <ActionSource log={log} />
+      </Fragment>
+    );
   }
   if (logIsLeaderboardPut(log)) {
     return "uploaded a new leaderboard";
@@ -88,7 +100,12 @@ function LogAction({ log }: {log: ConfigEditionLog}) {
     if (log.data.newRewards.length === 1) {
       return (
         <Fragment>
-          set <b>role rewards</b> to role{" "}
+          set
+          {" "}
+          <b>role rewards</b>
+          {" "}
+          to role
+          {" "}
           <RoleMentionFromId id={log.data.newRewards[0].roleId} />
           <ActionSource log={log} />
         </Fragment>
@@ -96,7 +113,12 @@ function LogAction({ log }: {log: ConfigEditionLog}) {
     }
     return (
       <Fragment>
-        set <b>role rewards</b> to roles{" "}
+        set
+        {" "}
+        <b>role rewards</b>
+        {" "}
+        to roles
+        {" "}
         <Stack display="inline-flex" direction="row" columnGap={1} flexWrap="wrap">
           {log.data.newRewards.map((reward) => (
             <RoleMentionFromId key={reward.roleId} id={reward.roleId} />
@@ -109,7 +131,7 @@ function LogAction({ log }: {log: ConfigEditionLog}) {
   return "edited configuration";
 }
 
-function LogAuthor({ log }: {log: ConfigEditionLog}) {
+function LogAuthor({ log }: { log: ConfigEditionLog }) {
   return (
     <Tooltip enterDelay={400} enterNextDelay={200} title={`ID ${log.user_id}`}>
       <Stack direction="row" gap={0.5} alignItems="center">
@@ -122,14 +144,14 @@ function LogAuthor({ log }: {log: ConfigEditionLog}) {
   );
 }
 
-function OptionName({ optionId }: {optionId: string}) {
+function OptionName({ optionId }: { optionId: string }) {
   const optionName = getGuildDashboardTranslations("option_name." + optionId, optionId);
   return (
     <b>'{optionName}'</b>
   );
 }
 
-function ActionSource({ log }: {log: ConfigEditionLog}) {
+function ActionSource({ log }: { log: ConfigEditionLog }) {
   if (log.origin === "bot") {
     return " from the bot";
   }
@@ -145,7 +167,7 @@ interface ConfigEditionLog_SconfigOptionSet extends ConfigEditionLog {
   data: {
     option: string;
     value: string;
-  }
+  };
 }
 function logIsSconfigOptionSet(log: ConfigEditionLog): log is ConfigEditionLog_SconfigOptionSet {
   return log.type === "sconfig_option_set";
@@ -156,7 +178,7 @@ interface ConfigEditionLog_SconfigOptionReset extends ConfigEditionLog {
   data: {
     option: string;
     value: string;
-  }
+  };
 }
 function logIsSconfigOptionReset(log: ConfigEditionLog): log is ConfigEditionLog_SconfigOptionReset {
   return log.type === "sconfig_option_reset";
@@ -164,7 +186,7 @@ function logIsSconfigOptionReset(log: ConfigEditionLog): log is ConfigEditionLog
 
 interface ConfigEditionLog_LeaderboardPut extends ConfigEditionLog {
   type: "leaderboard_put";
-  data: null
+  data: null;
 }
 function logIsLeaderboardPut(log: ConfigEditionLog): log is ConfigEditionLog_LeaderboardPut {
   return log.type === "leaderboard_put";
@@ -174,10 +196,10 @@ interface ConfigEditionLog_RoleRewardsPut extends ConfigEditionLog {
   type: "role_rewards_put";
   data: {
     newRewards: {
-    roleId: string;
-    level: string;
-    }[]
-  }
+      roleId: string;
+      level: string;
+    }[];
+  };
 }
 function logIsRoleRewardsPut(log: ConfigEditionLog): log is ConfigEditionLog_RoleRewardsPut {
   return log.type === "role_rewards_put";

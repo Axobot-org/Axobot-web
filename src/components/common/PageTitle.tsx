@@ -24,4 +24,6 @@ export default function PageTitle({ text, icon }: PageTitleProps) {
   );
 }
 
-const Title = (props: React.ComponentProps<typeof Typography>) => <Typography variant="h4" fontSize={{ xs: "1.75rem", sm: "2.125rem" }} noWrap {...props} />;
+const Title = (props: React.ComponentProps<typeof Typography>) => (
+  <Typography variant="h4" fontSize={{ xs: "1.75rem", sm: "2.125rem" }} noWrap {...props} />
+);

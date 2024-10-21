@@ -9,7 +9,7 @@ import { LeaderboardAsJson } from "../../../../repository/types/api";
 import { isLeaderboardImport, parseLeaderboardImport } from "../../../../repository/types/checks";
 import { LeaderboardImport, LeaderboardUserImport } from "../../../../repository/types/leaderboard";
 
-export default function UploadLeaderboardButton({ guildId }: {guildId: string}) {
+export default function UploadLeaderboardButton({ guildId }: { guildId: string }) {
   const [readingFile, setReadingFile] = useState(false);
   const inputFile = useRef<HTMLInputElement | null>(null);
   const { loading: sending, sendNewLeaderboard } = useSendNewLeaderboard(guildId);

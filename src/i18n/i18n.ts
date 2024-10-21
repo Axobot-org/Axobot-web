@@ -1,6 +1,6 @@
 import EnTranslations from "./translations/GuildDashboard/en.json" assert { type: "json" };
 
-type TranslationRecord = { [key: string]: string | TranslationRecord }
+type TranslationRecord = { [key: string]: string | TranslationRecord };
 
 
 /**

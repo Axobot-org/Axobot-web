@@ -12,7 +12,7 @@ interface TextChannelConfigComponentProps {
 export default function TextChannelConfigComponent({ optionId, option }: TextChannelConfigComponentProps) {
   return (
     <SimpleConfiguration optionId={optionId}>
-      <TextChannelPicker optionId={optionId} option={option}/>
+      <TextChannelPicker optionId={optionId} option={option} />
     </SimpleConfiguration>
   );
 }

@@ -12,7 +12,7 @@ interface MatomoTagManager {
   dataLayer: {
     get(name: "userId"): string | undefined;
     push(data: MatomoLoginEvent | MatomoLogoutEvent): void;
-  }
+  };
 }
 
 declare global {
@@ -22,7 +22,6 @@ declare global {
 }
 
 export class MatomoManager {
-
   static getUserId() {
     const mtm = window.MatomoTagManager;
     return mtm?.dataLayer.get("userId");
@@ -40,5 +39,4 @@ export class MatomoManager {
     const mtm = window.MatomoTagManager;
     mtm?.dataLayer.push({ event: "logout", userId: undefined });
   }
-
 }

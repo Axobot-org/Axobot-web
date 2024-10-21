@@ -12,7 +12,6 @@ interface PlayersListProps {
 }
 
 export default function PlayersList({ players, loading, hasNextPage, loadMore }: PlayersListProps) {
-
   const [sentryRef] = useInfiniteScroll({
     loading,
     hasNextPage,
@@ -32,7 +31,7 @@ export default function PlayersList({ players, loading, hasNextPage, loadMore }:
         maxWidth: "98vw",
       }}
     >
-      {players.map(player => <PlayerRow key={player.user_id} player={player} />)}
+      {players.map((player) => <PlayerRow key={player.user_id} player={player} />)}
 
       {(loading || hasNextPage) && (
         <ListItem ref={sentryRef} sx={{ justifyContent: "center" }}>

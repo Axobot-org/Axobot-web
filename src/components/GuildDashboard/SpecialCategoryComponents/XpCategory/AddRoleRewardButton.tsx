@@ -6,9 +6,9 @@ import { GuildRole } from "../../../../repository/types/guild";
 import RoleMention from "../../../common/RoleMention";
 
 interface AddRoleRewardButtonProps {
-  guildId: string,
-  existingRoleIds: string[],
-  addNewReward: (roleId: string) => void
+  guildId: string;
+  existingRoleIds: string[];
+  addNewReward: (roleId: string) => void;
 }
 export default function AddRoleRewardButton({ guildId, existingRoleIds, addNewReward }: AddRoleRewardButtonProps) {
   const { data, error } = useFetchGuildRolesQuery({ guildId });
@@ -20,7 +20,7 @@ export default function AddRoleRewardButton({ guildId, existingRoleIds, addNewRe
     return null;
   }
 
-  const roles = data.filter(role => !role.managed && role.id !== guildId && !existingRoleIds.includes(role.id));
+  const roles = data.filter((role) => !role.managed && role.id !== guildId && !existingRoleIds.includes(role.id));
 
   const onChange = (role: GuildRole | null) => {
     if (role) {
@@ -43,7 +43,8 @@ export default function AddRoleRewardButton({ guildId, existingRoleIds, addNewRe
           <TextField
             {...params}
             variant="standard"
-            placeholder="Add a role reward" />
+            placeholder="Add a role reward"
+          />
         )}
         renderOption={(props, opt) => (
           <li {...props} key={opt.id}>

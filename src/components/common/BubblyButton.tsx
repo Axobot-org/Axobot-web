@@ -4,7 +4,7 @@ import { useState } from "react";
 const AnimationDurationMs = 1400;
 
 interface BubblyButtonProps {
-  sx?: SxProps<Theme>
+  sx?: SxProps<Theme>;
 }
 
 export default function BubblyButton({ sx }: BubblyButtonProps) {

@@ -4,7 +4,7 @@ import LoadingPage from "../../pages/genericPages/LoadingPage";
 import { useIsAuthenticated } from "../../repository/commands/useIsAuthenticated";
 
 
-export default function UnAuthGuard({ children }: {children: JSX.Element}) {
+export default function UnAuthGuard({ children }: { children: JSX.Element }) {
   const { isAuthenticated, loading } = useIsAuthenticated();
 
   if (loading) {
@@ -16,5 +16,4 @@ export default function UnAuthGuard({ children }: {children: JSX.Element}) {
     return <Navigate to="/" />;
   }
   return children;
-
 }

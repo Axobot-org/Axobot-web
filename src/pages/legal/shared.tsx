@@ -9,7 +9,7 @@ function titleToSectionId(title: string) {
   return result;
 }
 
-export const TitleSection = ({ title, children }: PropsWithChildren<{title: string}>) => (
+export const TitleSection = ({ title, children }: PropsWithChildren<{ title: string }>) => (
   <section id={titleToSectionId(title)}>
     <TitleTypography variant="h4" mt={8} fontWeight="bold" textTransform="uppercase">
       {title}
@@ -21,7 +21,7 @@ export const TitleSection = ({ title, children }: PropsWithChildren<{title: stri
   </section>
 );
 
-export const SubtitleSection = ({ title, children }: PropsWithChildren<{title: string}>) => (
+export const SubtitleSection = ({ title, children }: PropsWithChildren<{ title: string }>) => (
   <section id={titleToSectionId(title)}>
     <TitleTypography variant="h5" mt={3} fontWeight="bold">
       {title}
@@ -33,7 +33,7 @@ export const SubtitleSection = ({ title, children }: PropsWithChildren<{title: s
   </section>
 );
 
-export const Subtitle2Section = ({ title, children }: PropsWithChildren<{title: string}>) => (
+export const Subtitle2Section = ({ title, children }: PropsWithChildren<{ title: string }>) => (
   <section id={titleToSectionId(title)}>
     <TitleTypography variant="h6" mt={3} fontWeight="bold">
       {title}
@@ -52,7 +52,7 @@ const TitleTypography = styled(Typography)({
   },
 });
 
-const HeaderLink = ({ title }: {title: string}) => (
+const HeaderLink = ({ title }: { title: string }) => (
   <Link
     href={`#${titleToSectionId(title)}`}
     className="header-link"
@@ -69,11 +69,12 @@ const HeaderLink = ({ title }: {title: string}) => (
       "&:hover": {
         opacity: 1,
       },
-    }}>
+    }}
+  >
     #
   </Link>
 );
 
-export const ExternalLink = ({ href }: {href: string}) => (
+export const ExternalLink = ({ href }: { href: string }) => (
   <Link href={href} target="_blank">{href}</Link>
 );

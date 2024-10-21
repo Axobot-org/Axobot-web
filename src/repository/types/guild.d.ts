@@ -15,7 +15,7 @@ export interface GuildData {
   features: string[];
 }
 
-export type GuildConfig = Record<string, Record<string, unknown>>
+export type GuildConfig = Record<string, Record<string, unknown>>;
 
 export type PopulatedOption<T extends AllRepresentation> = T & { value: unknown };
 

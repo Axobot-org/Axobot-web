@@ -51,17 +51,19 @@ export default function VoiceChannelConfigComponent({ optionId, option }: VoiceC
   const currentChannel: GuildChannel | null = (
     channels.find((channel) => channel.id === currentValue)
     || (
-      currentValue === null ? null : {
-        id: currentValue,
-        name: currentValue,
-        type: ChannelType.GuildVoice,
-        isText: false,
-        isVoice: true,
-        isThread: false,
-        isNSFW: false,
-        position: null,
-        parentId: null,
-      }
+      currentValue === null
+        ? null
+        : {
+          id: currentValue,
+          name: currentValue,
+          type: ChannelType.GuildVoice,
+          isText: false,
+          isVoice: true,
+          isThread: false,
+          isNSFW: false,
+          position: null,
+          parentId: null,
+        }
     )
   );
 
@@ -83,25 +85,27 @@ export default function VoiceChannelConfigComponent({ optionId, option }: VoiceC
     <SimpleConfiguration optionId={optionId}>
       {!error && (
         (editing && !isDisabled)
-          ? <Autocomplete
-            openOnFocus
-            blurOnSelect
-            options={channels}
-            value={currentChannel}
-            onChange={(_, newValue) => onChange(newValue)}
-            sx={{ width: 250 }}
-            loading={isLoading || !channels}
-            isOptionEqualToValue={(opt, value) => opt.id === value.id}
-            getOptionLabel={(channel) => channel.name}
-            getOptionDisabled={isOptionDisabled}
-            onBlur={() => setEditing(false)}
-            renderInput={(params) => <TextField {...params} autoFocus variant="standard" placeholder="Pick a channel" />}
-            renderOption={(props, opt) => (
-              <li {...props} key={opt.id}>
-                <ChannelMention channel={opt} disabled={isOptionDisabled(opt)} disableColor={isOptionDisabled(opt)} indent />
-              </li>
-            )}
-          />
+          ? (
+            <Autocomplete
+              openOnFocus
+              blurOnSelect
+              options={channels}
+              value={currentChannel}
+              onChange={(_, newValue) => onChange(newValue)}
+              sx={{ width: 250 }}
+              loading={isLoading || !channels}
+              isOptionEqualToValue={(opt, value) => opt.id === value.id}
+              getOptionLabel={(channel) => channel.name}
+              getOptionDisabled={isOptionDisabled}
+              onBlur={() => setEditing(false)}
+              renderInput={(params) => <TextField {...params} autoFocus variant="standard" placeholder="Pick a channel" />}
+              renderOption={(props, opt) => (
+                <li {...props} key={opt.id}>
+                  <ChannelMention channel={opt} disabled={isOptionDisabled(opt)} disableColor={isOptionDisabled(opt)} indent />
+                </li>
+              )}
+            />
+          )
           : <ReadonlyChannelPicker currentChannel={currentChannel} onClick={() => setEditing(!isDisabled)} />
       )}
     </SimpleConfiguration>

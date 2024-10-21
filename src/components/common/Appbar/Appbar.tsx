@@ -36,7 +36,7 @@ export default function Appbar() {
       <Container maxWidth="xl">
         <Toolbar disableGutters sx={{ justifyContent: "space-between" }}>
           <Stack direction="row" spacing={1} alignItems="center">
-            <Box id="appbar-left-slot"/>
+            <Box id="appbar-left-slot" />
 
             <LogoAndTitle />
           </Stack>
