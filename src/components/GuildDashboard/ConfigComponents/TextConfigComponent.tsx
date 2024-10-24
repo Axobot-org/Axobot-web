@@ -50,7 +50,9 @@ export default function TextConfigComponent({ optionId, option }: TextConfigComp
         variant="standard"
         multiline={option.max_length > 150}
         maxRows={5}
-        inputProps={{ minLength: option.min_length, maxLength: option.max_length }}
+        slotProps={{
+          htmlInput: { minLength: option.min_length, maxLength: option.max_length },
+        }}
         disabled={isDisabled}
       />
     </ComplexConfiguration>
