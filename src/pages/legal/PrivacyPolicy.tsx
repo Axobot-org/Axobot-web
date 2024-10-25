@@ -1,4 +1,4 @@
-/* eslint-disable @stylistic/jsx-one-expression-per-line */
+/* eslint @stylistic/jsx-one-expression-per-line: "off" */
 import { Box, Link, Typography } from "@mui/material";
 import { Fragment } from "react/jsx-runtime";
 

@@ -1,4 +1,4 @@
-/* eslint-disable @stylistic/jsx-one-expression-per-line */
+/* eslint @stylistic/jsx-one-expression-per-line: "off" */
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
 import { Box, Collapse, IconButton, Link, Paper, Stack, Typography } from "@mui/material";
 import { useState } from "react";
