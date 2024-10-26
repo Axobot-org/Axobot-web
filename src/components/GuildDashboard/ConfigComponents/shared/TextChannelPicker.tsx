@@ -4,9 +4,9 @@ import { ChannelType } from "discord-api-types/v10";
 import { useMemo, useState } from "react";
 
 import { useConfigComponentContext } from "../../../../repository/context/ConfigComponentContext";
-import { useGuildConfigEditionContext } from "../../../../repository/context/GuildConfigEditionContext";
+import { useGuildConfigBaseOptionEditionContext } from "../../../../repository/context/GuildConfigEditionContext";
 import { useFetchGuildChannelsQuery } from "../../../../repository/redux/api/api";
-import { GuildChannel } from "../../../../repository/types/guild";
+import { GuildChannel, PopulatedOption } from "../../../../repository/types/guild";
 import { TextChannelOptionRepresentation } from "../../../../repository/types/guild-config-types";
 import ChannelMention from "../../../common/ChannelMention";
 import useIsConfigEdited from "./useIsConfigEdited";
@@ -18,7 +18,7 @@ interface TextChannelPickerProps {
 }
 
 export default function TextChannelPicker({ optionId, option }: TextChannelPickerProps) {
-  const { guildId, state, setValue, resetValue } = useGuildConfigEditionContext();
+  const { guildId, state, setValue, resetValue } = useGuildConfigBaseOptionEditionContext();
   const { isDisabled } = useConfigComponentContext();
   const isEdited = useIsConfigEdited(optionId);
   const { data, isLoading, error } = useFetchGuildChannelsQuery({ guildId });
@@ -47,17 +47,19 @@ export default function TextChannelPicker({ optionId, option }: TextChannelPicke
   const currentChannel: GuildChannel | null = (
     channels.find((channel) => channel.id === currentValue)
     || (
-      currentValue === null ? null : {
-        id: currentValue,
-        name: currentValue,
-        type: ChannelType.GuildText,
-        isText: true,
-        isVoice: false,
-        isThread: false,
-        isNSFW: false,
-        position: null,
-        parentId: null,
-      }
+      currentValue === null
+        ? null
+        : {
+          id: currentValue,
+          name: currentValue,
+          type: ChannelType.GuildText,
+          isText: true,
+          isVoice: false,
+          isThread: false,
+          isNSFW: false,
+          position: null,
+          parentId: null,
+        }
     )
   );
 
@@ -113,14 +115,18 @@ interface ReadonlyChannelPickerProps {
 
 function ReadonlyChannelPicker({ currentChannel, onClick }: ReadonlyChannelPickerProps) {
   return (
-    <Button onClick={onClick} endIcon={<EditIcon />} sx={{
-      textTransform: "none",
-      fontSize: "1rem",
-      height: "32px",
-      maxWidth: { md: "250px", lg: "300px" },
-      overflow: "hidden",
-      justifyContent: "space-between",
-    }}>
+    <Button
+      onClick={onClick}
+      endIcon={<EditIcon />}
+      sx={{
+        textTransform: "none",
+        fontSize: "1rem",
+        height: "32px",
+        maxWidth: { md: "250px", lg: "300px" },
+        overflow: "hidden",
+        justifyContent: "space-between",
+      }}
+    >
       {
         currentChannel === null
           ? <Typography color="gray" fontStyle="italic">Pick a channel</Typography>

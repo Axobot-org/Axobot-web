@@ -1,11 +1,38 @@
-import { usePatchGuildConfigMutation } from "../api/api";
+import { useState } from "react";
+
+import { usePatchGuildConfigMutation, usePutGuildRoleRewardsMutation } from "../api/api";
 
 export function usePatchGuildConfig() {
-  const [patchMutation, { error, isLoading, data }] = usePatchGuildConfigMutation();
+  const [success, setSuccess] = useState(false);
+  const [
+    patchGuildConfigMutation,
+    { error: errorOnGuildConfig, isLoading: isLoadingGuildConfig },
+  ] = usePatchGuildConfigMutation();
+  const [
+    putRoleRewardsMutation,
+    { error: errorOnRoleRewards, isLoading: isLoadingRoleRewards },
+  ] = usePutGuildRoleRewardsMutation();
 
-  async function patchCommand(guildId: string, config: Record<string, unknown>) {
-    await patchMutation({ guildId, config });
+  async function patchGuildConfigCommand(guildId: string, config: Record<string, unknown>) {
+    setSuccess(false);
+    await patchGuildConfigMutation({ guildId, config });
+    setSuccess(true);
   }
 
-  return { patchCommand, error, loading: isLoading, data };
+  async function putRoleRewardsCommand(
+    guildId: string,
+    roleRewards: Parameters<typeof putRoleRewardsMutation>[0]["roleRewards"]
+  ) {
+    setSuccess(false);
+    await putRoleRewardsMutation({ guildId, roleRewards });
+    setSuccess(true);
+  }
+
+  return {
+    patchGuildConfigCommand,
+    putRoleRewardsCommand,
+    error: errorOnGuildConfig ?? errorOnRoleRewards,
+    loading: isLoadingGuildConfig || isLoadingRoleRewards,
+    success,
+  };
 }

@@ -14,14 +14,14 @@ export default function PlayerRow({ player }: PlayerRowProps) {
 
   const getBadgeStyle = (index: number) => {
     switch (index) {
-    case 0:
-      return { backgroundColor: "#FFD700", color: "#806000" };
-    case 1:
-      return { backgroundColor: "#C0C0C0", color: "#404040" };
-    case 2:
-      return { backgroundColor: "#cd7f32", color: "#3e260f" };
-    default:
-      return undefined;
+      case 0:
+        return { backgroundColor: "#FFD700", color: "#806000" };
+      case 1:
+        return { backgroundColor: "#C0C0C0", color: "#404040" };
+      case 2:
+        return { backgroundColor: "#cd7f32", color: "#3e260f" };
+      default:
+        return undefined;
     }
   };
 
@@ -50,11 +50,16 @@ export default function PlayerRow({ player }: PlayerRowProps) {
 
       <RightUserXp>{formatNumber(BigInt(player.xp))} xp</RightUserXp>
 
-      <CircularProgressWithLabel thickness={3} value={levelProgress} aria-label={xpText} label={
-        <Tooltip title={xpText}>
-          <UserLevel>{player.level.toString()}</UserLevel>
-        </Tooltip>
-      } />
+      <CircularProgressWithLabel
+        thickness={3}
+        value={levelProgress}
+        aria-label={xpText}
+        label={(
+          <Tooltip title={xpText}>
+            <UserLevel>{player.level.toString()}</UserLevel>
+          </Tooltip>
+        )}
+      />
     </Container>
   );
 }

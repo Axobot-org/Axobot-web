@@ -17,10 +17,10 @@ export default function NumericInput(props: NumericInputProps) {
     <TextField
       {...rest}
       sx={{ maxWidth: "4.5em" }}
-      InputProps={{
-        inputComponent: NumericFormatCustom,
+      slotProps={{
+        input: { inputComponent: NumericFormatCustom },
+        htmlInput: { min, max, suffix, defaultValue, onValueChange, decimalScale: acceptDecimals ? 3 : 0 },
       }}
-      inputProps={{ min, max, suffix, defaultValue, onValueChange, decimalScale: acceptDecimals ? 3 : 0 }}
       variant="standard"
     />
   );

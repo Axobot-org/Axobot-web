@@ -12,7 +12,7 @@ declare namespace NodeJS {
       VITE_DISCORD_CLIENT_ID: string;
       VITE_MATOMO_URL: string;
       NO_INDEX: string;
-    }
+    };
   }
 }
 

@@ -1,13 +1,13 @@
 import { LeaderboardResponse } from "./api";
 
 export interface LeaderboardData {
-  guild: LeaderboardResponse["guild"]
-  players: {[key: string]: RankedPlayer}
-  totalCount: number,
-  xpType: string,
-  xpRate: number,
-  xpDecay: number,
-  roleRewards: RoleReward[] | undefined,
+  guild: LeaderboardResponse["guild"];
+  players: { [key: string]: RankedPlayer };
+  totalCount: number;
+  xpType: string;
+  xpRate: number;
+  xpDecay: number;
+  roleRewards: RoleReward[] | undefined;
 }
 
 export interface RankedPlayer {
@@ -22,28 +22,28 @@ export interface RankedPlayer {
 }
 
 export interface RoleReward {
-  id: string,
-  guildId: string,
-  roleId: string,
-  level: bigint,
-  addedAt: string,
+  id: string;
+  guildId: string;
+  roleId: string;
+  level: bigint;
+  addedAt: string;
   role: {
-    name: string,
-    color: number,
-  } | null,
+    name: string;
+    color: number;
+  } | null;
 }
 
 type LeaderboardUserImport = (
   (
-    {userId: string}
-    | {user_id: string}
-    | {id: string}
+    { userId: string }
+    | { user_id: string }
+    | { id: string }
   ) & { xp: number | string }
 );
 
 export type LeaderboardImport = LeaderboardUserImport[]
-| {
-  players: LeaderboardUserImport[];
-} | {
-  levels: LeaderboardUserImport[];
-}
+  | {
+    players: LeaderboardUserImport[];
+  } | {
+    levels: LeaderboardUserImport[];
+  };

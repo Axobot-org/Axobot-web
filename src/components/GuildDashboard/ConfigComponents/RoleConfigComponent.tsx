@@ -3,7 +3,7 @@ import { Autocomplete, Button, TextField, Typography } from "@mui/material";
 import { useMemo, useState } from "react";
 
 import { useConfigComponentContext } from "../../../repository/context/ConfigComponentContext";
-import { useGuildConfigEditionContext } from "../../../repository/context/GuildConfigEditionContext";
+import { useGuildConfigBaseOptionEditionContext } from "../../../repository/context/GuildConfigEditionContext";
 import { useFetchGuildRolesQuery } from "../../../repository/redux/api/api";
 import { GuildRole, PopulatedOption } from "../../../repository/types/guild";
 import { RoleOptionRepresentation } from "../../../repository/types/guild-config-types";
@@ -17,7 +17,7 @@ interface RoleConfigComponentProps {
 }
 
 export default function RoleConfigComponent({ optionId, option }: RoleConfigComponentProps) {
-  const { guildId, state, setValue, resetValue } = useGuildConfigEditionContext();
+  const { guildId, state, setValue, resetValue } = useGuildConfigBaseOptionEditionContext();
   const { isDisabled } = useConfigComponentContext();
   const isEdited = useIsConfigEdited(optionId);
   const { data, isLoading, error } = useFetchGuildRolesQuery({ guildId });
@@ -43,14 +43,16 @@ export default function RoleConfigComponent({ optionId, option }: RoleConfigComp
   const currentRole: GuildRole | null = (
     roles.find((role) => role.id === currentValue)
     || (
-      currentValue === null ? null : {
-        id: currentValue,
-        name: currentValue,
-        color: 0,
-        position: 0,
-        permissions: "0",
-        managed: false,
-      }
+      currentValue === null
+        ? null
+        : {
+          id: currentValue,
+          name: currentValue,
+          color: 0,
+          position: 0,
+          permissions: "0",
+          managed: false,
+        }
     )
   );
 
@@ -67,31 +69,34 @@ export default function RoleConfigComponent({ optionId, option }: RoleConfigComp
   return (
     <SimpleConfiguration optionId={optionId}>
       {!error && (
-        (editing && isDisabled)
-          ? <Autocomplete
-            openOnFocus
-            blurOnSelect
-            options={roles}
-            value={currentRole}
-            onChange={(_, newValue) => onChange(newValue)}
-            sx={{ width: 250 }}
-            loading={isLoading || !roles}
-            isOptionEqualToValue={(opt, value) => opt.id === value.id}
-            getOptionLabel={(role) => role.name}
-            onBlur={() => setEditing(false)}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                autoFocus
-                variant="standard"
-                placeholder="Pick a role" />
-            )}
-            renderOption={(props, opt) => (
-              <li {...props} key={opt.id}>
-                <RoleMention name={opt.name} color={opt.color} />
-              </li>
-            )}
-          />
+        (editing && !isDisabled)
+          ? (
+            <Autocomplete
+              openOnFocus
+              blurOnSelect
+              options={roles}
+              value={currentRole}
+              onChange={(_, newValue) => onChange(newValue)}
+              sx={{ width: 250 }}
+              loading={isLoading || !roles}
+              isOptionEqualToValue={(opt, value) => opt.id === value.id}
+              getOptionLabel={(role) => role.name}
+              onBlur={() => setEditing(false)}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  autoFocus
+                  variant="standard"
+                  placeholder="Pick a role"
+                />
+              )}
+              renderOption={(props, opt) => (
+                <li {...props} key={opt.id}>
+                  <RoleMention name={opt.name} color={opt.color} />
+                </li>
+              )}
+            />
+          )
           : <ReadonlyRolePicker currentRole={currentRole} onClick={() => setEditing(!isDisabled)} />
       )}
     </SimpleConfiguration>

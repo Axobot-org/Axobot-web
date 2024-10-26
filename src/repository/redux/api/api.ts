@@ -1,6 +1,13 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-import { BotInfoResponse, LeaderboardAsJson, LeaderboardResponse, LoginJSONResponse, RoleReward } from "../../types/api";
+import {
+  BotInfoResponse,
+  ConfigEditionLog,
+  LeaderboardAsJson,
+  LeaderboardResponse,
+  LoginJSONResponse,
+  RoleReward,
+} from "../../types/api";
 import { GuildChannel, GuildConfig, GuildData, GuildRole } from "../../types/guild";
 import { GuildConfigOptionCategory, GuildConfigOptionsMapType } from "../../types/guild-config-types";
 import { LeaderboardData, RankedPlayer } from "../../types/leaderboard";
@@ -31,7 +38,7 @@ export const axoApi = createApi({
     fetchGuilds: builder.query<GuildData[], void>({
       query: () => "discord/@me/guilds",
     }),
-    fetchLeaderboard: builder.query<LeaderboardData, { guildId: "global" | string, page: number, limit: number }>({
+    fetchLeaderboard: builder.query<LeaderboardData, { guildId: "global" | string; page: number; limit: number }>({
       query: ({ guildId, page, limit }) => ({
         url: guildId === "global" ? "discord/leaderboard/global" : `discord/guild/${guildId}/leaderboard`,
         params: { page, limit },
@@ -43,12 +50,14 @@ export const axoApi = createApi({
         xpType: response.xp_type,
         xpRate: response.xp_rate,
         xpDecay: response.xp_decay,
-        roleRewards: response.role_rewards ? [
-          ...response.role_rewards.map((roleReward) => ({
-            ...roleReward,
-            level: BigInt(roleReward.level),
-          })),
-        ] : undefined,
+        roleRewards: response.role_rewards
+          ? [
+            ...response.role_rewards.map((roleReward) => ({
+              ...roleReward,
+              level: BigInt(roleReward.level),
+            })),
+          ]
+          : undefined,
         players: response.players.reduce((acc, curr) => {
           acc[curr.ranking] = curr;
           return acc;
@@ -76,7 +85,7 @@ export const axoApi = createApi({
     fetchGuild: builder.query<GuildData, { guildId: string }>({
       query: ({ guildId }) => `discord/guild/${guildId}`,
     }),
-    fetchGuildConfig: builder.query<GuildConfig, {guildId: string, categories: "all" | GuildConfigOptionCategory[]}>({
+    fetchGuildConfig: builder.query<GuildConfig, { guildId: string; categories: "all" | GuildConfigOptionCategory[] }>({
       query: ({ guildId, categories }) => ({
         url: `discord/guild/${guildId}/config`,
         params: { categories },
@@ -112,6 +121,9 @@ export const axoApi = createApi({
     fetchGuildChannels: builder.query<GuildChannel[], { guildId: string }>({
       query: ({ guildId }) => `discord/guild/${guildId}/channels`,
     }),
+    fetchConfigEditionLogs: builder.query<ConfigEditionLog[], { guildId: string }>({
+      query: ({ guildId }) => `discord/guild/${guildId}/config-logs`,
+    }),
 
     // ----- MUTATIONS ----- //
     login: builder.mutation<LoginJSONResponse, string>({
@@ -121,7 +133,7 @@ export const axoApi = createApi({
         params: { code: discordCode },
       }),
     }),
-    patchGuildConfig: builder.mutation<Record<string, unknown>, { guildId: string, config: Record<string, unknown> }>({
+    patchGuildConfig: builder.mutation<Record<string, unknown>, { guildId: string; config: Record<string, unknown> }>({
       query: ({ guildId, config }) => ({
         url: `discord/guild/${guildId}/config`,
         method: "PATCH",
@@ -145,12 +157,31 @@ export const axoApi = createApi({
         } catch { /* don't update cache on error */ }
       },
     }),
-    putGuildLeaderboard: builder.mutation<undefined, {guildId: string, players: LeaderboardAsJson}>({
+    putGuildLeaderboard: builder.mutation<undefined, { guildId: string; players: LeaderboardAsJson }>({
       query: ({ guildId, players }) => ({
         url: `discord/guild/${guildId}/leaderboard`,
         method: "PUT",
         body: players,
       }),
+    }),
+    putGuildRoleRewards: builder.mutation<RoleReward[], {
+      guildId: string;
+      roleRewards: Pick<RoleReward, "roleId" | "level">[];
+    }>({
+      query: ({ guildId, roleRewards }) => ({
+        url: `discord/guild/${guildId}/role-rewards`,
+        method: "PUT",
+        body: roleRewards,
+      }),
+      async onQueryStarted({ guildId }, { dispatch, queryFulfilled }) {
+        // update fetchGuildRoleRewards cache with returned updated data
+        try {
+          const { data } = await queryFulfilled;
+          dispatch(
+            axoApi.util.updateQueryData("fetchGuildRoleRewards", { guildId }, () => data)
+          );
+        } catch { /* don't update cache on error */ }
+      },
     }),
   }),
 });
@@ -167,8 +198,10 @@ export const {
   useFetchGuildRoleRewardsQuery,
   useFetchGuildRolesQuery,
   useFetchGuildChannelsQuery,
+  useFetchConfigEditionLogsQuery,
 
   useLoginMutation,
   usePatchGuildConfigMutation,
   usePutGuildLeaderboardMutation,
+  usePutGuildRoleRewardsMutation,
 } = axoApi;

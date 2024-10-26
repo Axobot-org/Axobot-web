@@ -12,14 +12,14 @@ export default function csvToJson(text: string, quoteChar = "\"", delimiter = ",
   const regex = new RegExp(`\\s*(${quoteChar})?(.*?)\\1\\s*(?:${delimiter}|$)`, "gs");
 
   const match = (line: string) => [...line.matchAll(regex)]
-    .map(m => m[2])
+    .map((m) => m[2])
     .slice(0, -1);
 
   let lines = text.split("\n").filter(Boolean);
   const heads = headers ?? match(lines.shift() ?? "");
   lines = lines.slice(1);
 
-  return lines.map(line => match(line).reduce((acc, cur, i) => {
+  return lines.map((line) => match(line).reduce((acc, cur, i) => {
     // replace blank matches with `null`
     const val = convertCursor(cur);
     const key = heads[i] ?? i.toString();

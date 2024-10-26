@@ -20,12 +20,22 @@ export function useConfigComponentContext() {
   return useContext(ConfigComponentContext);
 }
 
-export function getMissingOptionRequirement(option: PopulatedGuildConfig[string], config: PopulatedGuildConfig): OptionRequirement | null {
+export function getMissingOptionRequirement(
+  option: PopulatedGuildConfig[string],
+  config: PopulatedGuildConfig
+): OptionRequirement | null {
   if (option.requires === undefined) {
     return null;
   }
   for (const req of option.requires) {
-    if ("to_be_defined" in req && (config[req.option].value === undefined || config[req.option].value === null || config[req.option].value === "")) {
+    if (
+      "to_be_defined" in req
+      && (
+        config[req.option].value === undefined
+        || config[req.option].value === null
+        || config[req.option].value === ""
+      )
+    ) {
       return req;
     }
     if ("to_be" in req) {

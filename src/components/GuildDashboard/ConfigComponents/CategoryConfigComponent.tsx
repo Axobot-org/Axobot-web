@@ -4,7 +4,7 @@ import { ChannelType } from "discord-api-types/v10";
 import { useMemo, useState } from "react";
 
 import { useConfigComponentContext } from "../../../repository/context/ConfigComponentContext";
-import { useGuildConfigEditionContext } from "../../../repository/context/GuildConfigEditionContext";
+import { useGuildConfigBaseOptionEditionContext } from "../../../repository/context/GuildConfigEditionContext";
 import { useFetchGuildChannelsQuery } from "../../../repository/redux/api/api";
 import { GuildChannel, PopulatedOption } from "../../../repository/types/guild";
 import { CategoryOptionRepresentation } from "../../../repository/types/guild-config-types";
@@ -19,7 +19,7 @@ interface CategoryConfigComponentProps {
 }
 
 export default function CategoryConfigComponent({ optionId, option }: CategoryConfigComponentProps) {
-  const { guildId, state, setValue, resetValue } = useGuildConfigEditionContext();
+  const { guildId, state, setValue, resetValue } = useGuildConfigBaseOptionEditionContext();
   const { isDisabled } = useConfigComponentContext();
   const isEdited = useIsConfigEdited(optionId);
   const { data, isLoading, error } = useFetchGuildChannelsQuery({ guildId });
@@ -38,17 +38,19 @@ export default function CategoryConfigComponent({ optionId, option }: CategoryCo
   const currentCategory: GuildChannel | null = (
     categories.find((category) => category.id === currentValue)
     || (
-      currentValue === null ? null : {
-        id: currentValue,
-        name: currentValue,
-        type: ChannelType.GuildCategory,
-        isText: false,
-        isVoice: false,
-        isThread: false,
-        isNSFW: false,
-        position: null,
-        parentId: null,
-      }
+      currentValue === null
+        ? null
+        : {
+          id: currentValue,
+          name: currentValue,
+          type: ChannelType.GuildCategory,
+          isText: false,
+          isVoice: false,
+          isThread: false,
+          isNSFW: false,
+          position: null,
+          parentId: null,
+        }
     )
   );
 
@@ -70,24 +72,26 @@ export default function CategoryConfigComponent({ optionId, option }: CategoryCo
     <SimpleConfiguration optionId={optionId}>
       {!error && (
         (editing && !isDisabled)
-          ? <Autocomplete
-            openOnFocus
-            blurOnSelect
-            options={categories}
-            value={currentCategory}
-            onChange={(_, newValue) => onChange(newValue)}
-            sx={{ width: 250 }}
-            loading={isLoading || !categories}
-            isOptionEqualToValue={(opt, value) => opt.id === value.id}
-            getOptionLabel={(category) => category.name}
-            onBlur={() => setEditing(false)}
-            renderInput={(params) => <TextField {...params} autoFocus variant="standard" placeholder="Pick a category" />}
-            renderOption={(props, opt) => (
-              <li {...props} key={opt.id}>
-                <ChannelMention channel={opt} />
-              </li>
-            )}
-          />
+          ? (
+            <Autocomplete
+              openOnFocus
+              blurOnSelect
+              options={categories}
+              value={currentCategory}
+              onChange={(_, newValue) => onChange(newValue)}
+              sx={{ width: 250 }}
+              loading={isLoading || !categories}
+              isOptionEqualToValue={(opt, value) => opt.id === value.id}
+              getOptionLabel={(category) => category.name}
+              onBlur={() => setEditing(false)}
+              renderInput={(params) => <TextField {...params} autoFocus variant="standard" placeholder="Pick a category" />}
+              renderOption={(props, opt) => (
+                <li {...props} key={opt.id}>
+                  <ChannelMention channel={opt} />
+                </li>
+              )}
+            />
+          )
           : <ReadonlyChannelPicker currentCategory={currentCategory} onClick={() => setEditing(!isDisabled)} />
       )}
     </SimpleConfiguration>

@@ -5,14 +5,16 @@ import { PopulatedGuildConfig } from "../types/guild";
 import { GuildConfigOptionCategory } from "../types/guild-config-types";
 
 interface MethodParameters {
-  guildId: string,
-  category: GuildConfigOptionCategory,
+  guildId: string;
+  category: GuildConfigOptionCategory;
 }
 
 export function useFetchGuildConfigCategory({ guildId, category }: MethodParameters) {
   const { data: configData, isLoading: isLoadingConfig, error: errorConfig } = useFetchGuildConfigQuery({
     guildId: guildId,
     categories: [category],
+  }, {
+    skip: category === "edition-logs",
   });
   const { data: defaultConfig, isLoading: isLoadingDefault, error: errorDefault } = useFetchDefaultGuildConfigQuery();
 

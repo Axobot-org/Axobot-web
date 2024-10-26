@@ -12,21 +12,24 @@ interface SaveConfigBannerProps {
 }
 
 export default function SaveConfigBanner({ guildId }: SaveConfigBannerProps) {
-  const { patchCommand, loading, data } = usePatchGuildConfig();
-  const { state, resetState } = useGuildConfigEditionContext();
+  const { patchGuildConfigCommand, putRoleRewardsCommand, loading, success } = usePatchGuildConfig();
+  const { state, hasAnyUnsavedChange, resetState } = useGuildConfigEditionContext();
   const isOnMobile = useIsOnMobile();
 
   function saveConfiguration() {
-    patchCommand(guildId, state);
+    if (Object.keys(state.baseOptions).length > 0) {
+      patchGuildConfigCommand(guildId, state.baseOptions);
+    }
+    if (state.roleRewards !== undefined) {
+      putRoleRewardsCommand(guildId, state.roleRewards);
+    }
   }
 
   useEffect(() => {
-    if (data) {
+    if (success) {
       resetState();
     }
-  }, [data, resetState]);
-
-  const isVisible = Object.keys(state).length !== 0;
+  }, [success, resetState]);
 
   const buttonSize = isOnMobile ? "small" : "medium";
 
@@ -34,7 +37,7 @@ export default function SaveConfigBanner({ guildId }: SaveConfigBannerProps) {
     <Snackbar
       // somehow 'horizontal: left' with sticky position centers the banner
       anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
-      open={isVisible}
+      open={hasAnyUnsavedChange}
       sx={{
         width: { xs: "95vw", md: "70vw" },
         maxWidth: "900px",
@@ -45,7 +48,9 @@ export default function SaveConfigBanner({ guildId }: SaveConfigBannerProps) {
       <SnackbarContent elevation={5}>
         <Stack>
           <Typography variant="h6">
-            <SyncProblemIcon color="warning" sx={{ verticalAlign: "sub" }} /> Unsaved changes
+            <SyncProblemIcon color="warning" sx={{ verticalAlign: "sub" }} />
+            {" "}
+            Unsaved changes
           </Typography>
           <Typography variant="subtitle2" color="gray">
             You have unsaved changes in the configuration. They won't be applied until you save them.
@@ -53,7 +58,7 @@ export default function SaveConfigBanner({ guildId }: SaveConfigBannerProps) {
         </Stack>
         <ActionsStack direction="row">
           <Button size={buttonSize} disabled={loading} variant="contained" onClick={saveConfiguration}>Save</Button>
-          <DiscardButton size={buttonSize} disabled={loading} onClick={resetState} >Discard</DiscardButton>
+          <DiscardButton size={buttonSize} disabled={loading} onClick={resetState}>Discard</DiscardButton>
         </ActionsStack>
       </SnackbarContent>
     </Snackbar>

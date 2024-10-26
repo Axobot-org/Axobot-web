@@ -1,3 +1,4 @@
+/* eslint @stylistic/jsx-one-expression-per-line: "off" */
 import { Box, Link, Typography } from "@mui/material";
 import { Fragment } from "react/jsx-runtime";
 
@@ -33,9 +34,11 @@ export default function PrivacyPolicy() {
           <p>
             We use your data to provide and enhance our Service. By using the Service, you consent to the collection and use of your data in accordance with this Privacy Policy.
           </p>
-          <p><b>
-            Since Axobot relies on the Discord platform, it is the User's responsibility to inquire about the security policy implemented by Discord (<ExternalLink href="https://discord.com" />) and any exceptions this policy may bring to our Privacy Policy, particularly by recording certain data collected by Axobot in a way that is transparent to us.
-          </b></p>
+          <p>
+            <b>
+              Since Axobot relies on the Discord platform, it is the User's responsibility to inquire about the security policy implemented by Discord (<ExternalLink href="https://discord.com" />) and any exceptions this policy may bring to our Privacy Policy, particularly by recording certain data collected by Axobot in a way that is transparent to us.
+            </b>
+          </p>
         </TitleSection>
 
         <TitleSection title="2. Definitions">
