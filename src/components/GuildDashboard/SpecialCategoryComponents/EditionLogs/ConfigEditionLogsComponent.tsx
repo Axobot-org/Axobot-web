@@ -2,16 +2,14 @@ import { Avatar, Stack, styled, Tooltip, Typography } from "@mui/material";
 import { Fragment } from "react/jsx-runtime";
 
 import { getGuildDashboardTranslations } from "../../../../i18n/i18n";
+import { useGuildConfigEditionContext } from "../../../../repository/context/GuildConfigEditionContext";
 import { useFetchConfigEditionLogsQuery } from "../../../../repository/redux/api/api";
 import { ConfigEditionLog } from "../../../../repository/types/api";
 import { RoleMentionFromId } from "../../../common/RoleMention";
 import { ErrorPage, LoadingPlaceholder } from "../../shared";
 
-interface ConfigEditionLogsComponentProps {
-  guildId: string;
-}
-
-export default function ConfigEditionLogsComponent({ guildId }: ConfigEditionLogsComponentProps) {
+export default function ConfigEditionLogsComponent() {
+  const { guildId } = useGuildConfigEditionContext();
   const { data, isLoading, error } = useFetchConfigEditionLogsQuery({ guildId });
 
   if (error) {

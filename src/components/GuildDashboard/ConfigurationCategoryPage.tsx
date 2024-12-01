@@ -69,7 +69,7 @@ export default function ConfigurationCategoryPage({ guildId, activePage }: Confi
         ))}
 
       </ComponentsContainer>
-      <SpecialCategoryComponent guildId={guildId} activePage={activePage} />
+      <SpecialCategoryComponent activePage={activePage} />
     </PageContainer>
   );
 }
@@ -123,12 +123,12 @@ function GenericConfigComponent({ optionId, option }: { optionId: string; option
   }
 }
 
-function SpecialCategoryComponent({ guildId, activePage }: { guildId: string; activePage: GuildConfigOptionCategory }) {
+function SpecialCategoryComponent({ activePage }: { activePage: GuildConfigOptionCategory }) {
   switch (activePage) {
     case "edition-logs":
-      return <ConfigEditionLogsComponent guildId={guildId} />;
+      return <ConfigEditionLogsComponent />;
     case "xp":
-      return <XpCategoryComponent guildId={guildId} />;
+      return <XpCategoryComponent />;
     default:
       return null;
   }

@@ -3,7 +3,7 @@ import { Button, Divider, Link, Stack, styled, Typography } from "@mui/material"
 import { Fragment } from "react/jsx-runtime";
 
 import { useFetchGuildConfigCategory } from "../../../../repository/commands/useFetchGuildConfigCategory";
-import { useGuildConfigRoleRewardsEditionContext } from "../../../../repository/context/GuildConfigEditionContext";
+import { useGuildConfigEditionContext, useGuildConfigRoleRewardsEditionContext } from "../../../../repository/context/GuildConfigEditionContext";
 import { useFetchGuildConfigQuery, useFetchGuildRoleRewardsQuery } from "../../../../repository/redux/api/api";
 import { ExternalRoutesURLs } from "../../../../router/router";
 import AddRoleRewardButton from "./AddRoleRewardButton";
@@ -12,15 +12,11 @@ import RoleRewardsList from "./RoleRewardsList";
 import UploadLeaderboardButton from "./UploadLeaderboardButton";
 
 
-interface XpCategoryComponentProps {
-  guildId: string;
-}
-
-export default function XpCategoryComponent({ guildId }: XpCategoryComponentProps) {
+export default function XpCategoryComponent() {
   return (
     <Fragment>
-      <LeaderboardActionsSection guildId={guildId} />
-      <RolesRewardsSection guildId={guildId} />
+      <LeaderboardActionsSection />
+      <RolesRewardsSection />
     </Fragment>
   );
 }
@@ -34,7 +30,8 @@ const SectionTitle = styled(Typography)({
   fontWeight: 500,
 });
 
-function LeaderboardActionsSection({ guildId }: { guildId: string }) {
+function LeaderboardActionsSection() {
+  const { guildId } = useGuildConfigEditionContext();
   const { data: xpData } = useFetchGuildConfigCategory({ guildId, category: "xp" });
 
   const isNotGlobalXp = xpData?.["xp_type"].value !== "global";
@@ -62,7 +59,8 @@ function LeaderboardActionsSection({ guildId }: { guildId: string }) {
 }
 
 
-function RolesRewardsSection({ guildId }: { guildId: string }) {
+function RolesRewardsSection() {
+  const { guildId } = useGuildConfigEditionContext();
   const { data: configData } = useFetchGuildConfigQuery({ guildId: guildId, categories: ["core"] });
   const { data: rawRoleRewardsFromApi } = useFetchGuildRoleRewardsQuery({ guildId });
   const { state: editedRoleRewards, setValue, resetValue } = useGuildConfigRoleRewardsEditionContext();
