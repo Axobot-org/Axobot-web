@@ -113,7 +113,7 @@ interface ReadonlyChannelPickerProps {
   onClick: () => void;
 }
 
-function ReadonlyChannelPicker({ currentChannel, onClick }: ReadonlyChannelPickerProps) {
+export function ReadonlyChannelPicker({ currentChannel, onClick }: ReadonlyChannelPickerProps) {
   return (
     <Button
       onClick={onClick}

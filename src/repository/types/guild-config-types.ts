@@ -127,6 +127,7 @@ export const GuildConfigOptionCategoryNames = [
   "moderation",
   "partners",
   "poll-channels",
+  "rss",
   "streamers",
   "voice-channels",
   "welcome",
@@ -134,7 +135,7 @@ export const GuildConfigOptionCategoryNames = [
   "edition-logs",
 ] as const;
 export type GuildConfigOptionCategory = typeof GuildConfigOptionCategoryNames[number];
-export const EmptyCategories: GuildConfigOptionCategory[] = ["edition-logs"];
+export const EmptyCategories: GuildConfigOptionCategory[] = ["rss", "edition-logs"];
 export type GuildConfigOptionsMapType = Record<GuildConfigOptionCategory, Record<string, AllRepresentation>>;
 export type GuildConfigOptionValueType = AllRepresentation["default"] | bigint;
 export type PartialGuildConfig = Partial<Record<GuildConfigOptionCategory, Record<string, unknown>>>;

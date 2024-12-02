@@ -1,4 +1,4 @@
-import { Feed, Gavel, Handshake, HowToVote, InfoOutlined, Leaderboard, LiveTv, Mic, QuestionMark, Settings, WavingHand } from "@mui/icons-material";
+import { Feed, Gavel, Handshake, HowToVote, InfoOutlined, Leaderboard, LiveTv, Mic, NewspaperOutlined, QuestionMark, Settings, WavingHand } from "@mui/icons-material";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -104,6 +104,8 @@ function TabIcon({ page }: { page: GuildConfigOptionCategory }) {
       return <Handshake />;
     case "poll-channels":
       return <HowToVote />;
+    case "rss":
+      return <NewspaperOutlined />;
     case "streamers":
       return <LiveTv />;
     case "voice-channels":

@@ -19,6 +19,7 @@ import TextConfigComponent from "./ConfigComponents/TextConfigComponent";
 import VoiceChannelConfigComponent from "./ConfigComponents/VoiceChannelConfigComponent";
 import { ErrorPage, LoadingPlaceholder } from "./shared";
 import ConfigEditionLogsComponent from "./SpecialCategoryComponents/EditionLogs/ConfigEditionLogsComponent";
+import RssFeedsComponent from "./SpecialCategoryComponents/RssFeeds/RssFeedsComponent";
 import XpCategoryComponent from "./SpecialCategoryComponents/XpCategory/XpCategoryComponent";
 
 interface ConfigurationCategoryPageProps {
@@ -127,6 +128,8 @@ function SpecialCategoryComponent({ activePage }: { activePage: GuildConfigOptio
   switch (activePage) {
     case "edition-logs":
       return <ConfigEditionLogsComponent />;
+    case "rss":
+      return <RssFeedsComponent />;
     case "xp":
       return <XpCategoryComponent />;
     default:

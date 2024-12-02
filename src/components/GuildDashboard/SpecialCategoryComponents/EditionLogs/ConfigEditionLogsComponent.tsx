@@ -59,6 +59,7 @@ const LogRowContainer = styled(Stack)(({ theme }) => ({
   borderRadius: 10,
   padding: theme.spacing(0.75, 2),
   alignItems: "center",
+  transition: "background-color 0.2s",
   "&:hover": {
     backgroundColor: theme.palette.custom.background1,
   },

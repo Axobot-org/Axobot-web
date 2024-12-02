@@ -54,3 +54,27 @@ export interface ConfigEditionLog {
   date: string;
   data: unknown;
 }
+
+export interface RssFeed {
+  id: string;
+  channelId: string;
+  type: string;
+  link: string;
+  date: Date;
+  structure: string;
+  roles: string[];
+  useEmbed: boolean;
+  embed: {
+    authorText?: string;
+    title?: string;
+    footerText?: string;
+    color?: number;
+    showDateInFooter?: boolean;
+    enableLinkInTitle?: boolean;
+    imageLocation?: "thumbnail" | "banner" | "none";
+  };
+  silentMention: boolean;
+  recentErrors: number;
+  enabled: boolean;
+  addedAt: Date;
+}

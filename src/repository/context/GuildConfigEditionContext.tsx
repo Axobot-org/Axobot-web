@@ -1,6 +1,16 @@
-import { createContext, PropsWithChildren, useCallback, useContext, useState } from "react";
+import { createContext, Dispatch, PropsWithChildren, SetStateAction, useCallback, useContext, useState } from "react";
+
 
 type EditionValueType = number | boolean | string | string[] | null;
+
+export interface StateRssFeed {
+  id?: string;
+  channelId: string;
+  roles: string[];
+  silentMention: boolean;
+  markedForDeletion?: boolean;
+}
+
 interface GuildConfigEdition {
   baseOptions: Record<string, EditionValueType>;
   roleRewards?: {
@@ -8,6 +18,7 @@ interface GuildConfigEdition {
     roleId: string;
     level: string;
   }[];
+  rssFeeds?: StateRssFeed[];
 }
 
 interface ContextType {
@@ -18,6 +29,8 @@ interface ContextType {
   resetBaseOptionValue: (optionId: string) => void;
   setRoleRewardsValue: (roleRewards: GuildConfigEdition["roleRewards"]) => void;
   resetRoleRewardsValue: () => void;
+  setRssFeedsValue: Dispatch<SetStateAction<GuildConfigEdition["rssFeeds"]>>;
+  resetRssFeedsValue: () => void;
   resetState: () => void;
 }
 
@@ -37,6 +50,12 @@ const GuildConfigEditionContext = createContext<ContextType>({
     throw new Error("GuildConfigEditionContext is not provided");
   },
   resetRoleRewardsValue: () => {
+    throw new Error("GuildConfigEditionContext is not provided");
+  },
+  setRssFeedsValue: () => {
+    throw new Error("GuildConfigEditionContext is not provided");
+  },
+  resetRssFeedsValue: () => {
     throw new Error("GuildConfigEditionContext is not provided");
   },
   resetState: () => {
@@ -81,11 +100,35 @@ export function GuildConfigEditionProvider({ guildId, children }: PropsWithChild
     }));
   }, []);
 
+  const setRssFeedsValue: Dispatch<SetStateAction<GuildConfigEdition["rssFeeds"]>> = useCallback(
+    (valueOrUpdater) => {
+      setState((prevState) => {
+        const newRssFeeds
+          = typeof valueOrUpdater === "function"
+            ? valueOrUpdater(prevState.rssFeeds)
+            : valueOrUpdater;
+
+        return {
+          ...prevState,
+          rssFeeds: newRssFeeds,
+        };
+      });
+    },
+    []
+  );
+
+  const resetRssFeedsValue = useCallback(() => {
+    setState((prevState) => ({
+      ...prevState,
+      rssFeeds: undefined,
+    }));
+  }, []);
+
   const resetState = useCallback(() => {
     setState(getDefaultState());
   }, []);
 
-  const hasAnyUnsavedChange = Object.keys(state.baseOptions).length !== 0 || state.roleRewards !== undefined;
+  const hasAnyUnsavedChange = Object.keys(state.baseOptions).length !== 0 || state.roleRewards !== undefined || !!state.rssFeeds?.length;
 
   return (
     <GuildConfigEditionContext.Provider value={{
@@ -96,6 +139,8 @@ export function GuildConfigEditionProvider({ guildId, children }: PropsWithChild
       resetBaseOptionValue,
       setRoleRewardsValue,
       resetRoleRewardsValue,
+      setRssFeedsValue,
+      resetRssFeedsValue,
       resetState,
     }}
     >
@@ -125,5 +170,39 @@ export function useGuildConfigRoleRewardsEditionContext() {
     state: state.roleRewards,
     setValue: setRoleRewardsValue,
     resetValue: resetRoleRewardsValue,
+  };
+}
+
+export function useGuildConfigRssFeedsEditionContext() {
+  const { guildId, state, setRssFeedsValue } = useGuildConfigEditionContext();
+
+  const editFeed = (feed: StateRssFeed) => {
+    if (!state.rssFeeds) {
+      state.rssFeeds = [];
+    }
+    const existingFeed = state.rssFeeds.find((f) => f.id === feed.id);
+    const newFeed = {
+      id: feed.id,
+      channelId: feed.channelId,
+      roles: feed.roles,
+      silentMention: feed.silentMention,
+      markedForDeletion: feed.markedForDeletion ?? false,
+    };
+    if (existingFeed) {
+      setRssFeedsValue((prevState) => prevState?.map((f) => (f.id === newFeed.id ? newFeed : f)));
+    } else {
+      setRssFeedsValue((prevState) => [...(prevState ?? []), newFeed]);
+    }
+  };
+
+  const removeFeed = (feedId: string) => {
+    setRssFeedsValue((prevState) => prevState?.filter((f) => f.id !== feedId));
+  };
+
+  return {
+    guildId,
+    state: state.rssFeeds,
+    editFeed,
+    removeFeed,
   };
 }
