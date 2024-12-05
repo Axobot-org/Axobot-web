@@ -1,12 +1,13 @@
-import { ExpandLess, ExpandMore, Language, WarningAmberRounded } from "@mui/icons-material";
-import { Autocomplete, Collapse, IconButton, Stack, styled, Switch, TextField, Tooltip, Typography } from "@mui/material";
+import { ExpandLess, ExpandMore, InfoOutlined, Language, WarningAmberRounded } from "@mui/icons-material";
+import { Autocomplete, Collapse, IconButton, Link, Stack, styled, Switch, TextField, Tooltip, Typography } from "@mui/material";
 import { ChannelType } from "discord-api-types/v10";
-import { CSSProperties, PropsWithChildren, useState } from "react";
+import { CSSProperties, PropsWithChildren, useEffect, useRef, useState } from "react";
 
 import { useGuildConfigEditionContext } from "../../../../repository/context/GuildConfigEditionContext";
 import { useFetchGuildChannelsQuery } from "../../../../repository/redux/api/api";
 import { RssFeed } from "../../../../repository/types/api";
 import { GuildChannel } from "../../../../repository/types/guild";
+import { ExternalRoutesURLs } from "../../../../router/router";
 import BlueskyIcon from "../../../../svg/bluesky.svg?react";
 import DeviantArtIcon from "../../../../svg/deviantart.svg?react";
 import MinecraftIcon from "../../../../svg/minecraft.svg?react";
@@ -68,6 +69,11 @@ export default function FeedComponent({ feed, editFeed }: FeedComponentProps) {
             <SimpleParameterRow label="Use silent mentions">
               <SilentMentionToggle feed={feed} editFeed={editFeed} />
             </SimpleParameterRow>
+          )}
+          {!isMinecraft && (
+            <SimpleParameterColumn label="Text template" documentationUrl="rss.html#change-the-text">
+              <FeedTextEditor feed={feed} editFeed={editFeed} />
+            </SimpleParameterColumn>
           )}
         </Stack>
       </Collapse>
@@ -208,6 +214,22 @@ function SimpleParameterRow({ label, children }: PropsWithChildren<{ label: stri
   );
 }
 
+function SimpleParameterColumn({ label, documentationUrl, children }: PropsWithChildren<{ label: string; documentationUrl?: string }>) {
+  return (
+    <Stack direction="column" spacing={1} justifyContent="flex-start" alignItems="stretch">
+      <Stack direction="row" spacing={1} alignItems="center">
+        <Typography>{label}</Typography>
+        {documentationUrl && (
+          <Link href={`${ExternalRoutesURLs.documentation}/en/latest/${documentationUrl}`} target="_blank" title="Documentation" display="inline-flex">
+            <InfoOutlined fontSize="small" color="info" />
+          </Link>
+        )}
+      </Stack>
+      {children}
+    </Stack>
+  );
+}
+
 function ChannelSelection({ feed, editFeed }: FeedComponentProps) {
   const { guildId } = useGuildConfigEditionContext();
   const { data, isLoading, error } = useFetchGuildChannelsQuery({ guildId });
@@ -284,6 +306,50 @@ function SilentMentionToggle({ feed, editFeed }: FeedComponentProps) {
     <Switch
       checked={feed.silentMention}
       onChange={onChange}
+    />
+  );
+}
+
+function FeedTextEditor({ feed, editFeed }: FeedComponentProps) {
+  const MIN_LENGTH = 5;
+  const MAX_LENGTH = 1800;
+  const lastValidValue = useRef(feed.structure);
+
+  useEffect(() => {
+    if (feed.structure.length >= MIN_LENGTH && feed.structure.length <= MAX_LENGTH) {
+      lastValidValue.current = feed.structure;
+    }
+  }, [feed.structure]);
+
+  function onChange(event: React.ChangeEvent<HTMLTextAreaElement>) {
+    editFeed({
+      ...feed,
+      structure: event.target.value,
+    });
+  }
+
+  function onBlur(event: React.FocusEvent<HTMLTextAreaElement>) {
+    const value = event.target.value;
+    if ((value.length < MIN_LENGTH || value.length > MAX_LENGTH) && lastValidValue.current) {
+      editFeed({
+        ...feed,
+        structure: lastValidValue.current,
+      });
+    }
+  }
+
+  return (
+    <TextField
+      placeholder="Text template"
+      value={feed.structure}
+      onChange={onChange}
+      onBlur={onBlur}
+      variant="outlined"
+      multiline
+      maxRows={8}
+      slotProps={{
+        htmlInput: { minLength: MIN_LENGTH, maxLength: MAX_LENGTH },
+      }}
     />
   );
 }

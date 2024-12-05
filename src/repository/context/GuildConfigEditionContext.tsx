@@ -6,7 +6,7 @@ type EditionValueType = number | boolean | string | string[] | null;
 export interface StateRssFeed {
   id?: string;
   channelId: string;
-  roles: string[];
+  structure: string;
   silentMention: boolean;
   markedForDeletion?: boolean;
 }
@@ -181,10 +181,10 @@ export function useGuildConfigRssFeedsEditionContext() {
       state.rssFeeds = [];
     }
     const existingFeed = state.rssFeeds.find((f) => f.id === feed.id);
-    const newFeed = {
+    const newFeed: StateRssFeed = {
       id: feed.id,
       channelId: feed.channelId,
-      roles: feed.roles,
+      structure: feed.structure,
       silentMention: feed.silentMention,
       markedForDeletion: feed.markedForDeletion ?? false,
     };

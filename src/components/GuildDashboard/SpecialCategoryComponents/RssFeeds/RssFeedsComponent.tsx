@@ -2,7 +2,6 @@ import { Stack, Typography } from "@mui/material";
 import { useCallback } from "react";
 import { Fragment } from "react/jsx-runtime";
 
-import checkArrayEquity from "../../../../repository/checkArrayEquity";
 import { StateRssFeed, useGuildConfigEditionContext, useGuildConfigRssFeedsEditionContext } from "../../../../repository/context/GuildConfigEditionContext";
 import { useFetchGuildConfigQuery, useFetchGuildRssFeedsQuery } from "../../../../repository/redux/api/api";
 import { RssFeed } from "../../../../repository/types/api";
@@ -88,5 +87,5 @@ function PageTitle({ feeds }: { feeds: RssFeed[] | undefined }) {
 }
 
 function compareFeeds(a: StateRssFeed, b: StateRssFeed) {
-  return a.channelId === b.channelId && checkArrayEquity(a.roles, b.roles) && a.silentMention === b.silentMention && !!a.markedForDeletion === !!b.markedForDeletion;
+  return a.channelId === b.channelId && a.structure === b.structure && a.silentMention === b.silentMention && !!a.markedForDeletion === !!b.markedForDeletion;
 }
