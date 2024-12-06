@@ -2,7 +2,7 @@ import { Stack, Typography } from "@mui/material";
 import { useCallback } from "react";
 import { Fragment } from "react/jsx-runtime";
 
-import { StateRssFeed, useGuildConfigEditionContext, useGuildConfigRssFeedsEditionContext } from "../../../../repository/context/GuildConfigEditionContext";
+import { useGuildConfigEditionContext, useGuildConfigRssFeedsEditionContext } from "../../../../repository/context/GuildConfigEditionContext";
 import { useFetchGuildConfigQuery, useFetchGuildRssFeedsQuery } from "../../../../repository/redux/api/api";
 import { RssFeed } from "../../../../repository/types/api";
 import { ErrorPage, LoadingPlaceholder } from "../../shared";
@@ -11,16 +11,16 @@ import FeedComponent from "./FeedComponent";
 export default function RssFeedsComponent() {
   const { guildId } = useGuildConfigEditionContext();
   const { data, isLoading, error } = useFetchGuildRssFeedsQuery({ guildId });
-  const { state: editedFeeds, editFeed: editStateFeed, removeFeed } = useGuildConfigRssFeedsEditionContext();
+  const { findFeedInState, editFeed: editStateFeed, unregisterFeed } = useGuildConfigRssFeedsEditionContext();
 
   const editFeed = useCallback((feed: RssFeed) => {
-    const feedFromApi = data?.find((f) => f.id === feed.id);
-    if (feedFromApi && compareFeeds(feed, feedFromApi)) {
-      removeFeed(feed.id);
+    const uneditedFeed = data?.find((f) => f.id === feed.id);
+    if (uneditedFeed && compareFeeds(feed, uneditedFeed)) {
+      unregisterFeed(feed.id);
     } else {
       editStateFeed(feed);
     }
-  }, [data, editStateFeed, removeFeed]);
+  }, [data, editStateFeed, unregisterFeed]);
 
   if (error) {
     if (isLoading) {
@@ -51,7 +51,7 @@ export default function RssFeedsComponent() {
   }
 
   const sortedFeed = data.map((feedFromApi): RssFeed => {
-    const feedFromState = editedFeeds?.find((feed) => feed.id === feedFromApi.id) ?? {};
+    const feedFromState = findFeedInState(feedFromApi.id) ?? {};
     return { ...feedFromApi, ...feedFromState };
   }).toSorted((a, b) => (b.addedAt > a.addedAt ? -1 : 1));
 
@@ -86,6 +86,6 @@ function PageTitle({ feeds }: { feeds: RssFeed[] | undefined }) {
   return <Typography variant="h5" gutterBottom textAlign="center">{title}</Typography>;
 }
 
-function compareFeeds(a: StateRssFeed, b: StateRssFeed) {
-  return a.channelId === b.channelId && a.structure === b.structure && a.silentMention === b.silentMention && !!a.markedForDeletion === !!b.markedForDeletion;
+function compareFeeds(a: RssFeed, b: RssFeed) {
+  return Object.keys(a).every((key) => key in b && a[key as keyof RssFeed] === b[key as keyof RssFeed]);
 }

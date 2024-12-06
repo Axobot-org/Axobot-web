@@ -8,6 +8,7 @@ import {
   LoginJSONResponse,
   RoleReward,
   RssFeed,
+  RssFeedPUTData,
 } from "../../types/api";
 import { GuildChannel, GuildConfig, GuildData, GuildRole } from "../../types/guild";
 import { GuildConfigOptionCategory, GuildConfigOptionsMapType } from "../../types/guild-config-types";
@@ -204,6 +205,22 @@ export const axoApi = createApi({
         } catch { /* don't update cache on error */ }
       },
     }),
+    patchGuildRssFeeds: builder.mutation<RssFeed[], { guildId: string; feeds: RssFeedPUTData }>({
+      query: ({ guildId, feeds }) => ({
+        url: `discord/guild/${guildId}/rss-feeds`,
+        method: "PATCH",
+        body: feeds,
+      }),
+      async onQueryStarted({ guildId }, { dispatch, queryFulfilled }) {
+        // update fetchGuildRssFeeds cache with returned updated data
+        try {
+          const { data } = await queryFulfilled;
+          dispatch(
+            axoApi.util.updateQueryData("fetchGuildRssFeeds", { guildId }, () => data)
+          );
+        } catch { /* don't update cache on error */ }
+      },
+    }),
   }),
 });
 
@@ -227,4 +244,5 @@ export const {
   usePutGuildLeaderboardMutation,
   usePutGuildRoleRewardsMutation,
   useToggleGuildRssFeedMutation,
+  usePatchGuildRssFeedsMutation,
 } = axoApi;
