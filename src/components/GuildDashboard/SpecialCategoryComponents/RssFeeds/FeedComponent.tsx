@@ -44,7 +44,7 @@ export default function FeedComponent({ feed, editFeed }: FeedComponentProps) {
           <FeedTypeIcon feedType={feed.type} />
           <Stack direction="row" overflow="hidden" alignItems="center">
             <Typography noWrap component="span">
-              {feed.link}
+              {feed.displayName ?? feed.link}
             </Typography>
             {displayRecentErrors && <RecentErrorsIcon />}
             {!feed.enabled && <DisabledTag />}
