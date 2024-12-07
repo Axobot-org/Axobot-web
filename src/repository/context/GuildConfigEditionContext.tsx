@@ -1,6 +1,8 @@
 import { createContext, Dispatch, PropsWithChildren, SetStateAction, useCallback, useContext, useState } from "react";
 
+import { useFetchDefaultGuildConfigQuery } from "../redux/api/api";
 import { RssFeed } from "../types/api";
+import { GuildConfigOptionCategory } from "../types/guild-config-types";
 
 
 type EditionValueType = number | boolean | string | string[] | null;
@@ -25,6 +27,7 @@ interface ContextType {
   guildId: string;
   state: GuildConfigEdition;
   hasAnyUnsavedChange: boolean;
+  getCategoriesWithUnsavedChanges: () => GuildConfigOptionCategory[];
   setBaseOptionValue: (optionId: string, value: EditionValueType) => void;
   resetBaseOptionValue: (optionId: string) => void;
   setRoleRewardsValue: (roleRewards: GuildConfigEdition["roleRewards"]) => void;
@@ -40,6 +43,7 @@ const GuildConfigEditionContext = createContext<ContextType>({
   guildId: "",
   state: getDefaultState(),
   hasAnyUnsavedChange: false,
+  getCategoriesWithUnsavedChanges: () => [],
   setBaseOptionValue: () => {
     throw new Error("GuildConfigEditionContext is not provided");
   },
@@ -65,6 +69,7 @@ const GuildConfigEditionContext = createContext<ContextType>({
 
 export function GuildConfigEditionProvider({ guildId, children }: PropsWithChildren<{ guildId: string }>) {
   const [state, setState] = useState<GuildConfigEdition>(getDefaultState());
+  const { data: defaultConfig } = useFetchDefaultGuildConfigQuery();
 
   const setBaseOptionValue = useCallback((optionId: string, value: EditionValueType) => {
     setState((prevState) => ({
@@ -128,14 +133,34 @@ export function GuildConfigEditionProvider({ guildId, children }: PropsWithChild
     setState(getDefaultState());
   }, []);
 
+  const isAnyRssFeedEdited = (!!state.rssFeeds && (
+    state.rssFeeds.add.length !== 0
+    || state.rssFeeds.edit.length !== 0
+    || state.rssFeeds.remove.length !== 0
+  ));
+
+  const getCategoriesWithUnsavedChanges = (): GuildConfigOptionCategory[] => {
+    const unsavedCategories: GuildConfigOptionCategory[] = [];
+    if (defaultConfig) {
+      Object.entries(defaultConfig).forEach(([category, defaultCategoryOptions]) => {
+        if (Object.keys(defaultCategoryOptions).some((optionId) => state.baseOptions[optionId] !== undefined)) {
+          unsavedCategories.push(category as GuildConfigOptionCategory);
+        }
+      });
+    }
+    if (state.roleRewards !== undefined) {
+      unsavedCategories.push("xp");
+    }
+    if (isAnyRssFeedEdited) {
+      unsavedCategories.push("rss");
+    }
+    return unsavedCategories;
+  };
+
   const hasAnyUnsavedChange = (
     Object.keys(state.baseOptions).length !== 0
     || state.roleRewards !== undefined
-    || (!!state.rssFeeds && (
-      state.rssFeeds.add.length !== 0
-      || state.rssFeeds.edit.length !== 0
-      || state.rssFeeds.remove.length !== 0
-    ))
+    || isAnyRssFeedEdited
   );
 
   return (
@@ -143,6 +168,7 @@ export function GuildConfigEditionProvider({ guildId, children }: PropsWithChild
       guildId,
       state,
       hasAnyUnsavedChange,
+      getCategoriesWithUnsavedChanges,
       setBaseOptionValue,
       resetBaseOptionValue,
       setRoleRewardsValue,
