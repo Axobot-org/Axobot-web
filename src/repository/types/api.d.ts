@@ -60,7 +60,7 @@ export interface RssFeed {
   channelId: string;
   type: string;
   link: string;
-  displayName: string | undefined;
+  displayName?: string;
   date: Date;
   structure: string;
   roles: string[];

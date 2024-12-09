@@ -1,4 +1,4 @@
-import { ExpandLess, ExpandMore, InfoOutlined, Language, WarningAmberRounded } from "@mui/icons-material";
+import { ExpandLess, ExpandMore, InfoOutlined, WarningAmberRounded } from "@mui/icons-material";
 import { Autocomplete, Collapse, IconButton, Link, Stack, styled, Switch, TextField, Tooltip, Typography } from "@mui/material";
 import { ChannelType } from "discord-api-types/v10";
 import { CSSProperties, PropsWithChildren, useEffect, useRef, useState } from "react";
@@ -8,15 +8,10 @@ import { useFetchGuildChannelsQuery } from "../../../../repository/redux/api/api
 import { RssFeed } from "../../../../repository/types/api";
 import { GuildChannel } from "../../../../repository/types/guild";
 import { ExternalRoutesURLs } from "../../../../router/router";
-import BlueskyIcon from "../../../../svg/bluesky.svg?react";
-import DeviantArtIcon from "../../../../svg/deviantart.svg?react";
-import MinecraftIcon from "../../../../svg/minecraft.svg?react";
-import TwitchIcon from "../../../../svg/twitch.svg?react";
-import TwitterIcon from "../../../../svg/twitter.svg?react";
-import YoutubeIcon from "../../../../svg/youtube.svg?react";
 import ChannelMention from "../../../common/ChannelMention";
 import { ReadonlyChannelPicker } from "../../ConfigComponents/shared/TextChannelPicker";
 import FeedToggle from "./FeedToggle";
+import RssFeedMention from "./RssFeedMention";
 
 const RECENT_ERRORS_THRESHOLD = 3;
 
@@ -40,15 +35,10 @@ export default function FeedComponent({ feed, editFeed }: FeedComponentProps) {
   return (
     <FeedRowContainer isOpen={isOpen} disabled={!feed.enabled}>
       <FeedTitleStack onClick={toggleCollapsedZone}>
-        <Stack direction="row" gap={{ xs: 0.5, md: 1 }} overflow="hidden">
-          <FeedTypeIcon feedType={feed.type} />
-          <Stack direction="row" overflow="hidden" alignItems="center">
-            <Typography noWrap component="span">
-              {feed.displayName ?? feed.link}
-            </Typography>
-            {displayRecentErrors && <RecentErrorsIcon />}
-            {!feed.enabled && <DisabledTag />}
-          </Stack>
+        <Stack direction="row" overflow="hidden" alignItems="center">
+          <RssFeedMention feed={feed} />
+          {displayRecentErrors && <RecentErrorsIcon />}
+          {!feed.enabled && <DisabledTag />}
         </Stack>
 
         <Stack direction="row">
@@ -105,53 +95,6 @@ const FeedTitleStack = styled(Stack)(({ theme, onClick }) => ({
     gap: theme.spacing(0),
   },
 }));
-
-function FeedTypeIcon({ feedType }: { feedType: string }) {
-  switch (feedType) {
-    case "bluesky":
-      return (
-        <IconTooltip title="Bluesky">
-          <BlueskyIcon width={24} />
-        </IconTooltip>
-      );
-    case "deviant":
-      return (
-        <IconTooltip title="DeviantArt">
-          <DeviantArtIcon width={24} />
-        </IconTooltip>
-      );
-    case "mc":
-      return (
-        <IconTooltip title="Minecraft">
-          <MinecraftIcon width={24} />
-        </IconTooltip>
-      );
-    case "tw":
-      return (
-        <IconTooltip title="Twitter">
-          <TwitterIcon width={24} />
-        </IconTooltip>
-      );
-    case "twitch":
-      return (
-        <IconTooltip title="Twitch">
-          <TwitchIcon width={24} />
-        </IconTooltip>
-      );
-    case "yt":
-      return (
-        <IconTooltip title="YouTube">
-          <YoutubeIcon width={24} />
-        </IconTooltip>
-      );
-    default:
-      return (
-        <IconTooltip title="Other">
-          <Language htmlColor="#8c8c8c" />
-        </IconTooltip>
-      );
-  }
-}
 
 function IconTooltip({ title, spanStyle, children }: PropsWithChildren<{ title: string; spanStyle?: CSSProperties }>) {
   return (
