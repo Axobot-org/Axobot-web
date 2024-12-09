@@ -185,26 +185,6 @@ export const axoApi = createApi({
         } catch { /* don't update cache on error */ }
       },
     }),
-    toggleGuildRssFeed: builder.mutation<RssFeed, { guildId: string; feedId: string }>({
-      query: ({ guildId, feedId }) => ({
-        url: `discord/guild/${guildId}/rss-feeds/${feedId}/toggle`,
-        method: "POST",
-      }),
-      async onQueryStarted({ guildId }, { dispatch, queryFulfilled }) {
-        // update fetchGuildRssFeeds cache with returned updated data
-        try {
-          const { data } = await queryFulfilled;
-          dispatch(
-            axoApi.util.updateQueryData("fetchGuildRssFeeds", { guildId }, (draft) => {
-              const feedIndex = draft.findIndex((feed) => feed.id === data.id);
-              if (feedIndex !== -1) {
-                draft[feedIndex] = data;
-              }
-            })
-          );
-        } catch { /* don't update cache on error */ }
-      },
-    }),
     patchGuildRssFeeds: builder.mutation<RssFeed[], { guildId: string; feeds: RssFeedPUTData }>({
       query: ({ guildId, feeds }) => ({
         url: `discord/guild/${guildId}/rss-feeds`,
@@ -243,6 +223,5 @@ export const {
   usePatchGuildConfigMutation,
   usePutGuildLeaderboardMutation,
   usePutGuildRoleRewardsMutation,
-  useToggleGuildRssFeedMutation,
   usePatchGuildRssFeedsMutation,
 } = axoApi;
