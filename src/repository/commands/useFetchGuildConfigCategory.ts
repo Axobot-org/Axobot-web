@@ -2,7 +2,7 @@ import { useMemo } from "react";
 
 import { useFetchDefaultGuildConfigQuery, useFetchGuildConfigQuery } from "../redux/api/api";
 import { PopulatedGuildConfig } from "../types/guild";
-import { GuildConfigOptionCategory } from "../types/guild-config-types";
+import { EmptyCategories, GuildConfigOptionCategory } from "../types/guild-config-types";
 
 interface MethodParameters {
   guildId: string;
@@ -10,11 +10,12 @@ interface MethodParameters {
 }
 
 export function useFetchGuildConfigCategory({ guildId, category }: MethodParameters) {
+  const expectEmptyData = EmptyCategories.includes(category);
   const { data: configData, isLoading: isLoadingConfig, error: errorConfig } = useFetchGuildConfigQuery({
     guildId: guildId,
     categories: [category],
   }, {
-    skip: category === "edition-logs",
+    skip: expectEmptyData,
   });
   const { data: defaultConfig, isLoading: isLoadingDefault, error: errorDefault } = useFetchDefaultGuildConfigQuery();
 

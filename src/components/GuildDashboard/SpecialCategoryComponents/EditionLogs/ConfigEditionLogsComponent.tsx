@@ -2,16 +2,15 @@ import { Avatar, Stack, styled, Tooltip, Typography } from "@mui/material";
 import { Fragment } from "react/jsx-runtime";
 
 import { getGuildDashboardTranslations } from "../../../../i18n/i18n";
+import { useGuildConfigEditionContext } from "../../../../repository/context/GuildConfigEditionContext";
 import { useFetchConfigEditionLogsQuery } from "../../../../repository/redux/api/api";
 import { ConfigEditionLog } from "../../../../repository/types/api";
 import { RoleMentionFromId } from "../../../common/RoleMention";
 import { ErrorPage, LoadingPlaceholder } from "../../shared";
+import RssFeedMention from "../RssFeeds/RssFeedMention";
 
-interface ConfigEditionLogsComponentProps {
-  guildId: string;
-}
-
-export default function ConfigEditionLogsComponent({ guildId }: ConfigEditionLogsComponentProps) {
+export default function ConfigEditionLogsComponent() {
+  const { guildId } = useGuildConfigEditionContext();
   const { data, isLoading, error } = useFetchConfigEditionLogsQuery({ guildId });
 
   if (error) {
@@ -61,6 +60,7 @@ const LogRowContainer = styled(Stack)(({ theme }) => ({
   borderRadius: 10,
   padding: theme.spacing(0.75, 2),
   alignItems: "center",
+  transition: "background-color 0.2s",
   "&:hover": {
     backgroundColor: theme.palette.custom.background1,
   },
@@ -76,6 +76,7 @@ function LogAction({ log }: { log: ConfigEditionLog }) {
     return (
       <Fragment>
         edited option
+        {" "}
         <OptionName optionId={log.data.option} />
         <ActionSource log={log} />
       </Fragment>
@@ -85,6 +86,7 @@ function LogAction({ log }: { log: ConfigEditionLog }) {
     return (
       <Fragment>
         reset option
+        {" "}
         <OptionName optionId={log.data.option} />
         <ActionSource log={log} />
       </Fragment>
@@ -119,13 +121,26 @@ function LogAction({ log }: { log: ConfigEditionLog }) {
         {" "}
         to roles
         {" "}
-        <Stack display="inline-flex" direction="row" columnGap={1} flexWrap="wrap">
-          {log.data.newRewards.map((reward) => (
-            <RoleMentionFromId key={reward.roleId} id={reward.roleId} />
-          ))}
-        </Stack>
+        {log.data.newRewards.map((reward) => (
+          <RoleMentionFromId key={reward.roleId} id={reward.roleId} sx={{ ml: 0.5 }} />
+        ))}
         <ActionSource log={log} />
       </Fragment>
+    );
+  }
+  if (logIsRssUpdate(log)) {
+    const feedsCount = log.data.feeds.length;
+    const plural = log.data.feeds.length > 1;
+    let text = "";
+    if (log.type === "rss_added") {
+      text = `added ${feedsCount} RSS feed` + (plural ? "s" : "");
+    } else if (log.type === "rss_deleted") {
+      text = `deleted ${feedsCount} RSS feed` + (plural ? "s" : "");
+    } else {
+      text = `edited ${feedsCount} RSS feed` + (plural ? "s" : "");
+    }
+    return (
+      <RssUpdateLogs text={text} feeds={log.data.feeds} />
     );
   }
   return "edited configuration";
@@ -159,6 +174,18 @@ function ActionSource({ log }: { log: ConfigEditionLog }) {
     return " from the website";
   }
   return null;
+}
+
+function RssUpdateLogs({ text, feeds }: { text: string; feeds: ConfigEditionLog_RssUpdate["data"]["feeds"] }) {
+  const sortedFeeds = feeds.toSorted((a, b) => (a.displayName ?? a.link).localeCompare(b.displayName ?? b.link));
+  return (
+    <Stack direction="row" display="inline-flex" flexWrap="wrap">
+      {text}
+      {sortedFeeds.map((feed) => (
+        <RssFeedMention key={feed.id} feed={feed} sx={{ display: "inline-flex", ml: 1, gap: 0.5 }} />
+      ))}
+    </Stack>
+  );
 }
 
 
@@ -204,3 +231,21 @@ interface ConfigEditionLog_RoleRewardsPut extends ConfigEditionLog {
 function logIsRoleRewardsPut(log: ConfigEditionLog): log is ConfigEditionLog_RoleRewardsPut {
   return log.type === "role_rewards_put";
 }
+
+interface ConfigEditionLog_RssUpdate extends ConfigEditionLog {
+  type: "rss_added" | "rss_edited" | "rss_deleted";
+  data: {
+    feeds: {
+      id: string;
+      channelId: string;
+      link: string;
+      type: string;
+      displayName?: string;
+    }[];
+  };
+}
+
+function logIsRssUpdate(log: ConfigEditionLog): log is ConfigEditionLog_RssUpdate {
+  return log.type === "rss_added" || log.type === "rss_edited" || log.type === "rss_deleted";
+}
+

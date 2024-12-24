@@ -1,6 +1,6 @@
 {
   "name": "axobot-web",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "type": "module",
   "private": true,
   "dependencies": {
@@ -13,7 +13,7 @@
     "@vitejs/plugin-react-swc": "^3.6.0",
     "compression": "^1.7.4",
     "discord-api-types": "^0.37.92",
-    "express": "^4.21.1",
+    "express": "^4.21.2",
     "express-rate-limit": "^7.4.0",
     "morgan": "^1.10.0",
     "mui-color-input": "^4.0.0",

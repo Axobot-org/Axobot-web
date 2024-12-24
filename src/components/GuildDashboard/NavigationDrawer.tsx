@@ -1,14 +1,15 @@
-import { Feed, Gavel, Handshake, HowToVote, InfoOutlined, Leaderboard, LiveTv, Mic, QuestionMark, Settings, WavingHand } from "@mui/icons-material";
+import { Feed, Gavel, Handshake, HowToVote, InfoOutlined, Leaderboard, LiveTv, Mic, NewspaperOutlined, QuestionMark, Settings, WavingHand } from "@mui/icons-material";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import MenuIcon from "@mui/icons-material/Menu";
-import { Box, CSSObject, Divider, IconButton, List, ListItem, ListItemButton, ListItemIcon, ListItemText, styled, Theme, Toolbar } from "@mui/material";
+import { Badge, Box, CSSObject, Divider, IconButton, List, ListItem, ListItemButton, ListItemIcon, ListItemText, styled, Theme, Toolbar } from "@mui/material";
 import MuiDrawer from "@mui/material/Drawer";
 import { Fragment, useState } from "react";
 import { createPortal } from "react-dom";
 import { Link, useLocation } from "react-router-dom";
 
 import { getGuildDashboardTranslations } from "../../i18n/i18n";
+import { useGuildConfigEditionContext } from "../../repository/context/GuildConfigEditionContext";
 import { GuildConfigOptionCategory, GuildConfigOptionCategoryNames } from "../../repository/types/guild-config-types";
 import { useIsOnMobile } from "../../styles/useIsOnMobile";
 
@@ -104,6 +105,8 @@ function TabIcon({ page }: { page: GuildConfigOptionCategory }) {
       return <Handshake />;
     case "poll-channels":
       return <HowToVote />;
+    case "rss":
+      return <NewspaperOutlined />;
     case "streamers":
       return <LiveTv />;
     case "voice-channels":
@@ -124,7 +127,10 @@ function getPageTitle(page: string) {
 }
 
 function TabContent({ page, isOpen }: { page: GuildConfigOptionCategory; isOpen: boolean }) {
+  const { getCategoriesWithUnsavedChanges } = useGuildConfigEditionContext();
+  const unsavedCategories = getCategoriesWithUnsavedChanges();
   const formatedTitle = getPageTitle(page);
+
   return (
     <Fragment>
       <ListItemIcon
@@ -135,7 +141,9 @@ function TabContent({ page, isOpen }: { page: GuildConfigOptionCategory; isOpen:
           justifyContent: "center",
         }}
       >
-        <TabIcon page={page} />
+        <Badge color="warning" variant="dot" invisible={!unsavedCategories.includes(page)}>
+          <TabIcon page={page} />
+        </Badge>
       </ListItemIcon>
       <ListItemText primary={formatedTitle} sx={{ opacity: isOpen ? 1 : 0 }} />
     </Fragment>

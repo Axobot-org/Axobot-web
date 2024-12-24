@@ -7,6 +7,8 @@ import {
   LeaderboardResponse,
   LoginJSONResponse,
   RoleReward,
+  RssFeed,
+  RssFeedPUTData,
 } from "../../types/api";
 import { GuildChannel, GuildConfig, GuildData, GuildRole } from "../../types/guild";
 import { GuildConfigOptionCategory, GuildConfigOptionsMapType } from "../../types/guild-config-types";
@@ -124,6 +126,9 @@ export const axoApi = createApi({
     fetchConfigEditionLogs: builder.query<ConfigEditionLog[], { guildId: string }>({
       query: ({ guildId }) => `discord/guild/${guildId}/config-logs`,
     }),
+    fetchGuildRssFeeds: builder.query<RssFeed[], { guildId: string }>({
+      query: ({ guildId }) => `discord/guild/${guildId}/rss-feeds`,
+    }),
 
     // ----- MUTATIONS ----- //
     login: builder.mutation<LoginJSONResponse, string>({
@@ -164,10 +169,7 @@ export const axoApi = createApi({
         body: players,
       }),
     }),
-    putGuildRoleRewards: builder.mutation<RoleReward[], {
-      guildId: string;
-      roleRewards: Pick<RoleReward, "roleId" | "level">[];
-    }>({
+    putGuildRoleRewards: builder.mutation<RoleReward[], { guildId: string; roleRewards: Pick<RoleReward, "roleId" | "level">[] }>({
       query: ({ guildId, roleRewards }) => ({
         url: `discord/guild/${guildId}/role-rewards`,
         method: "PUT",
@@ -179,6 +181,22 @@ export const axoApi = createApi({
           const { data } = await queryFulfilled;
           dispatch(
             axoApi.util.updateQueryData("fetchGuildRoleRewards", { guildId }, () => data)
+          );
+        } catch { /* don't update cache on error */ }
+      },
+    }),
+    patchGuildRssFeeds: builder.mutation<RssFeed[], { guildId: string; feeds: RssFeedPUTData }>({
+      query: ({ guildId, feeds }) => ({
+        url: `discord/guild/${guildId}/rss-feeds`,
+        method: "PATCH",
+        body: feeds,
+      }),
+      async onQueryStarted({ guildId }, { dispatch, queryFulfilled }) {
+        // update fetchGuildRssFeeds cache with returned updated data
+        try {
+          const { data } = await queryFulfilled;
+          dispatch(
+            axoApi.util.updateQueryData("fetchGuildRssFeeds", { guildId }, () => data)
           );
         } catch { /* don't update cache on error */ }
       },
@@ -199,9 +217,11 @@ export const {
   useFetchGuildRolesQuery,
   useFetchGuildChannelsQuery,
   useFetchConfigEditionLogsQuery,
+  useFetchGuildRssFeedsQuery,
 
   useLoginMutation,
   usePatchGuildConfigMutation,
   usePutGuildLeaderboardMutation,
   usePutGuildRoleRewardsMutation,
+  usePatchGuildRssFeedsMutation,
 } = axoApi;

@@ -19,6 +19,7 @@ import TextConfigComponent from "./ConfigComponents/TextConfigComponent";
 import VoiceChannelConfigComponent from "./ConfigComponents/VoiceChannelConfigComponent";
 import { ErrorPage, LoadingPlaceholder } from "./shared";
 import ConfigEditionLogsComponent from "./SpecialCategoryComponents/EditionLogs/ConfigEditionLogsComponent";
+import RssFeedsComponent from "./SpecialCategoryComponents/RssFeeds/RssFeedsComponent";
 import XpCategoryComponent from "./SpecialCategoryComponents/XpCategory/XpCategoryComponent";
 
 interface ConfigurationCategoryPageProps {
@@ -69,7 +70,7 @@ export default function ConfigurationCategoryPage({ guildId, activePage }: Confi
         ))}
 
       </ComponentsContainer>
-      <SpecialCategoryComponent guildId={guildId} activePage={activePage} />
+      <SpecialCategoryComponent activePage={activePage} />
     </PageContainer>
   );
 }
@@ -123,12 +124,14 @@ function GenericConfigComponent({ optionId, option }: { optionId: string; option
   }
 }
 
-function SpecialCategoryComponent({ guildId, activePage }: { guildId: string; activePage: GuildConfigOptionCategory }) {
+function SpecialCategoryComponent({ activePage }: { activePage: GuildConfigOptionCategory }) {
   switch (activePage) {
     case "edition-logs":
-      return <ConfigEditionLogsComponent guildId={guildId} />;
+      return <ConfigEditionLogsComponent />;
+    case "rss":
+      return <RssFeedsComponent />;
     case "xp":
-      return <XpCategoryComponent guildId={guildId} />;
+      return <XpCategoryComponent />;
     default:
       return null;
   }

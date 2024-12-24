@@ -1,6 +1,7 @@
 import { useState } from "react";
 
-import { usePatchGuildConfigMutation, usePutGuildRoleRewardsMutation } from "../api/api";
+import { StateRssFeed } from "../../context/GuildConfigEditionContext";
+import { usePatchGuildConfigMutation, usePatchGuildRssFeedsMutation, usePutGuildRoleRewardsMutation } from "../api/api";
 
 export function usePatchGuildConfig() {
   const [success, setSuccess] = useState(false);
@@ -12,6 +13,10 @@ export function usePatchGuildConfig() {
     putRoleRewardsMutation,
     { error: errorOnRoleRewards, isLoading: isLoadingRoleRewards },
   ] = usePutGuildRoleRewardsMutation();
+  const [
+    patchGuildRssFeedsMutation,
+    { error: errorOnRssFeeds, isLoading: isLoadingRssFeeds },
+  ] = usePatchGuildRssFeedsMutation();
 
   async function patchGuildConfigCommand(guildId: string, config: Record<string, unknown>) {
     setSuccess(false);
@@ -28,11 +33,24 @@ export function usePatchGuildConfig() {
     setSuccess(true);
   }
 
+  async function patchRssFeedsCommand(
+    guildId: string,
+    feedsState: StateRssFeed
+  ) {
+    if (feedsState.add.length === 0 && feedsState.edit.length === 0 && feedsState.remove.length === 0) {
+      return;
+    }
+    setSuccess(false);
+    await patchGuildRssFeedsMutation({ guildId, feeds: feedsState });
+    setSuccess(true);
+  }
+
   return {
     patchGuildConfigCommand,
     putRoleRewardsCommand,
-    error: errorOnGuildConfig ?? errorOnRoleRewards,
-    loading: isLoadingGuildConfig || isLoadingRoleRewards,
+    patchRssFeedsCommand,
+    error: errorOnGuildConfig ?? errorOnRoleRewards ?? errorOnRssFeeds,
+    loading: isLoadingGuildConfig || isLoadingRoleRewards || isLoadingRssFeeds,
     success,
   };
 }
