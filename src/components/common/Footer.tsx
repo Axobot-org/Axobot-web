@@ -22,7 +22,7 @@ export default function Footer() {
         <CustomLink newTab href={ExternalRoutesURLs.supportServer}>Support server</CustomLink>
       </Stack>
       <Stack direction="column" columnGap={{ xs: 2, sm: 3 }} order={{ xs: -1, sm: 0 }} alignItems="center">
-        <span>© 2024 Axobot</span>
+        <span>© 2024-2025 Axobot</span>
         <span>All rights reserved.</span>
       </Stack>
       <Stack direction="column" columnGap={{ xs: 2, sm: 3 }} alignItems="center">
