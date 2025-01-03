@@ -99,7 +99,7 @@ interface __RssFeedPUT_Common {
   enabled: boolean;
 }
 
-interface RssFeedPUTData {
+export interface RssFeedPUTData {
   add?: (__RssFeedPUT_Common & {
     link: string;
     type: Exclude<typeof VALID_RSS_FEED_TYPES[number], "tw">;
@@ -109,3 +109,16 @@ interface RssFeedPUTData {
   })[];
   remove?: string[];
 }
+
+export interface RssFeedParsedEntry {
+  url: string;
+  title: string;
+  pubDate: string;
+  entryId: string | null;
+  author: string | null;
+  channel: string | null;
+  image: string | null;
+  postText: string | null;
+  postDescription: string | null;
+}
+

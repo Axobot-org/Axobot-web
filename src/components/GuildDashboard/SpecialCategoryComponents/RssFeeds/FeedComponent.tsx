@@ -1,5 +1,5 @@
 import { ExpandLess, ExpandMore, InfoOutlined, WarningAmberRounded } from "@mui/icons-material";
-import { Autocomplete, Collapse, IconButton, Link, Stack, styled, Switch, TextField, Tooltip, Typography } from "@mui/material";
+import { Autocomplete, Box, Collapse, IconButton, Link, Stack, styled, Switch, TextField, Tooltip, Typography } from "@mui/material";
 import { ChannelType } from "discord-api-types/v10";
 import { CSSProperties, PropsWithChildren, useEffect, useRef, useState } from "react";
 
@@ -10,6 +10,7 @@ import { GuildChannel } from "../../../../repository/types/guild";
 import { ExternalRoutesURLs } from "../../../../router/router";
 import ChannelMention from "../../../common/ChannelMention";
 import { ReadonlyChannelPicker } from "../../ConfigComponents/shared/TextChannelPicker";
+import FeedPreviewButton from "./FeedPreviewButton";
 import FeedToggle from "./FeedToggle";
 import RssFeedMention from "./RssFeedMention";
 
@@ -30,6 +31,7 @@ export default function FeedComponent({ feed, editFeed }: FeedComponentProps) {
 
   const isTwitter = feed.type === "tw";
   const isMinecraft = feed.type === "mc";
+  const canPreview = ["yt", "web"].includes(feed.type);
   const displayRecentErrors = !isTwitter && feed.recentErrors >= RECENT_ERRORS_THRESHOLD;
 
   return (
@@ -64,6 +66,11 @@ export default function FeedComponent({ feed, editFeed }: FeedComponentProps) {
             <SimpleParameterColumn label="Text template" documentationUrl="rss.html#change-the-text">
               <FeedTextEditor feed={feed} editFeed={editFeed} />
             </SimpleParameterColumn>
+          )}
+          {canPreview && (
+            <Box my={2}>
+              <FeedPreviewButton feed={feed} />
+            </Box>
           )}
         </Stack>
       </Collapse>

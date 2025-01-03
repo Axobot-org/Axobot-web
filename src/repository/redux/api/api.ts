@@ -8,6 +8,7 @@ import {
   LoginJSONResponse,
   RoleReward,
   RssFeed,
+  RssFeedParsedEntry,
   RssFeedPUTData,
 } from "../../types/api";
 import { GuildChannel, GuildConfig, GuildData, GuildRole } from "../../types/guild";
@@ -129,6 +130,13 @@ export const axoApi = createApi({
     fetchGuildRssFeeds: builder.query<RssFeed[], { guildId: string }>({
       query: ({ guildId }) => `discord/guild/${guildId}/rss-feeds`,
     }),
+    testRssFeed: builder.query<RssFeedParsedEntry, { type: string; url: string }>({
+      query: ({ type, url }) => ({
+        url: "rss/test",
+        params: { type, url },
+      }),
+      keepUnusedDataFor: 300, // 5 minutes
+    }),
 
     // ----- MUTATIONS ----- //
     login: builder.mutation<LoginJSONResponse, string>({
@@ -218,6 +226,7 @@ export const {
   useFetchGuildChannelsQuery,
   useFetchConfigEditionLogsQuery,
   useFetchGuildRssFeedsQuery,
+  useLazyTestRssFeedQuery,
 
   useLoginMutation,
   usePatchGuildConfigMutation,
