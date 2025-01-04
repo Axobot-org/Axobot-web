@@ -63,7 +63,7 @@ function MessageAuthorAndContent(props: Pick<DiscordMessagePreviewProps, "conten
           borderRadius: "50%",
         }}
       />
-      <Typography variant="h3" fontSize="1rem" lineHeight="1.375rem">
+      <Typography variant="h3" fontSize="1rem" lineHeight="1.375rem" pb="1px">
         <MessageAuthorAndTimestamp timestamp={props.timestamp} />
       </Typography>
       <Typography component="span" whiteSpace="pre-wrap" color="#dbdee1">
@@ -79,6 +79,12 @@ function MessageAuthorAndTimestamp(props: Pick<DiscordMessagePreviewProps, "time
       <Typography component="span" fontWeight={500} mr=".25rem" lineHeight="1.375rem">
         Axobot
       </Typography>
+      <Box component="span" display="inline-flex" mt=".2em" borderRadius="4px" padding="0 .275rem 0 .075rem" sx={{ verticalAlign: "sub", backgroundColor: "#5865f2" }}>
+        <svg aria-label="Verified app" xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" fill="none" viewBox="0 0 24 24">
+          <path fill="white" fill-rule="evenodd" d="M19.06 6.94a1.5 1.5 0 0 1 0 2.12l-8 8a1.5 1.5 0 0 1-2.12 0l-4-4a1.5 1.5 0 0 1 2.12-2.12L10 13.88l6.94-6.94a1.5 1.5 0 0 1 2.12 0Z" clip-rule="evenodd"></path>
+        </svg>
+        <Typography component="span" fontSize=".8rem" fontWeight={600} lineHeight=".9375rem">APP</Typography>
+      </Box>
       <Typography component="span" display="inline-block" ml=".25rem" fontSize=".75rem" height="1.25rem" color="#949ba4" sx={{ verticalAlign: "baseline" }}>
         {props.timestamp ?? "In the near future"}
       </Typography>
