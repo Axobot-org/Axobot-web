@@ -65,7 +65,7 @@ function useBuildDiscordMessageFromFeed({ feed, feedData }: { feed: RssFeed; fee
 
   if (feed.embed.authorText) {
     embed.author = {
-      name: formatStringPythonLike(feed.embed.authorText || "{author}", variables, 256),
+      name: formatStringPythonLike(feed.embed.authorText, variables, 256),
     };
   }
   if (feed.embed.footerText) {
@@ -129,7 +129,7 @@ function useVariablesDict(feed: RssFeed, feedData: RssFeedParsedEntry): Record<s
 }
 
 function formatStringPythonLike(str: string, variables: Record<string, string>, maxLength: number) {
-  return str.replace(/{([^}]+)}/gi, (_, key) => variables[key] || "").substring(0, maxLength);
+  return str.replace(/{([^}]+)}/gi, (_, key) => variables[key] ?? `{${key}}`).substring(0, maxLength);
 }
 
 function parseDate(isoString: string) {

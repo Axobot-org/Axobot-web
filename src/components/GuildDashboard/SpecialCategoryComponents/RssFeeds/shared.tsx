@@ -6,7 +6,7 @@ import { ExternalRoutesURLs } from "../../../../router/router";
 
 export function SimpleParameterRow({ label, children }: PropsWithChildren<{ label: string }>) {
   return (
-    <Stack direction="row" spacing={1} justifyContent="space-between" alignItems="center">
+    <Stack direction="row" spacing={1} justifyContent="space-between" minHeight={40} alignItems="center">
       <Typography>{label}</Typography>
       {children}
     </Stack>
