@@ -32,8 +32,6 @@ export default function FeedComponent({ feed, editFeed }: FeedComponentProps) {
   }
 
   const isTwitter = feed.type === "tw";
-  const isMinecraft = feed.type === "mc";
-  const canPreview = ["yt", "web"].includes(feed.type);
   const displayRecentErrors = !isTwitter && feed.recentErrors >= RECENT_ERRORS_THRESHOLD;
 
   return (
@@ -54,35 +52,50 @@ export default function FeedComponent({ feed, editFeed }: FeedComponentProps) {
       </FeedTitleStack>
 
       <Collapse in={isOpen}>
-        <Stack gap={1} px={2}>
-          {displayRecentErrors && <RecentErrorsDescription recentErrors={feed.recentErrors} />}
-          <SimpleParameterRow label="Channel">
-            <ChannelSelection feed={feed} editFeed={editFeed} />
-          </SimpleParameterRow>
-          {!isMinecraft && (
-            <Fragment>
-              <SimpleParameterRow label="Use silent mentions">
-                <SilentMentionToggle feed={feed} editFeed={editFeed} />
-              </SimpleParameterRow>
-              <SimpleParameterRow label="Display as an embed">
-                <UseEmbedToggle feed={feed} editFeed={editFeed} />
-              </SimpleParameterRow>
-              <Collapse in={feed.useEmbed} sx={{ mb: 1 }}>
-                <FeedEmbedSettings feed={feed} editFeed={editFeed} />
-              </Collapse>
-              <SimpleParameterColumn label="Text template" documentationUrl="rss.html#change-the-text">
-                <FeedTextEditor feed={feed} editFeed={editFeed} />
-              </SimpleParameterColumn>
-            </Fragment>
-          )}
-          {canPreview && (
-            <Box my={2}>
-              <FeedPreviewButton feed={feed} />
-            </Box>
-          )}
-        </Stack>
+        <InnerFeedComponent feed={feed} editFeed={editFeed} displayRecentErrors={displayRecentErrors} isVisible={isOpen} />
       </Collapse>
     </FeedRowContainer>
+  );
+}
+
+
+interface InnerComponentsProps {
+  feed: RssFeed;
+  editFeed: (feed: RssFeed) => void;
+}
+
+function InnerFeedComponent({ feed, editFeed, displayRecentErrors, isVisible }: InnerComponentsProps & { displayRecentErrors: boolean; isVisible: boolean }) {
+  const isMinecraft = feed.type === "mc";
+  const canPreview = ["yt", "web"].includes(feed.type);
+
+  return (
+    <Stack gap={1} px={2}>
+      {displayRecentErrors && <RecentErrorsDescription recentErrors={feed.recentErrors} />}
+      <SimpleParameterRow label="Channel">
+        <ChannelSelection feed={feed} editFeed={editFeed} />
+      </SimpleParameterRow>
+      {!isMinecraft && (
+        <Fragment>
+          <SimpleParameterRow label="Use silent mentions">
+            <SilentMentionToggle feed={feed} editFeed={editFeed} />
+          </SimpleParameterRow>
+          <SimpleParameterRow label="Display as an embed">
+            <UseEmbedToggle feed={feed} editFeed={editFeed} />
+          </SimpleParameterRow>
+          <Collapse in={feed.useEmbed} sx={{ mb: 1 }}>
+            {isVisible && <FeedEmbedSettings feed={feed} editFeed={editFeed} />}
+          </Collapse>
+          <SimpleParameterColumn label="Text template" documentationUrl="rss.html#change-the-text">
+            <FeedTextEditor feed={feed} editFeed={editFeed} />
+          </SimpleParameterColumn>
+        </Fragment>
+      )}
+      {canPreview && (
+        <Box my={2}>
+          <FeedPreviewButton feed={feed} />
+        </Box>
+      )}
+    </Stack>
   );
 }
 
@@ -163,7 +176,7 @@ function RecentErrorsDescription({ recentErrors }: { recentErrors: number }) {
   );
 }
 
-function ChannelSelection({ feed, editFeed }: FeedComponentProps) {
+function ChannelSelection({ feed, editFeed }: InnerComponentsProps) {
   const { guildId } = useGuildConfigEditionContext();
   const { data, isLoading, error } = useFetchGuildChannelsQuery({ guildId });
   const [editing, setEditing] = useState(false);
@@ -227,7 +240,7 @@ function ChannelSelection({ feed, editFeed }: FeedComponentProps) {
   return <ReadonlyChannelPicker currentChannel={currentChannel} onClick={() => setEditing(true)} />;
 }
 
-function SilentMentionToggle({ feed, editFeed }: FeedComponentProps) {
+function SilentMentionToggle({ feed, editFeed }: InnerComponentsProps) {
   function onChange() {
     editFeed({
       ...feed,
@@ -243,7 +256,7 @@ function SilentMentionToggle({ feed, editFeed }: FeedComponentProps) {
   );
 }
 
-function UseEmbedToggle({ feed, editFeed }: FeedComponentProps) {
+function UseEmbedToggle({ feed, editFeed }: InnerComponentsProps) {
   function onChange() {
     editFeed({
       ...feed,

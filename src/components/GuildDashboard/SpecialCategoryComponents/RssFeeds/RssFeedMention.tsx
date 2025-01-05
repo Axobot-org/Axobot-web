@@ -1,7 +1,7 @@
 import { Language } from "@mui/icons-material";
 import { Stack, Tooltip, Typography } from "@mui/material";
 import { SystemStyleObject } from "@mui/system";
-import { CSSProperties, PropsWithChildren } from "react";
+import { CSSProperties, memo, PropsWithChildren } from "react";
 
 import { RssFeed } from "../../../../repository/types/api";
 import BlueskyIcon from "../../../../svg/bluesky.svg?react";
@@ -12,12 +12,14 @@ import TwitterIcon from "../../../../svg/twitter.svg?react";
 import YoutubeIcon from "../../../../svg/youtube.svg?react";
 
 
+const RssFeedMention = memo(_RssFeedMention);
+export default RssFeedMention;
+
 interface RssFeedMentionProps {
   feed: Pick<RssFeed, "type" | "link" | "displayName">;
   sx?: SystemStyleObject;
 }
-
-export default function RssFeedMention({ feed, sx }: RssFeedMentionProps) {
+function _RssFeedMention({ feed, sx }: RssFeedMentionProps) {
   return (
     <Stack direction="row" gap={{ xs: 0.5, md: 1 }} overflow="hidden" sx={sx}>
       <FeedTypeIcon feedType={feed.type} />
