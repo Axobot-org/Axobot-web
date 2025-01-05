@@ -81,7 +81,7 @@ function MessageAuthorAndTimestamp(props: Pick<DiscordMessagePreviewProps, "time
       </Typography>
       <Box component="span" display="inline-flex" mt=".2em" borderRadius="4px" padding="0 .275rem 0 .075rem" sx={{ verticalAlign: "sub", backgroundColor: "#5865f2" }}>
         <svg aria-label="Verified app" xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" fill="none" viewBox="0 0 24 24">
-          <path fill="white" fill-rule="evenodd" d="M19.06 6.94a1.5 1.5 0 0 1 0 2.12l-8 8a1.5 1.5 0 0 1-2.12 0l-4-4a1.5 1.5 0 0 1 2.12-2.12L10 13.88l6.94-6.94a1.5 1.5 0 0 1 2.12 0Z" clip-rule="evenodd"></path>
+          <path fill="white" fillRule="evenodd" d="M19.06 6.94a1.5 1.5 0 0 1 0 2.12l-8 8a1.5 1.5 0 0 1-2.12 0l-4-4a1.5 1.5 0 0 1 2.12-2.12L10 13.88l6.94-6.94a1.5 1.5 0 0 1 2.12 0Z" clipRule="evenodd"></path>
         </svg>
         <Typography component="span" fontSize=".8rem" fontWeight={600} lineHeight=".9375rem">APP</Typography>
       </Box>
@@ -118,7 +118,7 @@ function MessageEmbed({ embed }: { embed: Exclude<DiscordMessagePreviewProps["em
             <Typography component="span" lineHeight="1.375rem" fontSize="0.875rem" fontWeight={600}>
               {embed.author.url
                 ? (
-                  <DiscordLink color="#f2f3f5" href={embed.author.url}>{embed.author.name}</DiscordLink>
+                  <DiscordLink color="#f2f3f5" href={embed.author.url} target="_blank">{embed.author.name}</DiscordLink>
                 )
                 : (
                   embed.author.name
@@ -130,7 +130,7 @@ function MessageEmbed({ embed }: { embed: Exclude<DiscordMessagePreviewProps["em
           <Typography component="div" mt="8px" lineHeight="1.375rem" fontWeight={700} color="#f2f3f5" gridColumn="1 / 1">
             {embed.url
               ? (
-                <DiscordLink href={embed.url}>{embed.title}</DiscordLink>
+                <DiscordLink href={embed.url} target="_blank">{embed.title}</DiscordLink>
               )
               : (
                 embed.title
