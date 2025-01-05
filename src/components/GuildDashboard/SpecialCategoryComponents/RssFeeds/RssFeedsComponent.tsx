@@ -1,12 +1,12 @@
 import { Stack, Typography } from "@mui/material";
-import { useCallback } from "react";
+import { lazy, Suspense, useCallback } from "react";
 import { Fragment } from "react/jsx-runtime";
 
 import { useGuildConfigEditionContext, useGuildConfigRssFeedsEditionContext } from "../../../../repository/context/GuildConfigEditionContext";
 import { useFetchGuildConfigQuery, useFetchGuildRssFeedsQuery } from "../../../../repository/redux/api/api";
 import { RssFeed } from "../../../../repository/types/api";
 import { ErrorPage, LoadingPlaceholder } from "../../shared";
-import FeedComponent from "./FeedComponent";
+const FeedComponent = lazy(() => import("./FeedComponent"));
 
 export default function RssFeedsComponent() {
   const { guildId } = useGuildConfigEditionContext();
@@ -59,11 +59,13 @@ export default function RssFeedsComponent() {
   return (
     <Fragment>
       <PageTitle feeds={data} />
-      <Stack gap={{ xs: 3, md: 1 }}>
-        {sortedFeed.map((feed) => (
-          <FeedComponent key={feed.id} feed={feed} editFeed={editFeed} />
-        ))}
-      </Stack>
+      <Suspense fallback={<LoadingPlaceholder />}>
+        <Stack gap={{ xs: 3, md: 1 }}>
+          {sortedFeed.map((feed) => (
+            <FeedComponent key={feed.id} feed={feed} editFeed={editFeed} />
+          ))}
+        </Stack>
+      </Suspense>
     </Fragment>
   );
 }

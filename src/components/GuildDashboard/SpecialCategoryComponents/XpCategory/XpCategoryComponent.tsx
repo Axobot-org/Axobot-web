@@ -1,5 +1,6 @@
 import LaunchIcon from "@mui/icons-material/Launch";
 import { Button, Divider, Link, Stack, styled, Typography } from "@mui/material";
+import { lazy, Suspense } from "react";
 import { Fragment } from "react/jsx-runtime";
 
 import { useFetchGuildConfigCategory } from "../../../../repository/commands/useFetchGuildConfigCategory";
@@ -9,7 +10,7 @@ import { ExternalRoutesURLs } from "../../../../router/router";
 import AddRoleRewardButton from "./AddRoleRewardButton";
 import DownloadLeaderboardButton from "./DownloadLeaderboardButton";
 import RoleRewardsList from "./RoleRewardsList";
-import UploadLeaderboardButton from "./UploadLeaderboardButton";
+const UploadLeaderboardButton = lazy(() => import("./UploadLeaderboardButton"));
 
 
 export default function XpCategoryComponent() {
@@ -51,7 +52,12 @@ function LeaderboardActionsSection() {
             View Leaderboard
           </Button>
           <DownloadLeaderboardButton guildId={guildId} />
-          {isNotGlobalXp && <UploadLeaderboardButton guildId={guildId} />}
+          {isNotGlobalXp
+          && (
+            <Suspense>
+              <UploadLeaderboardButton guildId={guildId} />
+            </Suspense>
+          )}
         </Stack>
       </Stack>
     </Fragment>

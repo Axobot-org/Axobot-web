@@ -12,7 +12,7 @@ interface UserMenuProps {
   appbarLinks: Record<string, string>;
 }
 
-export function UserMenu(props: UserMenuProps) {
+export default function UserMenu(props: UserMenuProps) {
   const { user } = useGetorFetchMe();
   const { logoutCommand } = useLogout();
 
@@ -90,5 +90,3 @@ export function UserMenu(props: UserMenuProps) {
     </Fragment>
   );
 }
-
-export default UserMenu;
