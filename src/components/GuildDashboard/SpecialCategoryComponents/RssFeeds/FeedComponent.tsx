@@ -1,18 +1,20 @@
-import { ExpandLess, ExpandMore, InfoOutlined, WarningAmberRounded } from "@mui/icons-material";
-import { Autocomplete, Box, Collapse, IconButton, Link, Stack, styled, Switch, TextField, Tooltip, Typography } from "@mui/material";
+import { ExpandLess, ExpandMore, WarningAmberRounded } from "@mui/icons-material";
+import { Autocomplete, Box, Collapse, IconButton, Stack, styled, Switch, TextField, Tooltip, Typography } from "@mui/material";
 import { ChannelType } from "discord-api-types/v10";
-import { CSSProperties, PropsWithChildren, useEffect, useRef, useState } from "react";
+import { CSSProperties, Fragment, PropsWithChildren, useState } from "react";
 
 import { useGuildConfigEditionContext } from "../../../../repository/context/GuildConfigEditionContext";
 import { useFetchGuildChannelsQuery } from "../../../../repository/redux/api/api";
 import { RssFeed } from "../../../../repository/types/api";
 import { GuildChannel } from "../../../../repository/types/guild";
-import { ExternalRoutesURLs } from "../../../../router/router";
 import ChannelMention from "../../../common/ChannelMention";
 import { ReadonlyChannelPicker } from "../../ConfigComponents/shared/TextChannelPicker";
+import FeedEmbedSettings from "./FeedEmbedSettings";
 import FeedPreviewButton from "./FeedPreviewButton";
+import FeedTextEditor from "./FeedTextEditor";
 import FeedToggle from "./FeedToggle";
 import RssFeedMention from "./RssFeedMention";
+import { SimpleParameterColumn, SimpleParameterRow } from "./shared";
 
 const RECENT_ERRORS_THRESHOLD = 3;
 
@@ -58,14 +60,20 @@ export default function FeedComponent({ feed, editFeed }: FeedComponentProps) {
             <ChannelSelection feed={feed} editFeed={editFeed} />
           </SimpleParameterRow>
           {!isMinecraft && (
-            <SimpleParameterRow label="Use silent mentions">
-              <SilentMentionToggle feed={feed} editFeed={editFeed} />
-            </SimpleParameterRow>
-          )}
-          {!isMinecraft && (
-            <SimpleParameterColumn label="Text template" documentationUrl="rss.html#change-the-text">
-              <FeedTextEditor feed={feed} editFeed={editFeed} />
-            </SimpleParameterColumn>
+            <Fragment>
+              <SimpleParameterRow label="Use silent mentions">
+                <SilentMentionToggle feed={feed} editFeed={editFeed} />
+              </SimpleParameterRow>
+              <SimpleParameterRow label="Display as an embed">
+                <UseEmbedToggle feed={feed} editFeed={editFeed} />
+              </SimpleParameterRow>
+              <Collapse in={feed.useEmbed} sx={{ mb: 1 }}>
+                <FeedEmbedSettings feed={feed} editFeed={editFeed} />
+              </Collapse>
+              <SimpleParameterColumn label="Text template" documentationUrl="rss.html#change-the-text">
+                <FeedTextEditor feed={feed} editFeed={editFeed} />
+              </SimpleParameterColumn>
+            </Fragment>
           )}
           {canPreview && (
             <Box my={2}>
@@ -155,31 +163,6 @@ function RecentErrorsDescription({ recentErrors }: { recentErrors: number }) {
   );
 }
 
-function SimpleParameterRow({ label, children }: PropsWithChildren<{ label: string }>) {
-  return (
-    <Stack direction="row" spacing={1} justifyContent="space-between" alignItems="center">
-      <Typography>{label}</Typography>
-      {children}
-    </Stack>
-  );
-}
-
-function SimpleParameterColumn({ label, documentationUrl, children }: PropsWithChildren<{ label: string; documentationUrl?: string }>) {
-  return (
-    <Stack direction="column" spacing={1} justifyContent="flex-start" alignItems="stretch">
-      <Stack direction="row" spacing={1} alignItems="center">
-        <Typography>{label}</Typography>
-        {documentationUrl && (
-          <Link href={`${ExternalRoutesURLs.documentation}/en/latest/${documentationUrl}`} target="_blank" title="Documentation" display="inline-flex">
-            <InfoOutlined fontSize="small" color="info" />
-          </Link>
-        )}
-      </Stack>
-      {children}
-    </Stack>
-  );
-}
-
 function ChannelSelection({ feed, editFeed }: FeedComponentProps) {
   const { guildId } = useGuildConfigEditionContext();
   const { data, isLoading, error } = useFetchGuildChannelsQuery({ guildId });
@@ -260,46 +243,18 @@ function SilentMentionToggle({ feed, editFeed }: FeedComponentProps) {
   );
 }
 
-function FeedTextEditor({ feed, editFeed }: FeedComponentProps) {
-  const MIN_LENGTH = 5;
-  const MAX_LENGTH = 1800;
-  const lastValidValue = useRef(feed.structure);
-
-  useEffect(() => {
-    if (feed.structure.length >= MIN_LENGTH && feed.structure.length <= MAX_LENGTH) {
-      lastValidValue.current = feed.structure;
-    }
-  }, [feed.structure]);
-
-  function onChange(event: React.ChangeEvent<HTMLTextAreaElement>) {
+function UseEmbedToggle({ feed, editFeed }: FeedComponentProps) {
+  function onChange() {
     editFeed({
       ...feed,
-      structure: event.target.value,
+      useEmbed: !feed.useEmbed,
     });
   }
 
-  function onBlur(event: React.FocusEvent<HTMLTextAreaElement>) {
-    const value = event.target.value;
-    if ((value.length < MIN_LENGTH || value.length > MAX_LENGTH) && lastValidValue.current) {
-      editFeed({
-        ...feed,
-        structure: lastValidValue.current,
-      });
-    }
-  }
-
   return (
-    <TextField
-      placeholder="Text template"
-      value={feed.structure}
+    <Switch
+      checked={feed.useEmbed}
       onChange={onChange}
-      onBlur={onBlur}
-      variant="outlined"
-      multiline
-      maxRows={8}
-      slotProps={{
-        htmlInput: { minLength: MIN_LENGTH, maxLength: MAX_LENGTH },
-      }}
     />
   );
 }
