@@ -1,3 +1,4 @@
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import { Box, Button, Collapse, Paper, Typography } from "@mui/material";
 import { ComponentProps, useState } from "react";
 import { Fragment } from "react/jsx-runtime";
@@ -13,17 +14,17 @@ export default function FeedPreviewButton({ feed }: FeedPreviewButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [fetchFeed, { data, isLoading }] = useLazyTestRssFeedQuery();
 
-  const handleOpen = async () => {
-    setIsOpen(true);
-    if (!data && !isLoading) {
+  const toggleOpen = async () => {
+    setIsOpen(!isOpen);
+    if (!isOpen && !data && !isLoading) {
       await fetchFeed({ type: feed.type, url: feed.link });
     }
   };
 
   return (
     <Fragment>
-      <Button color="secondary" variant="outlined" onClick={handleOpen}>
-        Preview this feed
+      <Button color="secondary" variant="outlined" onClick={toggleOpen} startIcon={<VisibilityIcon />}>
+        {isOpen ? "Hide Preview" : "Preview this feed"}
       </Button>
       <Collapse in={isOpen}>
         <Box>
