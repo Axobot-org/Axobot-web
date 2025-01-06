@@ -117,7 +117,7 @@ export const AxoTheme = createTheme({
         root: {
           padding: 8,
         },
-        switchBase: {
+        switchBase: ({ theme }) => ({
           "&.Mui-checked": {
             color: "#fff",
             "& + .MuiSwitch-track": {
@@ -125,7 +125,13 @@ export const AxoTheme = createTheme({
               border: 0,
             },
           },
-        },
+          "&.Mui-disabled + .MuiSwitch-track": {
+            opacity: 0.5,
+          },
+          "&.Mui-disabled .MuiSwitch-thumb": {
+            color: theme.palette.grey[600],
+          },
+        }),
         track: {
           borderRadius: 22 / 2,
         },
