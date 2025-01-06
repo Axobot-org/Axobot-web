@@ -248,12 +248,32 @@ export function useGuildConfigRssFeedsEditionContext() {
     setRssFeedsSubstate(stateKey, (prevState) => prevState.filter((f) => f.id !== feedId));
   };
 
+  const deleteFeed = (feedId: RssFeed["id"]) => {
+    if (!state.rssFeeds) {
+      state.rssFeeds = {
+        add: [],
+        edit: [],
+        remove: [],
+      };
+    }
+    setRssFeedsSubstate("remove", (prevState) => [...prevState, feedId]);
+  };
+
+  const unDeleteFeed = (feedId: RssFeed["id"]) => {
+    setRssFeedsSubstate("remove", (prevState) => prevState.filter((f) => f !== feedId));
+  };
+
+  const isFeedMarkedForDeletion = (feedId: RssFeed["id"]) => state.rssFeeds?.remove.includes(feedId) ?? false;
+
   return {
     guildId,
     state: state.rssFeeds,
     findFeedInState,
     editFeed,
     unregisterFeed,
+    deleteFeed,
+    unDeleteFeed,
+    isFeedMarkedForDeletion,
   };
 }
 

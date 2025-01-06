@@ -17,13 +17,14 @@ export default RssFeedMention;
 
 interface RssFeedMentionProps {
   feed: Pick<RssFeed, "type" | "link" | "displayName">;
+  strikethrough?: boolean;
   sx?: SystemStyleObject;
 }
-function _RssFeedMention({ feed, sx }: RssFeedMentionProps) {
+function _RssFeedMention({ feed, strikethrough, sx }: RssFeedMentionProps) {
   return (
     <Stack direction="row" gap={{ xs: 0.5, md: 1 }} overflow="hidden" sx={sx}>
       <FeedTypeIcon feedType={feed.type} />
-      <Typography noWrap component="span">
+      <Typography noWrap component="span" sx={strikethrough ? { textDecoration: "line-through" } : undefined}>
         {feed.displayName ?? feed.link}
       </Typography>
     </Stack>

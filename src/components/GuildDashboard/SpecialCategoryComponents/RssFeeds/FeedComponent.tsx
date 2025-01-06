@@ -3,12 +3,13 @@ import { Autocomplete, Box, Collapse, IconButton, Stack, styled, Switch, TextFie
 import { ChannelType } from "discord-api-types/v10";
 import { CSSProperties, Fragment, PropsWithChildren, useState } from "react";
 
-import { useGuildConfigEditionContext } from "../../../../repository/context/GuildConfigEditionContext";
+import { useGuildConfigEditionContext, useGuildConfigRssFeedsEditionContext } from "../../../../repository/context/GuildConfigEditionContext";
 import { useFetchGuildChannelsQuery } from "../../../../repository/redux/api/api";
 import { RssFeed } from "../../../../repository/types/api";
 import { GuildChannel } from "../../../../repository/types/guild";
 import ChannelMention from "../../../common/ChannelMention";
 import { ReadonlyChannelPicker } from "../../ConfigComponents/shared/TextChannelPicker";
+import FeedDeleteButton from "./FeedDeleteButton";
 import FeedEmbedSettings from "./FeedEmbedSettings";
 import FeedPreviewButton from "./FeedPreviewButton";
 import FeedTextEditor from "./FeedTextEditor";
@@ -26,6 +27,9 @@ interface FeedComponentProps {
 export default function FeedComponent({ feed, editFeed }: FeedComponentProps) {
   const [isOpen, setIsOpen] = useState(false);
   const Icon = isOpen ? ExpandLess : ExpandMore;
+  const { isFeedMarkedForDeletion } = useGuildConfigRssFeedsEditionContext();
+
+  const isMarkedForDeletion = isFeedMarkedForDeletion(feed.id);
 
   function toggleCollapsedZone() {
     setIsOpen(!isOpen);
@@ -38,13 +42,14 @@ export default function FeedComponent({ feed, editFeed }: FeedComponentProps) {
     <FeedRowContainer isOpen={isOpen} disabled={!feed.enabled}>
       <FeedTitleStack onClick={toggleCollapsedZone}>
         <Stack direction="row" overflow="hidden" alignItems="center">
-          <RssFeedMention feed={feed} />
+          <RssFeedMention feed={feed} strikethrough={isMarkedForDeletion} />
           {displayRecentErrors && <RecentErrorsIcon />}
-          {!feed.enabled && <DisabledTag />}
+          {!feed.enabled && !isMarkedForDeletion && <DisabledTag />}
+          {isMarkedForDeletion && <MarkedForDeletionTag />}
         </Stack>
 
         <Stack direction="row">
-          <FeedToggle feed={feed} editFeed={editFeed} disabled={isTwitter} />
+          <FeedToggle feed={feed} editFeed={editFeed} disabled={isTwitter || isMarkedForDeletion} />
           <IconButton onClick={toggleCollapsedZone}>
             <Icon />
           </IconButton>
@@ -95,6 +100,10 @@ function InnerFeedComponent({ feed, editFeed, displayRecentErrors, isVisible }: 
           <FeedPreviewButton feed={feed} />
         </Box>
       )}
+
+      <Box mb={2}>
+        <FeedDeleteButton feedId={feed.id} />
+      </Box>
     </Stack>
   );
 }
@@ -150,6 +159,10 @@ function IconTooltip({ title, spanStyle, children }: PropsWithChildren<{ title: 
 
 function DisabledTag() {
   return <Typography variant="caption" color="text.secondary" ml={0.5}>Disabled</Typography>;
+}
+
+function MarkedForDeletionTag() {
+  return <Typography variant="caption" color="text.secondary" ml={0.5}>Marked for deletion</Typography>;
 }
 
 function RecentErrorsIcon() {
