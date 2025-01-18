@@ -49,7 +49,7 @@ export default function FeedComponent({ feed, editFeed }: FeedComponentProps) {
         </Stack>
 
         <Stack direction="row">
-          <FeedToggle feed={feed} editFeed={editFeed} disabled={isTwitter || isMarkedForDeletion} />
+          <FeedToggle feed={feed} disabled={isTwitter || isMarkedForDeletion} />
           <IconButton onClick={toggleCollapsedZone}>
             <Icon />
           </IconButton>
