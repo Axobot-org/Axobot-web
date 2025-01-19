@@ -63,7 +63,7 @@ export default function LevelupChannelConfigComponent({ optionId, option }: Leve
 
   return (
     <LargeConfiguration optionId={optionId}>
-      <Stack gap={1}>
+      <Stack spacing={1}>
         <StyledSelect
           value={currentEnumValue}
           onChange={(e) => onChange(e.target.value as string)}

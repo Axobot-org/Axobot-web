@@ -22,7 +22,7 @@ export default function RoleMention({ name, color, disabled, onDelete, sx }: Rol
     <Stack
       display="inline-flex"
       direction="row"
-      gap={0.5}
+      spacing={0.5}
       sx={{
         color: mentionColorAsHex,
         backgroundColor: backgroundColorAsRGBA,

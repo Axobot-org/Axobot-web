@@ -67,7 +67,7 @@ export default function FloatConfigComponent({ optionId, option }: FloatConfigCo
 
   return (
     <ComplexConfiguration optionId={optionId}>
-      <Stack direction="row" gap={2}>
+      <Stack direction="row" spacing={2}>
         <Slider
           aria-label={optionId}
           defaultValue={defaultValue}

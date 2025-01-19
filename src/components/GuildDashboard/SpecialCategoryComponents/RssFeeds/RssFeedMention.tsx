@@ -24,7 +24,7 @@ function _RssFeedMention({ feed, sx }: RssFeedMentionProps) {
   const tooltipTitle = getGuildDashboardTranslations("rss_type." + feed.type, feed.type);
 
   return (
-    <Stack direction="row" gap={{ xs: 0.5, md: 1 }} overflow="hidden" sx={sx}>
+    <Stack direction="row" spacing={{ xs: 0.5, md: 1 }} overflow="hidden" sx={sx}>
       <IconTooltip title={tooltipTitle}>
         <FeedTypeIcon feedType={feed.type} />
       </IconTooltip>

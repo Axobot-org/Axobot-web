@@ -27,7 +27,7 @@ export default function ChannelMention({ channel, disabled, indent, disableColor
   return (
     <Stack
       direction="row"
-      gap={0.5}
+      spacing={0.5}
       sx={{
         color: disableColor ? undefined : `#${mentionColor.toString(16).padStart(6, "0")}`,
         backgroundColor: disableColor ? undefined : `#${backgroundColor.toString(16).padStart(8, "0")}`,

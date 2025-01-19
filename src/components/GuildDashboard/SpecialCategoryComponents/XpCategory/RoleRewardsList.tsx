@@ -61,7 +61,7 @@ function RoleRewardRow({ roleReward, role, editRewardLevel, deleteReward }: Role
 
   return (
     <Stack direction="row" height="48px" alignItems="center">
-      <Stack direction="row" py={1} gap={1} minWidth="18rem" alignItems="first baseline">
+      <Stack direction="row" py={1} spacing={1} minWidth="18rem" alignItems="first baseline">
         {isEditing
           ? (
             <NumericInput

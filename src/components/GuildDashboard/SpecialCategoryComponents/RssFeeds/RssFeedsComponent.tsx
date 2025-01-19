@@ -68,7 +68,7 @@ function PageContent({ data, isLoading, showErrorMessages }: { data: RssFeed[] |
 
   return (
     <Suspense fallback={<LoadingPlaceholder />}>
-      <Stack gap={{ xs: 3, md: 1 }}>
+      <Stack spacing={{ xs: 3, md: 1 }}>
         {sortedFeed.map((feed) => (
           <FeedComponent key={feed.id} feed={feed} />
         ))}

@@ -31,7 +31,7 @@ export default function ConfigEditionLogsComponent() {
   return (
     <Fragment>
       <Typography variant="h5" gutterBottom textAlign="center">Configuration edition logs</Typography>
-      <Stack gap={{ xs: 3, md: 0.75 }}>
+      <Stack spacing={{ xs: 3, md: 0.75 }}>
         {sortedData.map((log) => (
           <LogRow key={log.id} log={log} />
         ))}
@@ -44,7 +44,7 @@ function LogRow({ log }: { log: ConfigEditionLog }) {
   return (
     <LogRowContainer>
       <Typography variant="body2" color="textDisabled">{new Date(log.date).toLocaleString()}</Typography>
-      <Stack direction="row" gap={1} alignItems="center" flexWrap="wrap">
+      <Stack direction="row" spacing={1} alignItems="center" flexWrap="wrap">
         <LogAuthor log={log} />
         <span>
           <LogAction log={log} />
@@ -149,7 +149,7 @@ function LogAction({ log }: { log: ConfigEditionLog }) {
 function LogAuthor({ log }: { log: ConfigEditionLog }) {
   return (
     <Tooltip enterDelay={400} enterNextDelay={200} title={`ID ${log.user_id}`}>
-      <Stack direction="row" gap={0.5} alignItems="center">
+      <Stack direction="row" spacing={0.5} alignItems="center">
         <Avatar sx={{ width: 32, height: 32 }} alt={log.username ?? log.user_id} src={log.avatar + "?size=64"} />
         <Typography color="secondary">
           {log.username ?? log.user_id}

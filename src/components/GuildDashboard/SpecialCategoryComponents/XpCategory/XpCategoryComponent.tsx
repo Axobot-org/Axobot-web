@@ -39,9 +39,9 @@ function LeaderboardActionsSection() {
   return (
     <Fragment>
       <DividerWithMargins />
-      <Stack px={2} gap={2}>
+      <Stack px={2} spacing={2}>
         <SectionTitle>Leaderboard actions</SectionTitle>
-        <Stack gap={2} direction={{ xs: "column", sm: "row" }}>
+        <Stack spacing={2} direction={{ xs: "column", sm: "row" }}>
           <Button
             component={Link}
             target="_blank"
@@ -121,7 +121,7 @@ function RolesRewardsSection() {
   return (
     <Fragment>
       <DividerWithMargins />
-      <Stack px={2} gap={1}>
+      <Stack px={2} spacing={1}>
         <SectionTitle>{title}</SectionTitle>
         <Description>
           Roles rewards are roles given to your members when they reach a certain level of XP. This is a great way to encourage your members to be active!

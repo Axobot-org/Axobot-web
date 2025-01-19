@@ -13,7 +13,7 @@ interface FeedEmbedSettingsProps {
 
 export default function FeedEmbedSettings({ feed, editFeed }: FeedEmbedSettingsProps) {
   return (
-    <Stack gap={1}>
+    <Stack spacing={1}>
       <SimpleParameterRow label="Show date in footer">
         <ShowDateInFooterToggle feed={feed} editFeed={editFeed} />
       </SimpleParameterRow>
