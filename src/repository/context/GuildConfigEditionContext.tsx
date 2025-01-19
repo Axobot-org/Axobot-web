@@ -1,4 +1,4 @@
-import { createContext, PropsWithChildren, useCallback, useContext, useState } from "react";
+import { createContext, Dispatch, PropsWithChildren, SetStateAction, useCallback, useContext, useState } from "react";
 
 import { useFetchDefaultGuildConfigQuery } from "../redux/api/api";
 import { RssFeed } from "../types/api";
@@ -7,12 +7,6 @@ import { GuildConfigOptionCategory } from "../types/guild-config-types";
 
 type EditionValueType = number | boolean | string | string[] | null;
 
-export interface StateRssFeed {
-  add: RssFeed[];
-  edit: RssFeed[];
-  remove: string[];
-};
-
 interface GuildConfigEdition {
   baseOptions: Record<string, EditionValueType>;
   roleRewards?: {
@@ -20,6 +14,7 @@ interface GuildConfigEdition {
     roleId: string;
     level: string;
   }[];
+  editedRssFeeds?: RssFeed[];
 }
 
 interface ContextType {
@@ -31,6 +26,8 @@ interface ContextType {
   resetBaseOptionValue: (optionId: string) => void;
   setRoleRewardsValue: (roleRewards: GuildConfigEdition["roleRewards"]) => void;
   resetRoleRewardsValue: () => void;
+  setRssFeedsValue: Dispatch<SetStateAction<GuildConfigEdition["editedRssFeeds"]>>;
+  resetRssFeedsValue: () => void;
   resetState: () => void;
 }
 
@@ -51,6 +48,12 @@ const GuildConfigEditionContext = createContext<ContextType>({
     throw new Error("GuildConfigEditionContext is not provided");
   },
   resetRoleRewardsValue: () => {
+    throw new Error("GuildConfigEditionContext is not provided");
+  },
+  setRssFeedsValue: () => {
+    throw new Error("GuildConfigEditionContext is not provided");
+  },
+  resetRssFeedsValue: () => {
     throw new Error("GuildConfigEditionContext is not provided");
   },
   resetState: () => {
@@ -96,6 +99,29 @@ export function GuildConfigEditionProvider({ guildId, children }: PropsWithChild
     }));
   }, []);
 
+  const setRssFeedsValue: Dispatch<SetStateAction<GuildConfigEdition["editedRssFeeds"]>> = useCallback(
+    (valueOrUpdater) => {
+      setState((prevState) => {
+        const newRssFeeds
+          = typeof valueOrUpdater === "function"
+            ? valueOrUpdater(prevState.editedRssFeeds)
+            : valueOrUpdater;
+        return {
+          ...prevState,
+          editedRssFeeds: newRssFeeds,
+        };
+      });
+    },
+    []
+  );
+
+  const resetRssFeedsValue = useCallback(() => {
+    setState((prevState) => ({
+      ...prevState,
+      editedRssFeeds: undefined,
+    }));
+  }, []);
+
   const resetState = useCallback(() => {
     setState(getDefaultState());
   }, []);
@@ -111,6 +137,9 @@ export function GuildConfigEditionProvider({ guildId, children }: PropsWithChild
     }
     if (state.roleRewards !== undefined) {
       unsavedCategories.push("xp");
+    }
+    if (state.editedRssFeeds?.length) {
+      unsavedCategories.push("rss");
     }
     return unsavedCategories;
   };
@@ -130,6 +159,8 @@ export function GuildConfigEditionProvider({ guildId, children }: PropsWithChild
       resetBaseOptionValue,
       setRoleRewardsValue,
       resetRoleRewardsValue,
+      setRssFeedsValue,
+      resetRssFeedsValue,
       resetState,
     }}
     >
@@ -159,5 +190,29 @@ export function useGuildConfigRoleRewardsEditionContext() {
     state: state.roleRewards,
     setValue: setRoleRewardsValue,
     resetValue: resetRoleRewardsValue,
+  };
+}
+
+export function useRssFeedEditionContext(feedId: string) {
+  const { guildId, state, setRssFeedsValue } = useGuildConfigEditionContext();
+  const existingFeed = state.editedRssFeeds?.find((f) => f.id === feedId);
+
+  const editFeed = (feed: RssFeed) => {
+    if (existingFeed) {
+      setRssFeedsValue((prevState) => prevState?.map((f) => (f.id === feed.id ? feed : f)));
+    } else {
+      setRssFeedsValue((prevState) => [...(prevState ?? []), feed]);
+    }
+  };
+
+  const unregisterFeed = () => {
+    setRssFeedsValue((prevState) => prevState?.filter((f) => f.id !== feedId));
+  };
+
+  return {
+    guildId,
+    state: existingFeed,
+    editFeed,
+    unregisterFeed,
   };
 }

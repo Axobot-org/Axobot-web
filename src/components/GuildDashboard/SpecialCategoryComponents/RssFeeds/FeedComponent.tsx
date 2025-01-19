@@ -5,7 +5,7 @@ import { Autocomplete, Button, Collapse, Dialog, DialogActions, DialogContent, D
 import { ChannelType } from "discord-api-types/v10";
 import { CSSProperties, Fragment, PropsWithChildren, useState } from "react";
 
-import { useGuildConfigEditionContext } from "../../../../repository/context/GuildConfigEditionContext";
+import { useGuildConfigEditionContext, useRssFeedEditionContext } from "../../../../repository/context/GuildConfigEditionContext";
 import { useFetchGuildChannelsQuery, useLazyTestRssFeedQuery, usePutGuildRssFeedMutation } from "../../../../repository/redux/api/api";
 import { RssFeed } from "../../../../repository/types/api";
 import { GuildChannel } from "../../../../repository/types/guild";
@@ -25,17 +25,16 @@ interface FeedComponentProps {
   feed: RssFeed;
 }
 
-export default function FeedComponent({ feed }: FeedComponentProps) {
-  const { guildId } = useGuildConfigEditionContext();
+export default function FeedComponent({ feed: apiFeed }: FeedComponentProps) {
   const [editFeedMutation, { isLoading }] = usePutGuildRssFeedMutation();
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
-  const [editedFeed, setEditedFeed] = useState<RssFeed | null>(null);
+  const { guildId, state: editedFeed, editFeed: setEditedFeed, unregisterFeed: unregisterEditedFeed } = useRssFeedEditionContext(apiFeed.id);
   const Icon = isDetailsOpen ? ExpandLess : ExpandMore;
 
   function editFeed(newFeedObject: RssFeed) {
-    if (compareFeeds(feed, newFeedObject)) {
-      setEditedFeed(null);
+    if (compareFeeds(apiFeed, newFeedObject)) {
+      unregisterEditedFeed();
     } else {
       setEditedFeed(newFeedObject);
     }
@@ -45,7 +44,7 @@ export default function FeedComponent({ feed }: FeedComponentProps) {
     if (editedFeed && !isLoading) {
       const result = await editFeedMutation({ guildId, feed: editedFeed });
       if (!result.error) {
-        setEditedFeed(null);
+        unregisterEditedFeed();
       }
     }
   }
@@ -65,12 +64,12 @@ export default function FeedComponent({ feed }: FeedComponentProps) {
   function closeConfirmationDialogAndDetails() {
     closeConfirmationDialog();
     setIsDetailsOpen(false);
-    setEditedFeed(null);
+    unregisterEditedFeed();
   }
 
-  const isTwitter = feed.type === "tw";
-  const displayRecentErrors = !isTwitter && feed.recentErrors >= RECENT_ERRORS_THRESHOLD;
-  const feedToShow = editedFeed ?? feed;
+  const isTwitter = apiFeed.type === "tw";
+  const displayRecentErrors = !isTwitter && apiFeed.recentErrors >= RECENT_ERRORS_THRESHOLD;
+  const feedToShow = editedFeed ?? apiFeed;
 
   return (
     <FeedRowContainer isOpen={isDetailsOpen}>
@@ -78,7 +77,7 @@ export default function FeedComponent({ feed }: FeedComponentProps) {
         <Stack spacing={{ xs: 0, sm: 1 }} direction="row" overflow="hidden" alignItems="center">
           <RssFeedMention feed={feedToShow} />
           {displayRecentErrors && <RecentErrorsIcon />}
-          {!feed.enabled && <DisabledTag />}
+          {!apiFeed.enabled && <DisabledTag />}
           {editedFeed && <UnsavedTag />}
         </Stack>
 
@@ -91,7 +90,7 @@ export default function FeedComponent({ feed }: FeedComponentProps) {
       </FeedTitleStack>
 
       <Collapse in={isDetailsOpen}>
-        <InnerFeedComponent feed={feedToShow} isEdited={editedFeed !== null} editFeed={editFeed} saveFeed={saveFeed} displayRecentErrors={displayRecentErrors} isVisible={isDetailsOpen} />
+        <InnerFeedComponent feed={feedToShow} isEdited={!!editedFeed} editFeed={editFeed} saveFeed={saveFeed} displayRecentErrors={displayRecentErrors} isVisible={isDetailsOpen} />
       </Collapse>
 
       <UnsavedConfirmationDialog open={isConfirmModalOpen} onCancel={closeConfirmationDialog} onConfirm={closeConfirmationDialogAndDetails} />
