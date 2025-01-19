@@ -63,7 +63,7 @@ function PageContent({ data, isLoading, showErrorMessages }: { data: RssFeed[] |
     );
   }
 
-  const sortedFeed = data.toSorted((a, b) => (b.addedAt > a.addedAt ? -1 : 1));
+  const sortedFeed = data.toSorted((a, b) => (a.displayName ?? a.link).localeCompare(b.displayName ?? b.link));
 
 
   return (
