@@ -1,7 +1,7 @@
 import { ExpandLess, ExpandMore, WarningAmberRounded } from "@mui/icons-material";
 import SaveIcon from "@mui/icons-material/Save";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import { Autocomplete, Button, Collapse, IconButton, Stack, styled, Switch, TextField, Tooltip, Typography } from "@mui/material";
+import { Autocomplete, Button, Collapse, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, Stack, styled, Switch, TextField, Tooltip, Typography } from "@mui/material";
 import { ChannelType } from "discord-api-types/v10";
 import { CSSProperties, Fragment, PropsWithChildren, useState } from "react";
 
@@ -28,9 +28,10 @@ interface FeedComponentProps {
 export default function FeedComponent({ feed }: FeedComponentProps) {
   const { guildId } = useGuildConfigEditionContext();
   const [editFeedMutation, { isLoading }] = usePutGuildRssFeedMutation();
-  const [isOpen, setIsOpen] = useState(false);
+  const [isDetailsOpen, setIsDetailsOpen] = useState(false);
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [editedFeed, setEditedFeed] = useState<RssFeed | null>(null);
-  const Icon = isOpen ? ExpandLess : ExpandMore;
+  const Icon = isDetailsOpen ? ExpandLess : ExpandMore;
 
   function editFeed(newFeedObject: RssFeed) {
     if (compareFeeds(feed, newFeedObject)) {
@@ -50,7 +51,21 @@ export default function FeedComponent({ feed }: FeedComponentProps) {
   }
 
   function toggleCollapsedZone() {
-    setIsOpen(!isOpen);
+    if (isDetailsOpen && editedFeed) {
+      setIsConfirmModalOpen(true);
+    } else {
+      setIsDetailsOpen(!isDetailsOpen);
+    }
+  }
+
+  function closeConfirmationDialog() {
+    setIsConfirmModalOpen(false);
+  }
+
+  function closeConfirmationDialogAndDetails() {
+    closeConfirmationDialog();
+    setIsDetailsOpen(false);
+    setEditedFeed(null);
   }
 
   const isTwitter = feed.type === "tw";
@@ -58,7 +73,7 @@ export default function FeedComponent({ feed }: FeedComponentProps) {
   const feedToShow = editedFeed ?? feed;
 
   return (
-    <FeedRowContainer isOpen={isOpen} disabled={!feed.enabled}>
+    <FeedRowContainer isOpen={isDetailsOpen}>
       <FeedTitleStack onClick={toggleCollapsedZone}>
         <Stack spacing={{ xs: 0, sm: 1 }} direction="row" overflow="hidden" alignItems="center">
           <RssFeedMention feed={feedToShow} />
@@ -75,9 +90,11 @@ export default function FeedComponent({ feed }: FeedComponentProps) {
         </Stack>
       </FeedTitleStack>
 
-      <Collapse in={isOpen}>
-        <InnerFeedComponent feed={feedToShow} isEdited={editedFeed !== null} editFeed={editFeed} saveFeed={saveFeed} displayRecentErrors={displayRecentErrors} isVisible={isOpen} />
+      <Collapse in={isDetailsOpen}>
+        <InnerFeedComponent feed={feedToShow} isEdited={editedFeed !== null} editFeed={editFeed} saveFeed={saveFeed} displayRecentErrors={displayRecentErrors} isVisible={isDetailsOpen} />
       </Collapse>
+
+      <UnsavedConfirmationDialog open={isConfirmModalOpen} onCancel={closeConfirmationDialog} onConfirm={closeConfirmationDialogAndDetails} />
     </FeedRowContainer>
   );
 }
@@ -122,16 +139,15 @@ function InnerFeedComponent({ feed, isEdited, editFeed, saveFeed, displayRecentE
   );
 }
 
-const FeedRowContainer = styled(Stack, { shouldForwardProp: (prop) => prop !== "isOpen" && prop !== "disabled" })<{ isOpen: boolean; disabled: boolean }>(({ theme, isOpen, disabled }) => ({
+const FeedRowContainer = styled(Stack, { shouldForwardProp: (prop) => prop !== "isOpen" })<{ isOpen: boolean }>(({ theme, isOpen }) => ({
   flexDirection: "column",
   gap: theme.spacing(1, 2),
   borderRadius: 10,
   padding: theme.spacing(1.5, 2),
-  opacity: disabled ? 0.7 : 1,
-  backgroundColor: isOpen ? theme.palette.custom.background2 : "transparent",
+  backgroundColor: isOpen ? theme.palette.custom.background2 : theme.palette.custom.background1,
   transition: "background-color 0.2s",
-  "&:hover": {
-    backgroundColor: theme.palette.custom.background1,
+  "&:hover": !isOpen && {
+    opacity: 0.7,
   },
 }));
 
@@ -333,6 +349,30 @@ function FeedActionsAndPreview({ feed, isEdited, saveFeed }: FeedActionsAndPrevi
       </Stack>
       <FeedPreview isOpen={isPreviewOpen} isLoading={isLoading} feed={feed} data={previewData} />
     </Stack>
+  );
+}
+
+interface UnsavedConfirmationDialogProps {
+  open: boolean;
+  onCancel: () => void;
+  onConfirm: () => void;
+}
+function UnsavedConfirmationDialog({ open, onCancel, onConfirm }: UnsavedConfirmationDialogProps) {
+  return (
+    <Dialog maxWidth="xs" open={open} onClose={onCancel}>
+      <DialogTitle>You have unsaved changes!</DialogTitle>
+      <DialogContent>
+        <DialogContentText>
+          Closing this feed will discard your changes. Are you sure you want to continue?
+        </DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button autoFocus color="gray" onClick={onCancel}>
+          Cancel
+        </Button>
+        <Button color="error" onClick={onConfirm}>Close without saving</Button>
+      </DialogActions>
+    </Dialog>
   );
 }
 
