@@ -99,10 +99,14 @@ interface __RssFeedPUT_Common {
   enabled: boolean;
 }
 
-export interface RssFeedPUTData {
+export interface RssFeedPUTData extends __RssFeedPUT_Common {
+  id: string;
+}
+
+interface RssFeedsPATCHData {
   add?: (__RssFeedPUT_Common & {
     link: string;
-    type: Exclude<typeof VALID_RSS_FEED_TYPES[number], "tw">;
+    type: Exclude<VALID_RSS_FEED_TYPES, "tw">;
   })[];
   edit?: (__RssFeedPUT_Common & {
     id: string;

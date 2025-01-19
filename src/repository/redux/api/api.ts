@@ -213,18 +213,43 @@ export const axoApi = createApi({
         } catch { /* don't update cache on error */ }
       },
     }),
-    patchGuildRssFeeds: builder.mutation<RssFeed[], { guildId: string; feeds: RssFeedPUTData }>({
-      query: ({ guildId, feeds }) => ({
-        url: `discord/guild/${guildId}/rss-feeds`,
-        method: "PATCH",
-        body: feeds,
+    putGuildRssFeed: builder.mutation<RssFeed, { guildId: string; feed: RssFeedPUTData }>({
+      query: ({ guildId, feed }) => ({
+        url: `discord/guild/${guildId}/rss-feeds/${feed.id}`,
+        method: "PUT",
+        body: feed,
       }),
       async onQueryStarted({ guildId }, { dispatch, queryFulfilled }) {
         // update fetchGuildRssFeeds cache with returned updated data
         try {
           const { data } = await queryFulfilled;
           dispatch(
-            axoApi.util.updateQueryData("fetchGuildRssFeeds", { guildId }, () => data)
+            axoApi.util.updateQueryData("fetchGuildRssFeeds", { guildId }, (draft) => {
+              const feedIndex = draft.findIndex((f) => f.id === data.id);
+              if (feedIndex !== -1) {
+                draft[feedIndex] = data;
+              }
+            })
+          );
+        } catch { /* don't update cache on error */ }
+      },
+    }),
+    deleteGuildRssFeed: builder.mutation<undefined, { guildId: string; feedId: string }>({
+      query: ({ guildId, feedId }) => ({
+        url: `discord/guild/${guildId}/rss-feeds/${feedId}`,
+        method: "DELETE",
+      }),
+      async onQueryStarted({ guildId, feedId }, { dispatch, queryFulfilled }) {
+        // update fetchGuildRssFeeds cache with returned updated data
+        try {
+          await queryFulfilled;
+          dispatch(
+            axoApi.util.updateQueryData("fetchGuildRssFeeds", { guildId }, (draft) => {
+              const feedIndex = draft.findIndex((feed) => feed.id === feedId);
+              if (feedIndex !== -1) {
+                draft.splice(feedIndex, 1);
+              }
+            })
           );
         } catch { /* don't update cache on error */ }
       },
@@ -253,5 +278,6 @@ export const {
   usePutGuildLeaderboardMutation,
   usePutGuildRoleRewardsMutation,
   useToggleGuildRssFeedMutation,
-  usePatchGuildRssFeedsMutation,
+  usePutGuildRssFeedMutation,
+  useDeleteGuildRssFeedMutation,
 } = axoApi;

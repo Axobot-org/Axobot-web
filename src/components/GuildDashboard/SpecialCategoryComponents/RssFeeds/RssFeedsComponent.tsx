@@ -1,8 +1,8 @@
 import { Stack, Typography } from "@mui/material";
-import { lazy, Suspense, useCallback } from "react";
+import { lazy, Suspense } from "react";
 import { Fragment } from "react/jsx-runtime";
 
-import { useGuildConfigEditionContext, useGuildConfigRssFeedsEditionContext } from "../../../../repository/context/GuildConfigEditionContext";
+import { useGuildConfigEditionContext } from "../../../../repository/context/GuildConfigEditionContext";
 import { useFetchGuildConfigQuery, useFetchGuildRssFeedsQuery } from "../../../../repository/redux/api/api";
 import { RssFeed } from "../../../../repository/types/api";
 import { ErrorPage, LoadingPlaceholder } from "../../shared";
@@ -39,17 +39,6 @@ function PageTitle({ feeds }: { feeds: RssFeed[] | undefined }) {
 }
 
 function PageContent({ data, isLoading, showErrorMessages }: { data: RssFeed[] | undefined; isLoading: boolean; showErrorMessages: boolean }) {
-  const { findFeedInState, editFeed: editStateFeed, unregisterFeed } = useGuildConfigRssFeedsEditionContext();
-
-  const editFeed = useCallback((feed: RssFeed) => {
-    const uneditedFeed = data?.find((f) => f.id === feed.id);
-    if (uneditedFeed && compareFeeds(feed, uneditedFeed)) {
-      unregisterFeed(feed.id);
-    } else {
-      editStateFeed(feed);
-    }
-  }, [data, editStateFeed, unregisterFeed]);
-
   if (showErrorMessages) {
     if (isLoading) {
       return (
@@ -74,23 +63,16 @@ function PageContent({ data, isLoading, showErrorMessages }: { data: RssFeed[] |
     );
   }
 
-  const sortedFeed = data.map((feedFromApi): RssFeed => {
-    const feedFromState = findFeedInState(feedFromApi.id) ?? {};
-    return { ...feedFromApi, ...feedFromState };
-  }).toSorted((a, b) => (b.addedAt > a.addedAt ? -1 : 1));
+  const sortedFeed = data.toSorted((a, b) => (b.addedAt > a.addedAt ? -1 : 1));
 
 
   return (
     <Suspense fallback={<LoadingPlaceholder />}>
       <Stack gap={{ xs: 3, md: 1 }}>
         {sortedFeed.map((feed) => (
-          <FeedComponent key={feed.id} feed={feed} editFeed={editFeed} />
+          <FeedComponent key={feed.id} feed={feed} />
         ))}
       </Stack>
     </Suspense>
   );
-}
-
-function compareFeeds(a: RssFeed, b: RssFeed) {
-  return Object.keys(a).every((key) => key in b && a[key as keyof RssFeed] === b[key as keyof RssFeed]);
 }

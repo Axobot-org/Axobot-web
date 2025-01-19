@@ -1,17 +1,19 @@
 import { ExpandLess, ExpandMore, WarningAmberRounded } from "@mui/icons-material";
-import { Autocomplete, Box, Collapse, IconButton, Stack, styled, Switch, TextField, Tooltip, Typography } from "@mui/material";
+import SaveIcon from "@mui/icons-material/Save";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import { Autocomplete, Button, Collapse, IconButton, Stack, styled, Switch, TextField, Tooltip, Typography } from "@mui/material";
 import { ChannelType } from "discord-api-types/v10";
 import { CSSProperties, Fragment, PropsWithChildren, useState } from "react";
 
-import { useGuildConfigEditionContext, useGuildConfigRssFeedsEditionContext } from "../../../../repository/context/GuildConfigEditionContext";
-import { useFetchGuildChannelsQuery } from "../../../../repository/redux/api/api";
+import { useGuildConfigEditionContext } from "../../../../repository/context/GuildConfigEditionContext";
+import { useFetchGuildChannelsQuery, useLazyTestRssFeedQuery, usePutGuildRssFeedMutation } from "../../../../repository/redux/api/api";
 import { RssFeed } from "../../../../repository/types/api";
 import { GuildChannel } from "../../../../repository/types/guild";
 import ChannelMention from "../../../common/ChannelMention";
 import { ReadonlyChannelPicker } from "../../ConfigComponents/shared/TextChannelPicker";
 import FeedDeleteButton from "./FeedDeleteButton";
 import FeedEmbedSettings from "./FeedEmbedSettings";
-import FeedPreviewButton from "./FeedPreviewButton";
+import FeedPreview from "./FeedPreview";
 import FeedTextEditor from "./FeedTextEditor";
 import FeedToggle from "./FeedToggle";
 import RssFeedMention from "./RssFeedMention";
@@ -21,15 +23,31 @@ const RECENT_ERRORS_THRESHOLD = 3;
 
 interface FeedComponentProps {
   feed: RssFeed;
-  editFeed: (feed: RssFeed) => void;
 }
 
-export default function FeedComponent({ feed, editFeed }: FeedComponentProps) {
+export default function FeedComponent({ feed }: FeedComponentProps) {
+  const { guildId } = useGuildConfigEditionContext();
+  const [editFeedMutation, { isLoading }] = usePutGuildRssFeedMutation();
   const [isOpen, setIsOpen] = useState(false);
+  const [editedFeed, setEditedFeed] = useState<RssFeed | null>(null);
   const Icon = isOpen ? ExpandLess : ExpandMore;
-  const { isFeedMarkedForDeletion } = useGuildConfigRssFeedsEditionContext();
 
-  const isMarkedForDeletion = isFeedMarkedForDeletion(feed.id);
+  function editFeed(newFeedObject: RssFeed) {
+    if (compareFeeds(feed, newFeedObject)) {
+      setEditedFeed(null);
+    } else {
+      setEditedFeed(newFeedObject);
+    }
+  }
+
+  async function saveFeed() {
+    if (editedFeed && !isLoading) {
+      const result = await editFeedMutation({ guildId, feed: editedFeed });
+      if (!result.error) {
+        setEditedFeed(null);
+      }
+    }
+  }
 
   function toggleCollapsedZone() {
     setIsOpen(!isOpen);
@@ -37,19 +55,20 @@ export default function FeedComponent({ feed, editFeed }: FeedComponentProps) {
 
   const isTwitter = feed.type === "tw";
   const displayRecentErrors = !isTwitter && feed.recentErrors >= RECENT_ERRORS_THRESHOLD;
+  const feedToShow = editedFeed ?? feed;
 
   return (
     <FeedRowContainer isOpen={isOpen} disabled={!feed.enabled}>
       <FeedTitleStack onClick={toggleCollapsedZone}>
-        <Stack direction="row" overflow="hidden" alignItems="center">
-          <RssFeedMention feed={feed} strikethrough={isMarkedForDeletion} />
+        <Stack spacing={{ xs: 0, sm: 1 }} direction="row" overflow="hidden" alignItems="center">
+          <RssFeedMention feed={feedToShow} />
           {displayRecentErrors && <RecentErrorsIcon />}
-          {!feed.enabled && !isMarkedForDeletion && <DisabledTag />}
-          {isMarkedForDeletion && <MarkedForDeletionTag />}
+          {!feed.enabled && <DisabledTag />}
+          {editedFeed && <UnsavedTag />}
         </Stack>
 
         <Stack direction="row">
-          <FeedToggle feed={feed} disabled={isTwitter || isMarkedForDeletion} />
+          <FeedToggle feed={feedToShow} disabled={isTwitter} />
           <IconButton onClick={toggleCollapsedZone}>
             <Icon />
           </IconButton>
@@ -57,7 +76,7 @@ export default function FeedComponent({ feed, editFeed }: FeedComponentProps) {
       </FeedTitleStack>
 
       <Collapse in={isOpen}>
-        <InnerFeedComponent feed={feed} editFeed={editFeed} displayRecentErrors={displayRecentErrors} isVisible={isOpen} />
+        <InnerFeedComponent feed={feedToShow} isEdited={editedFeed !== null} editFeed={editFeed} saveFeed={saveFeed} displayRecentErrors={displayRecentErrors} isVisible={isOpen} />
       </Collapse>
     </FeedRowContainer>
   );
@@ -66,15 +85,18 @@ export default function FeedComponent({ feed, editFeed }: FeedComponentProps) {
 
 interface InnerComponentsProps {
   feed: RssFeed;
+  isEdited: boolean;
+  displayRecentErrors: boolean;
+  isVisible: boolean;
   editFeed: (feed: RssFeed) => void;
+  saveFeed: () => void;
 }
 
-function InnerFeedComponent({ feed, editFeed, displayRecentErrors, isVisible }: InnerComponentsProps & { displayRecentErrors: boolean; isVisible: boolean }) {
+function InnerFeedComponent({ feed, isEdited, editFeed, saveFeed, displayRecentErrors, isVisible }: InnerComponentsProps) {
   const isMinecraft = feed.type === "mc";
-  const canPreview = ["yt", "web"].includes(feed.type);
 
   return (
-    <Stack gap={1} px={2}>
+    <Stack spacing={1} px={2}>
       {displayRecentErrors && <RecentErrorsDescription recentErrors={feed.recentErrors} />}
       <SimpleParameterRow label="Channel">
         <ChannelSelection feed={feed} editFeed={editFeed} />
@@ -95,15 +117,7 @@ function InnerFeedComponent({ feed, editFeed, displayRecentErrors, isVisible }: 
           </SimpleParameterColumn>
         </Fragment>
       )}
-      {canPreview && (
-        <Box my={2}>
-          <FeedPreviewButton feed={feed} />
-        </Box>
-      )}
-
-      <Box mb={2}>
-        <FeedDeleteButton feedId={feed.id} />
-      </Box>
+      <FeedActionsAndPreview feed={feed} isEdited={isEdited} saveFeed={saveFeed} />
     </Stack>
   );
 }
@@ -161,8 +175,8 @@ function DisabledTag() {
   return <Typography variant="caption" color="text.secondary" ml={0.5}>Disabled</Typography>;
 }
 
-function MarkedForDeletionTag() {
-  return <Typography variant="caption" color="text.secondary" ml={0.5}>Marked for deletion</Typography>;
+function UnsavedTag() {
+  return <Typography variant="caption" color="primary" ml={0.5}>Unsaved</Typography>;
 }
 
 function RecentErrorsIcon() {
@@ -189,7 +203,7 @@ function RecentErrorsDescription({ recentErrors }: { recentErrors: number }) {
   );
 }
 
-function ChannelSelection({ feed, editFeed }: InnerComponentsProps) {
+function ChannelSelection({ feed, editFeed }: Pick<InnerComponentsProps, "feed" | "editFeed">) {
   const { guildId } = useGuildConfigEditionContext();
   const { data, isLoading, error } = useFetchGuildChannelsQuery({ guildId });
   const [editing, setEditing] = useState(false);
@@ -253,7 +267,7 @@ function ChannelSelection({ feed, editFeed }: InnerComponentsProps) {
   return <ReadonlyChannelPicker currentChannel={currentChannel} onClick={() => setEditing(true)} />;
 }
 
-function SilentMentionToggle({ feed, editFeed }: InnerComponentsProps) {
+function SilentMentionToggle({ feed, editFeed }: Pick<InnerComponentsProps, "feed" | "editFeed">) {
   function onChange() {
     editFeed({
       ...feed,
@@ -269,7 +283,7 @@ function SilentMentionToggle({ feed, editFeed }: InnerComponentsProps) {
   );
 }
 
-function UseEmbedToggle({ feed, editFeed }: InnerComponentsProps) {
+function UseEmbedToggle({ feed, editFeed }: Pick<InnerComponentsProps, "feed" | "editFeed">) {
   function onChange() {
     editFeed({
       ...feed,
@@ -284,3 +298,46 @@ function UseEmbedToggle({ feed, editFeed }: InnerComponentsProps) {
     />
   );
 }
+
+interface FeedActionsAndPreviewProps {
+  feed: RssFeed;
+  isEdited: boolean;
+  saveFeed: () => void;
+}
+function FeedActionsAndPreview({ feed, isEdited, saveFeed }: FeedActionsAndPreviewProps) {
+  const [isPreviewOpen, setIsPreviewOpen] = useState(false);
+  const canPreview = ["yt", "web"].includes(feed.type);
+  const [fetchFeed, { data: previewData, isLoading }] = useLazyTestRssFeedQuery();
+
+  const togglePreview = async () => {
+    setIsPreviewOpen(!isPreviewOpen);
+    if (!isPreviewOpen && !previewData && !isLoading) {
+      await fetchFeed({ type: feed.type, url: feed.link });
+    }
+  };
+
+  return (
+    <Stack direction="column" spacing={2} my={2}>
+      <Stack direction={{ xs: "column", md: "row" }} spacing={2}>
+        {canPreview && (
+          <Button color="secondary" variant="outlined" onClick={togglePreview} startIcon={<VisibilityIcon />}>
+            {isPreviewOpen ? "Hide Preview" : "Preview"}
+          </Button>
+        )}
+        {isEdited && (
+          <Button color="primary" variant="outlined" onClick={saveFeed} startIcon={<SaveIcon />}>
+            Save changes
+          </Button>
+        )}
+        <FeedDeleteButton feed={feed} />
+      </Stack>
+      <FeedPreview isOpen={isPreviewOpen} isLoading={isLoading} feed={feed} data={previewData} />
+    </Stack>
+  );
+}
+
+
+function compareFeeds(a: RssFeed, b: RssFeed) {
+  return Object.keys(a).every((key) => key in b && a[key as keyof RssFeed] === b[key as keyof RssFeed]);
+}
+

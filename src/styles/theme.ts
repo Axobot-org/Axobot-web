@@ -6,6 +6,7 @@ import LinkBehavior from "./LinkBehavior";
 declare module "@mui/material/styles" {
   interface Palette {
     blurple: Palette["primary"];
+    gray: Palette["primary"];
     custom: {
       background1: string;
       background2: string;
@@ -15,6 +16,7 @@ declare module "@mui/material/styles" {
 
   interface PaletteOptions {
     blurple: Palette["primary"];
+    gray: Palette["primary"];
     custom: {
       background1: string;
       background2: string;
@@ -26,6 +28,7 @@ declare module "@mui/material/styles" {
 declare module "@mui/material/Button" {
   interface ButtonPropsColorOverrides {
     blurple: true;
+    gray: true;
   }
 }
 
@@ -112,6 +115,11 @@ export const AxoTheme = createTheme({
         LinkComponent: LinkBehavior,
       },
     },
+    MuiStack: {
+      defaultProps: {
+        useFlexGap: true,
+      },
+    },
     MuiSwitch: {
       styleOverrides: {
         root: {
@@ -174,6 +182,12 @@ export const AxoTheme = createTheme({
       main: "#5865F2",
       light: "#7289DA",
       dark: "#454FBF",
+      contrastText: "#fff",
+    },
+    gray: {
+      main: "#747f8d",
+      light: "#b9bbbe",
+      dark: "#4f545c",
       contrastText: "#fff",
     },
     custom: {

@@ -1,46 +1,31 @@
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import { Box, Button, Collapse, Paper, Typography } from "@mui/material";
-import { ComponentProps, useState } from "react";
-import { Fragment } from "react/jsx-runtime";
+import { Box, Collapse, Paper, Typography } from "@mui/material";
+import { ComponentProps } from "react";
 
-import { useLazyTestRssFeedQuery } from "../../../../repository/redux/api/api";
 import { RssFeed, RssFeedParsedEntry } from "../../../../repository/types/api";
 import DiscordMessagePreview from "../../../common/DiscordMessagePreview";
 
 interface FeedPreviewButtonProps {
+  isOpen: boolean;
+  isLoading: boolean;
   feed: RssFeed;
+  data: RssFeedParsedEntry | undefined;
 }
-export default function FeedPreviewButton({ feed }: FeedPreviewButtonProps) {
-  const [isOpen, setIsOpen] = useState(false);
-  const [fetchFeed, { data, isLoading }] = useLazyTestRssFeedQuery();
-
-  const toggleOpen = async () => {
-    setIsOpen(!isOpen);
-    if (!isOpen && !data && !isLoading) {
-      await fetchFeed({ type: feed.type, url: feed.link });
-    }
-  };
-
+export default function FeedPreview({ isOpen, feed, data, isLoading }: FeedPreviewButtonProps) {
   return (
-    <Fragment>
-      <Button color="secondary" variant="outlined" onClick={toggleOpen} startIcon={<VisibilityIcon />}>
-        {isOpen ? "Hide Preview" : "Preview this feed"}
-      </Button>
-      <Collapse in={isOpen}>
-        <Box>
-          {isLoading && (<Typography color="textSecondary">Fetching the latest data...</Typography>)}
-          {(!isLoading && !data) && (<Typography color="error">Oops, something went wrong while fetching your feed.</Typography>)}
-          {(!isLoading && data) && <FeedPreview feed={feed} data={data} />}
-        </Box>
-      </Collapse>
-    </Fragment>
+    <Collapse in={isOpen}>
+      <Box>
+        {isLoading && (<Typography color="textSecondary">Fetching the latest data...</Typography>)}
+        {(!isLoading && !data) && (<Typography color="error">Oops, something went wrong while fetching your feed.</Typography>)}
+        {(!isLoading && data) && <InnerFeedPreview feed={feed} data={data} />}
+      </Box>
+    </Collapse>
   );
 }
 
-function FeedPreview({ feed, data }: { feed: RssFeed; data: RssFeedParsedEntry }) {
+function InnerFeedPreview({ feed, data }: { feed: RssFeed; data: RssFeedParsedEntry }) {
   const discordMessage = useBuildDiscordMessageFromFeed({ feed, feedData: data });
   return (
-    <Paper elevation={3} sx={{ mt: 2, px: 2, py: 1 }}>
+    <Paper elevation={3} sx={{ px: 2, py: 1 }}>
       <DiscordMessagePreview {...discordMessage} />
     </Paper>
   );

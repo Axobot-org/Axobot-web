@@ -3,6 +3,7 @@ import { Stack, Tooltip, Typography } from "@mui/material";
 import { SystemStyleObject } from "@mui/system";
 import { CSSProperties, memo, PropsWithChildren } from "react";
 
+import { getGuildDashboardTranslations } from "../../../../i18n/i18n";
 import { RssFeed } from "../../../../repository/types/api";
 import BlueskyIcon from "../../../../svg/bluesky.svg?react";
 import DeviantArtIcon from "../../../../svg/deviantart.svg?react";
@@ -17,14 +18,17 @@ export default RssFeedMention;
 
 interface RssFeedMentionProps {
   feed: Pick<RssFeed, "type" | "link" | "displayName">;
-  strikethrough?: boolean;
   sx?: SystemStyleObject;
 }
-function _RssFeedMention({ feed, strikethrough, sx }: RssFeedMentionProps) {
+function _RssFeedMention({ feed, sx }: RssFeedMentionProps) {
+  const tooltipTitle = getGuildDashboardTranslations("rss_type." + feed.type, feed.type);
+
   return (
     <Stack direction="row" gap={{ xs: 0.5, md: 1 }} overflow="hidden" sx={sx}>
-      <FeedTypeIcon feedType={feed.type} />
-      <Typography noWrap component="span" sx={strikethrough ? { textDecoration: "line-through" } : undefined}>
+      <IconTooltip title={tooltipTitle}>
+        <FeedTypeIcon feedType={feed.type} />
+      </IconTooltip>
+      <Typography noWrap component="span">
         {feed.displayName ?? feed.link}
       </Typography>
     </Stack>
@@ -34,47 +38,19 @@ function _RssFeedMention({ feed, strikethrough, sx }: RssFeedMentionProps) {
 function FeedTypeIcon({ feedType }: { feedType: string }) {
   switch (feedType) {
     case "bluesky":
-      return (
-        <IconTooltip title="Bluesky">
-          <BlueskyIcon width={24} />
-        </IconTooltip>
-      );
+      return <BlueskyIcon width={24} />;
     case "deviant":
-      return (
-        <IconTooltip title="DeviantArt">
-          <DeviantArtIcon width={24} />
-        </IconTooltip>
-      );
+      return <DeviantArtIcon width={24} />;
     case "mc":
-      return (
-        <IconTooltip title="Minecraft">
-          <MinecraftIcon width={24} />
-        </IconTooltip>
-      );
+      return <MinecraftIcon width={24} />;
     case "tw":
-      return (
-        <IconTooltip title="Twitter">
-          <TwitterIcon width={24} />
-        </IconTooltip>
-      );
+      return <TwitterIcon width={24} />;
     case "twitch":
-      return (
-        <IconTooltip title="Twitch">
-          <TwitchIcon width={24} />
-        </IconTooltip>
-      );
+      return <TwitchIcon width={24} />;
     case "yt":
-      return (
-        <IconTooltip title="YouTube">
-          <YoutubeIcon width={24} />
-        </IconTooltip>
-      );
+      return <YoutubeIcon width={24} />;
     default:
-      return (
-        <IconTooltip title="Other">
-          <Language htmlColor="#8c8c8c" />
-        </IconTooltip>
-      );
+      return <Language htmlColor="#8c8c8c" />;
   }
 }
 
