@@ -1,6 +1,9 @@
 import { Box, createTheme, Stack, styled, Theme, ThemeProvider, Typography } from "@mui/material";
 import { useMemo } from "react";
 
+import formatRelativeTimestamp from "../../repository/formatRelativeTimestamp";
+import DiscordMarkdown from "./DiscordMarkdown";
+
 interface DiscordMessagePreviewProps {
   content?: string;
   timestamp?: string;
@@ -32,6 +35,15 @@ export default function DiscordMessagePreview(props: DiscordMessagePreviewProps)
       body1: {
         ...outerTheme.typography.body1,
         fontFamily: "\"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      },
+    },
+    components: {
+      MuiStack: {
+        styleOverrides: {
+          root: {
+            fontFamily: "\"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          },
+        },
       },
     },
   });
@@ -66,9 +78,9 @@ function MessageAuthorAndContent(props: Pick<DiscordMessagePreviewProps, "conten
       <Typography variant="h3" fontSize="1rem" lineHeight="1.375rem" pb="1px">
         <MessageAuthorAndTimestamp timestamp={props.timestamp} />
       </Typography>
-      <Typography component="span" whiteSpace="pre-wrap" color="#dbdee1">
-        {props.content?.trim()}
-      </Typography>
+      <Stack whiteSpace="pre-wrap" color="#dbdee1">
+        <DiscordMarkdown text={props.content?.trim()} />
+      </Stack>
     </Box>
   );
 }
@@ -97,7 +109,7 @@ function MessageEmbed({ embed }: { embed: Exclude<DiscordMessagePreviewProps["em
 
   const timestamp = useMemo(() => {
     if (!embed.timestamp) return "";
-    return formatRelativeTimestamp(embed.timestamp);
+    return formatRelativeTimestamp(embed.timestamp, { useAbsoluteWhenOverOneDay: true });
   }, [embed.timestamp]);
 
   return (
@@ -139,7 +151,7 @@ function MessageEmbed({ embed }: { embed: Exclude<DiscordMessagePreviewProps["em
         )}
         {embed.description && (
           <Typography component="div" mt="8px" fontSize="0.875rem" lineHeight="1.125rem" fontWeight={400} color="#dbdee1" whiteSpace="pre-wrap" gridColumn="1 / 1">
-            {embed.description.trim()}
+            <DiscordMarkdown text={embed.description?.trim()} />
           </Typography>
         )}
         {embed.image && (
@@ -162,30 +174,6 @@ function MessageEmbed({ embed }: { embed: Exclude<DiscordMessagePreviewProps["em
       </Box>
     </Box>
   );
-}
-
-function formatRelativeTimestamp(timestamp: number) {
-  const diff = Math.round((timestamp - Date.now()));
-  const units: Record<string, number> = {
-    day: 24 * 60 * 60 * 1000,
-    hour: 60 * 60 * 1000,
-    minute: 60 * 1000,
-    second: 1000,
-  };
-
-  if (Math.abs(diff) <= units.day) {
-    const rtf = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
-    for (const unitName in units) {
-      if (Math.abs(diff) > units[unitName] || unitName === "second") {
-        return rtf.format(Math.round(diff / units[unitName]), unitName as Intl.RelativeTimeFormatUnit);
-      }
-    }
-  }
-
-  return new Date(timestamp).toLocaleString("en-GB", {
-    year: "numeric", month: "numeric", day: "numeric",
-    hour: "numeric", minute: "numeric",
-  });
 }
 
 const DiscordLink = styled("a")(({ color }) => ({

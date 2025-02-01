@@ -7,7 +7,7 @@ import DeleteCircleButton from "./DeleteCircleButton";
 
 interface RoleMentionProps {
   name: string;
-  color: number | undefined;
+  color?: number | undefined;
   disabled?: boolean;
   onDelete?: (event: unknown) => void;
   sx?: SystemStyleObject;
