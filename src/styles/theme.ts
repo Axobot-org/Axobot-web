@@ -1,18 +1,12 @@
 import { createTheme, LinkProps } from "@mui/material";
 import { TypographyOptions } from "@mui/material/styles/createTypography";
 
-import MPlus2 from "./fonts/MPLUS2-VariableFont_wght.ttf";
-import PoppinsBold from "./fonts/Poppins-Bold.ttf";
-import PoppinsBoldItalic from "./fonts/Poppins-BoldItalic.ttf";
-import PoppinsRegularItalic from "./fonts/Poppins-Italic.ttf";
-import PoppinsRegular from "./fonts/Poppins-Regular.ttf";
-import PoppinsThin from "./fonts/Poppins-Thin.ttf";
-import PoppinsThinItalic from "./fonts/Poppins-ThinItalic.ttf";
 import LinkBehavior from "./LinkBehavior";
 
 declare module "@mui/material/styles" {
   interface Palette {
     blurple: Palette["primary"];
+    gray: Palette["primary"];
     custom: {
       background1: string;
       background2: string;
@@ -22,6 +16,7 @@ declare module "@mui/material/styles" {
 
   interface PaletteOptions {
     blurple: Palette["primary"];
+    gray: Palette["primary"];
     custom: {
       background1: string;
       background2: string;
@@ -33,6 +28,7 @@ declare module "@mui/material/styles" {
 declare module "@mui/material/Button" {
   interface ButtonPropsColorOverrides {
     blurple: true;
+    gray: true;
   }
 }
 
@@ -51,46 +47,51 @@ export const AxoTheme = createTheme({
       styleOverrides: `
         @font-face {
           font-family: 'M PLUS 2';
-          src: local('M PLUS 2'), url(${MPlus2}) format('truetype');
+          src: local('M PLUS 2'), url(/assets/fonts/MPLUS2-VariableFont-latin.woff) format('woff');
+          font-display: swap;
+        }
+        @font-face {
+          font-family: 'M PLUS 2 ext';
+          src: local('M PLUS 2'), url(/assets/fonts/MPLUS2-VariableFont-extended.woff) format('woff');
           font-display: swap;
         }
         @font-face {
           font-family: 'Poppins';
           font-weight: 500;
-          src: local('Poppins'), local('Poppins-bold'), url(${PoppinsBold}) format('truetype');
+          src: local('Poppins'), local('Poppins-bold'), url(/assets/fonts/Poppins-Bold.ttf) format('truetype');
           font-display: swap;
         }
         @font-face {
           font-family: 'Poppins';
           font-weight: 500;
           font-style: italic;
-          src: local('Poppins'), local('Poppins-bold-italic'), url(${PoppinsBoldItalic}) format('truetype');
+          src: local('Poppins'), local('Poppins-bold-italic'), url(/assets/fonts/Poppins-BoldItalic.ttf) format('truetype');
           font-display: swap;
         }
         @font-face {
           font-family: 'Poppins';
           font-weight: 300;
-          src: local('Poppins'), local('Poppins-regular'), url(${PoppinsRegular}) format('truetype');
+          src: local('Poppins'), local('Poppins-regular'), url(/assets/fonts/Poppins-Regular.ttf) format('truetype');
           font-display: swap;
         }
         @font-face {
           font-family: 'Poppins';
           font-weight: 300;
           font-style: italic;
-          src: local('Poppins'), local('Poppins-regular'), url(${PoppinsRegularItalic}) format('truetype');
+          src: local('Poppins'), local('Poppins-regular'), url(/assets/fonts/Poppins-Italic.ttf) format('truetype');
           font-display: swap;
         }
         @font-face {
           font-family: 'Poppins';
           font-weight: 200;
-          src: local('Poppins'), local('Poppins-thin'), url(${PoppinsThin}) format('truetype');
+          src: local('Poppins'), local('Poppins-thin'), url(/assets/fonts/Poppins-Thin.ttf) format('truetype');
           font-display: swap;
         }
         @font-face {
           font-family: 'Poppins';
           font-weight: 200;
           font-style: italic;
-          src: local('Poppins'), local('Poppins-thin'), url(${PoppinsThinItalic}) format('truetype');
+          src: local('Poppins'), local('Poppins-thin'), url(/assets/fonts/Poppins-ThinItalic.ttf) format('truetype');
           font-display: swap;
         }
       `,
@@ -114,12 +115,17 @@ export const AxoTheme = createTheme({
         LinkComponent: LinkBehavior,
       },
     },
+    MuiStack: {
+      defaultProps: {
+        useFlexGap: true,
+      },
+    },
     MuiSwitch: {
       styleOverrides: {
         root: {
           padding: 8,
         },
-        switchBase: {
+        switchBase: ({ theme }) => ({
           "&.Mui-checked": {
             color: "#fff",
             "& + .MuiSwitch-track": {
@@ -127,7 +133,13 @@ export const AxoTheme = createTheme({
               border: 0,
             },
           },
-        },
+          "&.Mui-disabled + .MuiSwitch-track": {
+            opacity: 0.5,
+          },
+          "&.Mui-disabled .MuiSwitch-thumb": {
+            color: theme.palette.grey[600],
+          },
+        }),
         track: {
           borderRadius: 22 / 2,
         },
@@ -172,6 +184,12 @@ export const AxoTheme = createTheme({
       dark: "#454FBF",
       contrastText: "#fff",
     },
+    gray: {
+      main: "#747f8d",
+      light: "#b9bbbe",
+      dark: "#4f545c",
+      contrastText: "#fff",
+    },
     custom: {
       background1: "#1f1f1f",
       background2: "#2f2f2f",
@@ -198,6 +216,7 @@ export const AxoTheme = createTheme({
     h5: HeaderStyle,
     fontFamily: [
       "'M PLUS 2'",
+      "'M PLUS 2 ext'",
       "Roboto",
       "sans-serif",
     ].join(","),

@@ -1,8 +1,10 @@
 import FolderIcon from "@mui/icons-material/Folder";
-import { Stack, Typography } from "@mui/material";
+import { Skeleton, Stack, Typography } from "@mui/material";
 import { styled } from "@mui/system";
 import { ChannelType } from "discord-api-types/v10";
 
+import { useGuildConfigEditionContext } from "../../repository/context/GuildConfigEditionContext";
+import { useFetchGuildChannelsQuery } from "../../repository/redux/api/api";
 import DeleteCircleButton from "./DeleteCircleButton";
 
 
@@ -10,15 +12,16 @@ interface ChannelMentionProps {
   channel: {
     name: string;
     type: ChannelType;
-    parentId: string | null | undefined;
+    parentId?: string | null | undefined;
   };
   disabled?: boolean;
   indent?: boolean;
   disableColor?: boolean;
+  inline?: boolean;
   onDelete?: (event: unknown) => void;
 }
 
-export default function ChannelMention({ channel, disabled, indent, disableColor, onDelete }: ChannelMentionProps) {
+export default function ChannelMention({ channel, disabled, indent, disableColor, inline, onDelete }: ChannelMentionProps) {
   const mentionColor = 0xc9cdfb;
   const backgroundColor = 0x5865f24d;
   const Icon = getIconComponent(channel.type);
@@ -27,8 +30,9 @@ export default function ChannelMention({ channel, disabled, indent, disableColor
   return (
     <Stack
       direction="row"
-      gap={0.5}
+      spacing={0.5}
       sx={{
+        display: inline ? "inline-flex" : "flex",
         color: disableColor ? undefined : `#${mentionColor.toString(16).padStart(6, "0")}`,
         backgroundColor: disableColor ? undefined : `#${backgroundColor.toString(16).padStart(8, "0")}`,
         borderRadius: "5px",
@@ -138,3 +142,23 @@ const MediaChannelIcon = (
     <path fill="currentColor" fillRule="evenodd" d="M2 5a3 3 0 0 1 3-3h14a3 3 0 0 1 3 3v14a3 3 0 0 1-3 3H5a3 3 0 0 1-3-3V5Zm13.35 8.13 3.5 4.67c.37.5.02 1.2-.6 1.2H5.81a.75.75 0 0 1-.59-1.22l1.86-2.32a1.5 1.5 0 0 1 2.34 0l.5.64 2.23-2.97a2 2 0 0 1 3.2 0ZM10.2 5.98c.23-.91-.88-1.55-1.55-.9a.93.93 0 0 1-1.3 0c-.67-.65-1.78-.01-1.55.9a.93.93 0 0 1-.65 1.12c-.9.26-.9 1.54 0 1.8.48.14.77.63.65 1.12-.23.91.88 1.55 1.55.9a.93.93 0 0 1 1.3 0c.67.65 1.78.01 1.55-.9a.93.93 0 0 1 .65-1.12c.9-.26.9-1.54 0-1.8a.93.93 0 0 1-.65-1.12Z" clipRule="evenodd" />
   </IconSVG>
 );
+
+interface ChannelMentionFromIdProps extends Omit<ChannelMentionProps, "channel"> {
+  id: string;
+}
+export function ChannelMentionFromId({ id, ...props }: ChannelMentionFromIdProps) {
+  const { guildId } = useGuildConfigEditionContext();
+  const { data: channels } = useFetchGuildChannelsQuery({ guildId });
+
+  if (channels === undefined) {
+    return <Skeleton variant="text" width="5rem" sx={{ display: "inline-block" }} />;
+  }
+
+  const channel = channels.find((c) => c.id === id);
+
+  if (!channel) {
+    return <ChannelMention channel={{ name: id, type: ChannelType.GuildText }} {...props} />;
+  }
+
+  return <ChannelMention channel={channel} {...props} />;
+}

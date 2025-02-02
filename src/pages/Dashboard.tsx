@@ -50,7 +50,7 @@ function GuildsGrid() {
   }
 
   return (
-    <Stack direction="row" flexWrap="wrap" gap={3} my={4} justifyContent="center">
+    <Stack direction="row" flexWrap="wrap" spacing={3} my={4} justifyContent="center">
       {sortedGuilds.map((guild) => (
         <GuildBox guild={guild} key={guild.id} />
       ))}

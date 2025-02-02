@@ -7,12 +7,6 @@ import { GuildConfigOptionCategory } from "../types/guild-config-types";
 
 type EditionValueType = number | boolean | string | string[] | null;
 
-export interface StateRssFeed {
-  add: RssFeed[];
-  edit: RssFeed[];
-  remove: string[];
-};
-
 interface GuildConfigEdition {
   baseOptions: Record<string, EditionValueType>;
   roleRewards?: {
@@ -20,7 +14,7 @@ interface GuildConfigEdition {
     roleId: string;
     level: string;
   }[];
-  rssFeeds?: StateRssFeed;
+  editedRssFeeds?: RssFeed[];
 }
 
 interface ContextType {
@@ -32,7 +26,7 @@ interface ContextType {
   resetBaseOptionValue: (optionId: string) => void;
   setRoleRewardsValue: (roleRewards: GuildConfigEdition["roleRewards"]) => void;
   resetRoleRewardsValue: () => void;
-  setRssFeedsValue: Dispatch<SetStateAction<GuildConfigEdition["rssFeeds"]>>;
+  setRssFeedsValue: Dispatch<SetStateAction<GuildConfigEdition["editedRssFeeds"]>>;
   resetRssFeedsValue: () => void;
   resetState: () => void;
 }
@@ -105,17 +99,16 @@ export function GuildConfigEditionProvider({ guildId, children }: PropsWithChild
     }));
   }, []);
 
-  const setRssFeedsValue: Dispatch<SetStateAction<GuildConfigEdition["rssFeeds"]>> = useCallback(
+  const setRssFeedsValue: Dispatch<SetStateAction<GuildConfigEdition["editedRssFeeds"]>> = useCallback(
     (valueOrUpdater) => {
       setState((prevState) => {
         const newRssFeeds
           = typeof valueOrUpdater === "function"
-            ? valueOrUpdater(prevState.rssFeeds)
+            ? valueOrUpdater(prevState.editedRssFeeds)
             : valueOrUpdater;
-
         return {
           ...prevState,
-          rssFeeds: newRssFeeds,
+          editedRssFeeds: newRssFeeds,
         };
       });
     },
@@ -125,19 +118,13 @@ export function GuildConfigEditionProvider({ guildId, children }: PropsWithChild
   const resetRssFeedsValue = useCallback(() => {
     setState((prevState) => ({
       ...prevState,
-      rssFeeds: undefined,
+      editedRssFeeds: undefined,
     }));
   }, []);
 
   const resetState = useCallback(() => {
     setState(getDefaultState());
   }, []);
-
-  const isAnyRssFeedEdited = (!!state.rssFeeds && (
-    state.rssFeeds.add.length !== 0
-    || state.rssFeeds.edit.length !== 0
-    || state.rssFeeds.remove.length !== 0
-  ));
 
   const getCategoriesWithUnsavedChanges = (): GuildConfigOptionCategory[] => {
     const unsavedCategories: GuildConfigOptionCategory[] = [];
@@ -151,7 +138,7 @@ export function GuildConfigEditionProvider({ guildId, children }: PropsWithChild
     if (state.roleRewards !== undefined) {
       unsavedCategories.push("xp");
     }
-    if (isAnyRssFeedEdited) {
+    if (state.editedRssFeeds?.length) {
       unsavedCategories.push("rss");
     }
     return unsavedCategories;
@@ -160,7 +147,6 @@ export function GuildConfigEditionProvider({ guildId, children }: PropsWithChild
   const hasAnyUnsavedChange = (
     Object.keys(state.baseOptions).length !== 0
     || state.roleRewards !== undefined
-    || isAnyRssFeedEdited
   );
 
   return (
@@ -207,56 +193,26 @@ export function useGuildConfigRoleRewardsEditionContext() {
   };
 }
 
-export function useGuildConfigRssFeedsEditionContext() {
+export function useRssFeedEditionContext(feedId: string) {
   const { guildId, state, setRssFeedsValue } = useGuildConfigEditionContext();
-
-  function setRssFeedsSubstate<Key extends keyof StateRssFeed>(key: Key, callback: (prevState: StateRssFeed[Key]) => StateRssFeed[Key]) {
-    setRssFeedsValue((prevState) => ({
-      add: prevState?.add ?? [],
-      edit: prevState?.edit ?? [],
-      remove: prevState?.remove ?? [],
-      [key]: callback(prevState?.[key] ?? []),
-    }));
-  }
-
-  const findFeedInState = (feedId: string): RssFeed | undefined => {
-    if (!state.rssFeeds) {
-      return undefined;
-    }
-    return state.rssFeeds.add.find((f) => f.id === feedId) ?? state.rssFeeds.edit.find((f) => f.id === feedId);
-  };
+  const existingFeed = state.editedRssFeeds?.find((f) => f.id === feedId);
 
   const editFeed = (feed: RssFeed) => {
-    if (!state.rssFeeds) {
-      state.rssFeeds = {
-        add: [],
-        edit: [],
-        remove: [],
-      };
-    }
-    const existingFeed = findFeedInState(feed.id);
-    const stateKey = isNewRssFeed(feed) ? "add" : "edit";
     if (existingFeed) {
-      setRssFeedsSubstate(stateKey, (prevState) => prevState.map((f) => (f.id === feed.id ? feed : f)));
+      setRssFeedsValue((prevState) => prevState?.map((f) => (f.id === feed.id ? feed : f)));
     } else {
-      setRssFeedsSubstate(stateKey, (prevState) => [...prevState, feed]);
+      setRssFeedsValue((prevState) => [...(prevState ?? []), feed]);
     }
   };
 
-  const unregisterFeed = (feedId: string) => {
-    const stateKey = isNewRssFeed({ id: feedId }) ? "add" : "edit";
-    setRssFeedsSubstate(stateKey, (prevState) => prevState.filter((f) => f.id !== feedId));
+  const unregisterFeed = () => {
+    setRssFeedsValue((prevState) => prevState?.filter((f) => f.id !== feedId));
   };
 
   return {
     guildId,
-    state: state.rssFeeds,
-    findFeedInState,
+    state: existingFeed,
     editFeed,
     unregisterFeed,
   };
-}
-
-export function isNewRssFeed(feed: { id: string }) {
-  return feed.id.startsWith("temp_");
 }

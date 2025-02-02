@@ -109,5 +109,14 @@
     "xp_decay": "XP decay (per day)",
     "xp_rate": "XP rate",
     "xp_type": "XP system type"
+  },
+  "rss_type": {
+    "bluesky": "BlueSky",
+    "deviant": "DeviantArt",
+    "mc": "Minecraft",
+    "tw": "Twitter",
+    "twitch": "Twitch",
+    "yt": "YouTube",
+    "web": "Website"
   }
 }

@@ -4,14 +4,15 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import MenuIcon from "@mui/icons-material/Menu";
 import { Badge, Box, CSSObject, Divider, IconButton, List, ListItem, ListItemButton, ListItemIcon, ListItemText, styled, Theme, Toolbar } from "@mui/material";
 import MuiDrawer from "@mui/material/Drawer";
-import { Fragment, useState } from "react";
+import { Fragment, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import { getGuildDashboardTranslations } from "../../i18n/i18n";
 import { useGuildConfigEditionContext } from "../../repository/context/GuildConfigEditionContext";
 import { GuildConfigOptionCategory, GuildConfigOptionCategoryNames } from "../../repository/types/guild-config-types";
 import { useIsOnMobile } from "../../styles/useIsOnMobile";
+import UnsavedFeedsConfirmationDialog from "./SpecialCategoryComponents/RssFeeds/UnsavedFeedsConfirmationDialog";
 
 const drawerWidth = 240;
 
@@ -126,9 +127,7 @@ function getPageTitle(page: string) {
   return getGuildDashboardTranslations(`category_name.${page}`);
 }
 
-function TabContent({ page, isOpen }: { page: GuildConfigOptionCategory; isOpen: boolean }) {
-  const { getCategoriesWithUnsavedChanges } = useGuildConfigEditionContext();
-  const unsavedCategories = getCategoriesWithUnsavedChanges();
+function TabContent({ page, isOpen, isUnsaved }: { page: GuildConfigOptionCategory; isOpen: boolean; isUnsaved: boolean }) {
   const formatedTitle = getPageTitle(page);
 
   return (
@@ -141,7 +140,7 @@ function TabContent({ page, isOpen }: { page: GuildConfigOptionCategory; isOpen:
           justifyContent: "center",
         }}
       >
-        <Badge color="warning" variant="dot" invisible={!unsavedCategories.includes(page)}>
+        <Badge color="warning" variant="dot" invisible={!isUnsaved}>
           <TabIcon page={page} />
         </Badge>
       </ListItemIcon>
@@ -157,7 +156,36 @@ interface NavigationDrawerContentProps {
 }
 
 function NavigationDrawerContent({ open, activePage, toggleOpen }: NavigationDrawerContentProps) {
+  const { getCategoriesWithUnsavedChanges } = useGuildConfigEditionContext();
+  const unsavedCategories = getCategoriesWithUnsavedChanges();
   const isOnMobile = useIsOnMobile();
+  const navigate = useNavigate();
+
+  const [isUnsavedFeedsDialogOpen, setIsUnsavedFeedsDialogOpen] = useState(false);
+  const destinationPage = useRef<GuildConfigOptionCategory | null>(null);
+
+  function handleClickOnTab(page: GuildConfigOptionCategory) {
+    return async () => {
+      if (activePage === "rss" && unsavedCategories.includes("rss")) {
+        destinationPage.current = page;
+        setIsUnsavedFeedsDialogOpen(true);
+        return;
+      }
+      navigate(page);
+      if (isOnMobile) {
+        toggleOpen();
+      }
+    };
+  }
+
+  const closeUnsavedFeedsDialog = () => setIsUnsavedFeedsDialogOpen(false);
+  const closeUnsavedFeedsDialogAndNavigate = () => {
+    closeUnsavedFeedsDialog();
+    if (destinationPage.current) {
+      navigate(destinationPage.current);
+    }
+  };
+
   return (
     <Fragment>
       <Toolbar sx={{ display: { xs: "none", md: "initial" } }} />
@@ -174,16 +202,19 @@ function NavigationDrawerContent({ open, activePage, toggleOpen }: NavigationDra
               <PageTab
                 isOpen={open}
                 isSelected={activePage === page}
-                component={Link}
-                to={page}
-                onClick={isOnMobile ? toggleOpen : undefined}
+                onClick={handleClickOnTab(page)}
               >
-                <TabContent page={page} isOpen={open} />
+                <TabContent page={page} isOpen={open} isUnsaved={unsavedCategories.includes(page)} />
               </PageTab>
             </ListItem>
           ))}
         </List>
       </Box>
+      <UnsavedFeedsConfirmationDialog
+        open={isUnsavedFeedsDialogOpen}
+        onCancel={closeUnsavedFeedsDialog}
+        onConfirm={closeUnsavedFeedsDialogAndNavigate}
+      />
     </Fragment>
   );
 }

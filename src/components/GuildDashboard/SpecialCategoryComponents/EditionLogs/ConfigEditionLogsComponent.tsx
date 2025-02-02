@@ -11,7 +11,7 @@ import RssFeedMention from "../RssFeeds/RssFeedMention";
 
 export default function ConfigEditionLogsComponent() {
   const { guildId } = useGuildConfigEditionContext();
-  const { data, isLoading, error } = useFetchConfigEditionLogsQuery({ guildId });
+  const { data, isLoading, error } = useFetchConfigEditionLogsQuery({ guildId }, { refetchOnMountOrArgChange: 30 });
 
   if (error) {
     if (isLoading) {
@@ -31,7 +31,7 @@ export default function ConfigEditionLogsComponent() {
   return (
     <Fragment>
       <Typography variant="h5" gutterBottom textAlign="center">Configuration edition logs</Typography>
-      <Stack gap={{ xs: 3, md: 0.75 }}>
+      <Stack spacing={{ xs: 3, md: 0.75 }}>
         {sortedData.map((log) => (
           <LogRow key={log.id} log={log} />
         ))}
@@ -44,7 +44,7 @@ function LogRow({ log }: { log: ConfigEditionLog }) {
   return (
     <LogRowContainer>
       <Typography variant="body2" color="textDisabled">{new Date(log.date).toLocaleString()}</Typography>
-      <Stack direction="row" gap={1} alignItems="center" flexWrap="wrap">
+      <Stack direction="row" spacing={1} alignItems="center" flexWrap="wrap">
         <LogAuthor log={log} />
         <span>
           <LogAction log={log} />
@@ -129,18 +129,20 @@ function LogAction({ log }: { log: ConfigEditionLog }) {
     );
   }
   if (logIsRssUpdate(log)) {
-    const feedsCount = log.data.feeds.length;
-    const plural = log.data.feeds.length > 1;
+    const { feed } = log.data;
     let text = "";
     if (log.type === "rss_added") {
-      text = `added ${feedsCount} RSS feed` + (plural ? "s" : "");
+      text = "added RSS feed";
     } else if (log.type === "rss_deleted") {
-      text = `deleted ${feedsCount} RSS feed` + (plural ? "s" : "");
+      text = "deleted RSS feed";
     } else {
-      text = `edited ${feedsCount} RSS feed` + (plural ? "s" : "");
+      text = "edited RSS feed";
     }
     return (
-      <RssUpdateLogs text={text} feeds={log.data.feeds} />
+      <Stack direction="row" display="inline-flex" flexWrap="wrap">
+        {text}
+        <RssFeedMention key={feed.id} feed={feed} sx={{ display: "inline-flex", ml: 1, gap: 0.5 }} />
+      </Stack>
     );
   }
   return "edited configuration";
@@ -149,9 +151,9 @@ function LogAction({ log }: { log: ConfigEditionLog }) {
 function LogAuthor({ log }: { log: ConfigEditionLog }) {
   return (
     <Tooltip enterDelay={400} enterNextDelay={200} title={`ID ${log.user_id}`}>
-      <Stack direction="row" gap={0.5} alignItems="center">
+      <Stack direction="row" spacing={0.5} alignItems="center">
         <Avatar sx={{ width: 32, height: 32 }} alt={log.username ?? log.user_id} src={log.avatar + "?size=64"} />
-        <Typography color="secondary">
+        <Typography>
           {log.username ?? log.user_id}
         </Typography>
       </Stack>
@@ -174,18 +176,6 @@ function ActionSource({ log }: { log: ConfigEditionLog }) {
     return " from the website";
   }
   return null;
-}
-
-function RssUpdateLogs({ text, feeds }: { text: string; feeds: ConfigEditionLog_RssUpdate["data"]["feeds"] }) {
-  const sortedFeeds = feeds.toSorted((a, b) => (a.displayName ?? a.link).localeCompare(b.displayName ?? b.link));
-  return (
-    <Stack direction="row" display="inline-flex" flexWrap="wrap">
-      {text}
-      {sortedFeeds.map((feed) => (
-        <RssFeedMention key={feed.id} feed={feed} sx={{ display: "inline-flex", ml: 1, gap: 0.5 }} />
-      ))}
-    </Stack>
-  );
 }
 
 
@@ -235,13 +225,13 @@ function logIsRoleRewardsPut(log: ConfigEditionLog): log is ConfigEditionLog_Rol
 interface ConfigEditionLog_RssUpdate extends ConfigEditionLog {
   type: "rss_added" | "rss_edited" | "rss_deleted";
   data: {
-    feeds: {
+    feed: {
       id: string;
       channelId: string;
       link: string;
       type: string;
       displayName?: string;
-    }[];
+    };
   };
 }
 

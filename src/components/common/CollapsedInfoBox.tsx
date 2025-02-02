@@ -13,7 +13,7 @@ export default function CollapsedInfoBox({ title, children }: PropsWithChildren<
 
   return (
     <Container className={isOpen ? "isOpen" : undefined}>
-      <Stack useFlexGap direction="row" gap={2} alignItems="center">
+      <Stack direction="row" spacing={2} alignItems="center">
         <Tooltip title={title}>
           <IconButton onClick={() => setIsOpen(!isOpen)}>
             <Icon />

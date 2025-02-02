@@ -1,69 +1,21 @@
 import { Stack, Typography } from "@mui/material";
-import { useCallback } from "react";
+import { lazy, Suspense } from "react";
 import { Fragment } from "react/jsx-runtime";
 
-import { useGuildConfigEditionContext, useGuildConfigRssFeedsEditionContext } from "../../../../repository/context/GuildConfigEditionContext";
+import { useGuildConfigEditionContext } from "../../../../repository/context/GuildConfigEditionContext";
 import { useFetchGuildConfigQuery, useFetchGuildRssFeedsQuery } from "../../../../repository/redux/api/api";
 import { RssFeed } from "../../../../repository/types/api";
 import { ErrorPage, LoadingPlaceholder } from "../../shared";
-import FeedComponent from "./FeedComponent";
+const FeedComponent = lazy(() => import("./FeedComponent"));
 
 export default function RssFeedsComponent() {
   const { guildId } = useGuildConfigEditionContext();
   const { data, isLoading, error } = useFetchGuildRssFeedsQuery({ guildId });
-  const { findFeedInState, editFeed: editStateFeed, unregisterFeed } = useGuildConfigRssFeedsEditionContext();
-
-  const editFeed = useCallback((feed: RssFeed) => {
-    const uneditedFeed = data?.find((f) => f.id === feed.id);
-    if (uneditedFeed && compareFeeds(feed, uneditedFeed)) {
-      unregisterFeed(feed.id);
-    } else {
-      editStateFeed(feed);
-    }
-  }, [data, editStateFeed, unregisterFeed]);
-
-  if (error) {
-    if (isLoading) {
-      return (
-        <Fragment>
-          <PageTitle feeds={data} />
-          <LoadingPlaceholder />
-        </Fragment>
-      );
-    }
-
-    console.error(error);
-    return (
-      <Fragment>
-        <PageTitle feeds={data} />
-        <ErrorPage title="Oops, something went wrong!" message="Sorry, an unexpected error has occurred." />
-      </Fragment>
-    );
-  }
-
-  if (data === undefined) {
-    return (
-      <Fragment>
-        <PageTitle feeds={data} />
-        <LoadingPlaceholder />
-      </Fragment>
-    );
-  }
-
-  const sortedFeed = data.map((feedFromApi): RssFeed => {
-    const feedFromState = findFeedInState(feedFromApi.id) ?? {};
-    return { ...feedFromApi, ...feedFromState };
-  }).toSorted((a, b) => (b.addedAt > a.addedAt ? -1 : 1));
-
 
   return (
     <Fragment>
       <PageTitle feeds={data} />
-      <Stack gap={{ xs: 3, md: 1 }}>
-        {sortedFeed.map((feed) => (
-          <FeedComponent key={feed.id} feed={feed} editFeed={editFeed} />
-        ))}
-      </Stack>
+      <PageContent data={data} isLoading={isLoading} showErrorMessages={error !== undefined} />
     </Fragment>
   );
 }
@@ -86,6 +38,41 @@ function PageTitle({ feeds }: { feeds: RssFeed[] | undefined }) {
   return <Typography variant="h5" gutterBottom textAlign="center">{title}</Typography>;
 }
 
-function compareFeeds(a: RssFeed, b: RssFeed) {
-  return Object.keys(a).every((key) => key in b && a[key as keyof RssFeed] === b[key as keyof RssFeed]);
+function PageContent({ data, isLoading, showErrorMessages }: { data: RssFeed[] | undefined; isLoading: boolean; showErrorMessages: boolean }) {
+  if (showErrorMessages) {
+    if (isLoading) {
+      return (
+        <LoadingPlaceholder />
+      );
+    }
+
+    return (
+      <ErrorPage title="Oops, something went wrong!" message="Sorry, an unexpected error has occurred." />
+    );
+  }
+
+  if (data === undefined) {
+    return (
+      <LoadingPlaceholder />
+    );
+  }
+
+  if (data.length === 0) {
+    return (
+      <Typography variant="body1" textAlign="center">No feeds added yet.</Typography>
+    );
+  }
+
+  const sortedFeed = data.toSorted((a, b) => (a.displayName ?? a.link).localeCompare(b.displayName ?? b.link));
+
+
+  return (
+    <Suspense fallback={<LoadingPlaceholder />}>
+      <Stack spacing={{ xs: 3, md: 1 }}>
+        {sortedFeed.map((feed) => (
+          <FeedComponent key={feed.id} feed={feed} />
+        ))}
+      </Stack>
+    </Suspense>
+  );
 }

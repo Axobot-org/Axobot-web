@@ -68,7 +68,7 @@ const defaultSrcPolicy = isProduction ? "default-src https:" : "";
 const scriptSrcPolicy = isProduction ? `script-src-elem ${env.PUBLIC_URL} ${env.VITE_API_URL} https://static.cloudflareinsights.com https://zrunner.me` : "";
 const styleSrcPolicy = isProduction ? "style-src 'sha256-47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU='" : "";
 const headers = {
-  "Content-Security-Policy": `frame-ancestors 'none'; upgrade-insecure-requests; ${defaultSrcPolicy}; ${scriptSrcPolicy}; ${styleSrcPolicy}; img-src 'self' https://cdn.discordapp.com`,
+  "Content-Security-Policy": `frame-ancestors 'none'; upgrade-insecure-requests; ${defaultSrcPolicy}; ${scriptSrcPolicy}; ${styleSrcPolicy}; img-src https:`,
   "Cross-Origin-Embedder-Policy": "credentialless",
   "Cross-Origin-Opener-Policy": "same-origin",
   "Cross-Origin-Resource-Policy": "same-site",

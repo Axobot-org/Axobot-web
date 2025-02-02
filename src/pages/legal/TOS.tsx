@@ -16,7 +16,7 @@ const TOSSummary = () => {
 
   return (
     <Paper sx={{ mt: { xs: 2, md: 4 }, p: 2, width: "100%", backgroundColor: "#318167" }}>
-      <Stack useFlexGap direction="row" gap={2} justifyContent="space-between" alignItems="center">
+      <Stack direction="row" spacing={2} justifyContent="space-between" alignItems="center">
         <Typography variant="h5">Summary</Typography>
         <IconButton onClick={() => setIsOpen(!isOpen)}>
           <Icon />

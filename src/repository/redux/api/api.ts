@@ -8,6 +8,7 @@ import {
   LoginJSONResponse,
   RoleReward,
   RssFeed,
+  RssFeedParsedEntry,
   RssFeedPUTData,
 } from "../../types/api";
 import { GuildChannel, GuildConfig, GuildData, GuildRole } from "../../types/guild";
@@ -129,6 +130,13 @@ export const axoApi = createApi({
     fetchGuildRssFeeds: builder.query<RssFeed[], { guildId: string }>({
       query: ({ guildId }) => `discord/guild/${guildId}/rss-feeds`,
     }),
+    testRssFeed: builder.query<RssFeedParsedEntry, { type: string; url: string }>({
+      query: ({ type, url }) => ({
+        url: "rss/test",
+        params: { type, url },
+      }),
+      keepUnusedDataFor: 300, // 5 minutes
+    }),
 
     // ----- MUTATIONS ----- //
     login: builder.mutation<LoginJSONResponse, string>({
@@ -185,18 +193,63 @@ export const axoApi = createApi({
         } catch { /* don't update cache on error */ }
       },
     }),
-    patchGuildRssFeeds: builder.mutation<RssFeed[], { guildId: string; feeds: RssFeedPUTData }>({
-      query: ({ guildId, feeds }) => ({
-        url: `discord/guild/${guildId}/rss-feeds`,
-        method: "PATCH",
-        body: feeds,
+    toggleGuildRssFeed: builder.mutation<RssFeed, { guildId: string; feedId: string }>({
+      query: ({ guildId, feedId }) => ({
+        url: `discord/guild/${guildId}/rss-feeds/${feedId}/toggle`,
+        method: "POST",
       }),
       async onQueryStarted({ guildId }, { dispatch, queryFulfilled }) {
         // update fetchGuildRssFeeds cache with returned updated data
         try {
           const { data } = await queryFulfilled;
           dispatch(
-            axoApi.util.updateQueryData("fetchGuildRssFeeds", { guildId }, () => data)
+            axoApi.util.updateQueryData("fetchGuildRssFeeds", { guildId }, (draft) => {
+              const feedIndex = draft.findIndex((feed) => feed.id === data.id);
+              if (feedIndex !== -1) {
+                draft[feedIndex] = data;
+              }
+            })
+          );
+        } catch { /* don't update cache on error */ }
+      },
+    }),
+    putGuildRssFeed: builder.mutation<RssFeed, { guildId: string; feed: RssFeedPUTData }>({
+      query: ({ guildId, feed }) => ({
+        url: `discord/guild/${guildId}/rss-feeds/${feed.id}`,
+        method: "PUT",
+        body: feed,
+      }),
+      async onQueryStarted({ guildId }, { dispatch, queryFulfilled }) {
+        // update fetchGuildRssFeeds cache with returned updated data
+        try {
+          const { data } = await queryFulfilled;
+          dispatch(
+            axoApi.util.updateQueryData("fetchGuildRssFeeds", { guildId }, (draft) => {
+              const feedIndex = draft.findIndex((f) => f.id === data.id);
+              if (feedIndex !== -1) {
+                draft[feedIndex] = data;
+              }
+            })
+          );
+        } catch { /* don't update cache on error */ }
+      },
+    }),
+    deleteGuildRssFeed: builder.mutation<undefined, { guildId: string; feedId: string }>({
+      query: ({ guildId, feedId }) => ({
+        url: `discord/guild/${guildId}/rss-feeds/${feedId}`,
+        method: "DELETE",
+      }),
+      async onQueryStarted({ guildId, feedId }, { dispatch, queryFulfilled }) {
+        // update fetchGuildRssFeeds cache with returned updated data
+        try {
+          await queryFulfilled;
+          dispatch(
+            axoApi.util.updateQueryData("fetchGuildRssFeeds", { guildId }, (draft) => {
+              const feedIndex = draft.findIndex((feed) => feed.id === feedId);
+              if (feedIndex !== -1) {
+                draft.splice(feedIndex, 1);
+              }
+            })
           );
         } catch { /* don't update cache on error */ }
       },
@@ -218,10 +271,13 @@ export const {
   useFetchGuildChannelsQuery,
   useFetchConfigEditionLogsQuery,
   useFetchGuildRssFeedsQuery,
+  useLazyTestRssFeedQuery,
 
   useLoginMutation,
   usePatchGuildConfigMutation,
   usePutGuildLeaderboardMutation,
   usePutGuildRoleRewardsMutation,
-  usePatchGuildRssFeedsMutation,
+  useToggleGuildRssFeedMutation,
+  usePutGuildRssFeedMutation,
+  useDeleteGuildRssFeedMutation,
 } = axoApi;

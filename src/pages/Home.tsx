@@ -31,7 +31,7 @@ export default function Home() {
         <BotGuildCounter />
       </Box>
 
-      <Stack direction={{ xs: "column", sm: "row" }} gap={3} mt={5} mb={8}>
+      <Stack direction={{ xs: "column", sm: "row" }} spacing={3} mt={5} mb={8}>
         <Button variant="contained" target="_blank" href={ExternalRoutesURLs.botInvite}>
           Invite Axobot
         </Button>

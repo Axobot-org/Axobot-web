@@ -29,7 +29,7 @@ export default function AddRoleRewardButton({ guildId, existingRoleIds, addNewRe
   };
 
   return (
-    <Stack direction="row" gap={1} alignItems="center">
+    <Stack direction="row" spacing={1} alignItems="center">
       <AddIcon color="primary" />
       <Autocomplete
         openOnFocus
