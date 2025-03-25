@@ -42,7 +42,6 @@ export default function TextChannelsListConfigComponent({ optionId, option }: Te
 
   const channels = useMemo(() => (
     data?.filter((channel) => {
-      if (channel.isVoice) return false;
       if (!option.allow_threads && channel.isThread) return false;
       if (!option.allow_announcement_channels && channel.type === ChannelType.GuildAnnouncement) return false;
       if (!option.allow_non_nsfw_channels && !channel.isNSFW) return false;
