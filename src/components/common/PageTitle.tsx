@@ -1,4 +1,4 @@
-import { Stack, Typography } from "@mui/material";
+import { Stack, styled, Typography } from "@mui/material";
 
 interface PageTitleProps {
   text: string;
@@ -8,22 +8,41 @@ interface PageTitleProps {
 export default function PageTitle({ text, icon }: PageTitleProps) {
   if (icon === undefined) {
     return (
-      <Title my={2} maxWidth="100%">
+      <Title variant="h2" maxWidth="100%">
         {text}
       </Title>
     );
   }
 
   return (
-    <Stack direction="row" alignItems="center" textAlign="center" my={2} maxWidth="100%">
+    <TitleStack>
       {icon}
-      <Title ml={2}>
+      <Title variant="h2">
         {text}
       </Title>
-    </Stack>
+    </TitleStack>
   );
 }
 
-const Title = (props: React.ComponentProps<typeof Typography>) => (
-  <Typography variant="h4" fontSize={{ xs: "1.75rem", sm: "2.125rem" }} noWrap {...props} />
-);
+const TitleStack = styled(Stack)(({ theme }) => ({
+  flexDirection: "row",
+  flexWrap: "wrap",
+  justifyContent: "center",
+  columnGap: theme.spacing(2),
+  alignItems: "center",
+  textAlign: "center",
+  maxWidth: "100%",
+}));
+
+const Title = styled(Typography)(({ theme }) => ({
+  ...theme.typography.h4,
+  fontSize: "2.125rem",
+  margin: theme.spacing(3, 0),
+  overflow: "hidden",
+  textOverflow: "ellipsis",
+
+  [theme.breakpoints.down("sm")]: {
+    fontSize: "1.75rem",
+    margin: theme.spacing(2, 0),
+  },
+}));
