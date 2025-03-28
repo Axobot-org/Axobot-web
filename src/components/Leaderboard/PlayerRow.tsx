@@ -35,18 +35,18 @@ export default function PlayerRow({ player }: PlayerRowProps) {
 
   return (
     <Container key={player.user_id}>
-      <ListItemIcon>
+      <ResponsiveListItemIcon>
         <RankBadge sx={getBadgeStyle(player.ranking)}>
           {player.ranking + 1}
         </RankBadge>
-      </ListItemIcon>
+      </ResponsiveListItemIcon>
 
       <UserAvatar alt={player.username ?? undefined} src={player.avatar + "?size=64"} />
 
-      <ListItemText>
+      <TruncatedListItemText>
         <UserName>{player.username}</UserName>
         <SubtitleUserXp>{formatNumber(BigInt(player.xp))} xp</SubtitleUserXp>
-      </ListItemText>
+      </TruncatedListItemText>
 
       <RightUserXp>{formatNumber(BigInt(player.xp))} xp</RightUserXp>
 
@@ -81,6 +81,12 @@ const UserCustomListItem = styled(CustomListItem)(({ theme }) => ({
   borderWidth: 2,
 }));
 
+const ResponsiveListItemIcon = styled(ListItemIcon)(({ theme }) => ({
+  [theme.breakpoints.down(400)]: {
+    minWidth: "45px",
+  },
+}));
+
 const RankBadge = styled(Avatar)(({ theme }) => ({
   backgroundColor: theme.palette.custom.background2,
   color: theme.palette.text.primary,
@@ -95,6 +101,14 @@ const UserAvatar = styled(Avatar)(({ theme }) => ({
   width: 32,
   height: 32,
 }));
+
+const TruncatedListItemText = styled(ListItemText)({
+  "& .MuiTypography-root": {
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    whiteSpace: "nowrap",
+  },
+});
 
 const UserName = styled("span")({
   fontWeight: 600,
