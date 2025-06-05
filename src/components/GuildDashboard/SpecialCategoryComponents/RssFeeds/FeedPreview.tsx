@@ -1,4 +1,4 @@
-import { Box, Collapse, Paper, Typography } from "@mui/material";
+import { Box, Collapse, Paper, styled, Typography } from "@mui/material";
 import { ComponentProps } from "react";
 
 import { RssFeed, RssFeedParsedEntry } from "../../../../repository/types/api";
@@ -12,24 +12,39 @@ interface FeedPreviewButtonProps {
 }
 export default function FeedPreview({ isOpen, feed, data, isLoading }: FeedPreviewButtonProps) {
   return (
-    <Collapse in={isOpen}>
+    <StyledCollapse in={isOpen}>
       <Box>
         {isLoading && (<Typography color="textSecondary">Fetching the latest data...</Typography>)}
         {(!isLoading && !data) && (<Typography color="error">Oops, something went wrong while fetching your feed.</Typography>)}
         {(!isLoading && data) && <InnerFeedPreview feed={feed} data={data} />}
       </Box>
-    </Collapse>
+    </StyledCollapse>
   );
 }
 
 function InnerFeedPreview({ feed, data }: { feed: RssFeed; data: RssFeedParsedEntry }) {
   const discordMessage = useBuildDiscordMessageFromFeed({ feed, feedData: data });
   return (
-    <Paper elevation={3} sx={{ px: 2, py: 1 }}>
+    <PreviewPaperContainer elevation={3}>
       <DiscordMessagePreview {...discordMessage} />
-    </Paper>
+    </PreviewPaperContainer>
   );
 }
+
+const StyledCollapse = styled(Collapse)(({ theme }) => ({
+  [theme.breakpoints.down("sm")]: {
+    marginLeft: theme.spacing(-2),
+    marginRight: theme.spacing(-2),
+  },
+}));
+
+const PreviewPaperContainer = styled(Paper)(({ theme }) => ({
+  padding: theme.spacing(1, 2),
+
+  [theme.breakpoints.down("sm")]: {
+    padding: theme.spacing(1, 0),
+  },
+}));
 
 
 type DiscordMessageInput = ComponentProps<typeof DiscordMessagePreview>;

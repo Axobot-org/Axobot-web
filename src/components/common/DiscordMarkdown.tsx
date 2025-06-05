@@ -251,7 +251,6 @@ function getRenderer() {
 
   const MarkdownRenderer = ({ markdown }: { markdown: string }) => {
     const tokens = md.parse(markdown, {});
-    console.debug(tokens);
     return <div>{renderTokens(tokens, 0)}</div>;
   };
 
@@ -260,10 +259,11 @@ function getRenderer() {
 
 const BlueMention = styled.span({
   display: "inline-flex",
-  borderRadius: "5px",
+  borderRadius: "3px",
   padding: "0 2px",
-  color: "#c9cdfb",
-  backgroundColor: "#5865f24c",
+  color: "#a9baff",
+  backgroundColor: "#5865f23d",
+  fontWeight: 500,
 });
 
 const DiscordP = styled.p({
@@ -296,21 +296,21 @@ const DiscordH3 = styled.div({
 
 const DiscordSubtext = styled.small({
   display: "block",
-  color: "#949ba4",
+  color: "#94959c",
   lineHeight: "1.1rem",
   fontSize: ".8125rem",
 });
 
 const FakeLink = styled.span({
-  color: "#00abfa",
+  color: "#5197ed",
   "&:hover": {
     textDecoration: "underline",
   },
 });
 
 const InlineCode = styled.code({
-  backgroundColor: "#2b2d31",
-  border: "1px solid #1e1f22",
+  backgroundColor: "#5865f214",
+  border: "1px solid #97979f33",
   borderRadius: 4,
   padding: "0 .2em",
   fontSize: "0.85rem",
@@ -318,13 +318,14 @@ const InlineCode = styled.code({
 });
 
 const CodeBlock = styled.pre({
-  backgroundColor: "#2b2d31",
-  border: "1px solid #1e1f22",
-  borderRadius: 5,
+  backgroundColor: "#5865f214",
+  border: "1px solid #97979f33",
+  borderRadius: 4,
   marginTop: "6px",
   padding: ".5em",
   fontSize: "0.875rem",
   lineHeight: "1.125rem",
+  whiteSpace: "pre-wrap",
 });
 
 const DiscordOl = styled.ol({

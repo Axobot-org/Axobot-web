@@ -17,7 +17,7 @@ export default function Timestamp({ timestamp, format }: TimestampProps) {
   return (
     <span style={{
       display: "inline-flex",
-      backgroundColor: "#4e50587a",
+      backgroundColor: "#97979f1f",
       borderRadius: 3,
       padding: "0 2px",
     }}
