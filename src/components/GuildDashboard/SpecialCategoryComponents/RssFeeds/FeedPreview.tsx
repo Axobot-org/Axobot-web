@@ -39,6 +39,7 @@ const StyledCollapse = styled(Collapse)(({ theme }) => ({
 }));
 
 const PreviewPaperContainer = styled(Paper)(({ theme }) => ({
+  background: "#1a1a1e",
   padding: theme.spacing(1, 2),
 
   [theme.breakpoints.down("sm")]: {
