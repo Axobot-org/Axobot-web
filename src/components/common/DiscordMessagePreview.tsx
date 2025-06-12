@@ -50,7 +50,7 @@ export default function DiscordMessagePreview(props: DiscordMessagePreviewProps)
 
   return (
     <ThemeProvider theme={overrideTheme}>
-      <Stack direction="column" position="relative" py="0.125rem" pl="72px" pr="48px" minHeight="2.75rem">
+      <Stack direction="column" position="relative" py="0.125rem" pl="72px" pr="24px" minHeight="2.75rem" overflow="hidden">
         <MessageAuthorAndContent {...props} />
         {props.embed && <MessageEmbed embed={props.embed} />}
       </Stack>
@@ -67,6 +67,7 @@ function MessageAuthorAndContent(props: Pick<DiscordMessagePreviewProps, "conten
         alt="Axobot avatar"
         style={{
           userSelect: "none",
+          WebkitUserSelect: "none",
           position: "absolute",
           left: "16px",
           marginTop: "calc(4px - 0.125rem)",
@@ -78,7 +79,7 @@ function MessageAuthorAndContent(props: Pick<DiscordMessagePreviewProps, "conten
       <Typography variant="h3" fontSize="1rem" lineHeight="1.375rem" pb="1px">
         <MessageAuthorAndTimestamp timestamp={props.timestamp} />
       </Typography>
-      <Stack whiteSpace="pre-wrap" color="#dbdee1">
+      <Stack whiteSpace="pre-wrap" color="#efeff0">
         <DiscordMarkdown text={props.content?.trim()} />
       </Stack>
     </Box>
@@ -113,10 +114,10 @@ function MessageEmbed({ embed }: { embed: Exclude<DiscordMessagePreviewProps["em
   }, [embed.timestamp]);
 
   return (
-    <Box display="grid" maxWidth="516px" my=".125rem" borderRadius="4px" borderLeft={`4px solid ${hexEmbedColor}`} bgcolor="#2b2d31">
+    <Box display="grid" maxWidth="516px" my=".125rem" borderRadius="4px" borderLeft={`4px solid ${hexEmbedColor}`} bgcolor="#242429">
       <Box sx={{
         overflow: "hidden",
-        padding: ".5rem 1rem 1rem .75rem",
+        padding: ".125rem 1rem 1rem .75rem",
         display: "grid",
         gridTemplateColumns: "auto",
         gridTemplateRows: embed.thumbnail ? "auto min-content" : "auto",
@@ -139,7 +140,7 @@ function MessageEmbed({ embed }: { embed: Exclude<DiscordMessagePreviewProps["em
           </Stack>
         )}
         {embed.title && (
-          <Typography component="div" mt="8px" lineHeight="1.375rem" fontWeight={700} color="#f2f3f5" gridColumn="1 / 1">
+          <Typography component="div" mt="8px" lineHeight="1.375rem" fontWeight={600} color="#e3e3e6" gridColumn="1 / 1">
             {embed.url
               ? (
                 <DiscordLink href={embed.url} target="_blank">{embed.title}</DiscordLink>
@@ -150,17 +151,17 @@ function MessageEmbed({ embed }: { embed: Exclude<DiscordMessagePreviewProps["em
           </Typography>
         )}
         {embed.description && (
-          <Typography component="div" mt="8px" fontSize="0.875rem" lineHeight="1.125rem" fontWeight={400} color="#dbdee1" whiteSpace="pre-wrap" gridColumn="1 / 1">
+          <Typography component="div" mt="8px" fontSize="0.875rem" lineHeight="1.125rem" fontWeight={400} color="#efeff0" whiteSpace="pre-wrap" gridColumn="1 / 1">
             <DiscordMarkdown text={embed.description?.trim()} />
           </Typography>
         )}
         {embed.image && (
           <Box mt="16px" maxWidth="400px" maxHeight="225px">
-            <img style={{ userSelect: "none", maxWidth: "100%", maxHeight: "100%", borderRadius: "4px" }} alt="Image" src={embed.image}></img>
+            <img style={{ userSelect: "none", WebkitUserSelect: "none", maxWidth: "100%", maxHeight: "100%", borderRadius: "4px" }} alt="Image" src={embed.image}></img>
           </Box>
         )}
         {(embed.footer || embed.timestamp) && (
-          <Typography component="span" mt="8px" fontSize="0.75rem" lineHeight="1rem" fontWeight={500} color="#dbdee1" gridColumn="1 / 1">
+          <Typography component="span" mt="8px" fontSize="0.75rem" lineHeight="1rem" fontWeight={500} color="#efeff0" gridColumn="1 / 1">
             {embed.footer?.text}
             {embed.footer && timestamp && " • "}
             {timestamp}
@@ -168,7 +169,7 @@ function MessageEmbed({ embed }: { embed: Exclude<DiscordMessagePreviewProps["em
         )}
         {embed.thumbnail && (
           <Box gridRow="1 / 8" gridColumn="2 / 2" ml="16px" mt="8px" flexShrink={0} justifySelf="end">
-            <img style={{ userSelect: "none", maxWidth: "80px", maxHeight: "80px", borderRadius: "4px" }} alt="Thumbnail" src={embed.thumbnail}></img>
+            <img style={{ userSelect: "none", WebkitUserSelect: "none", maxWidth: "80px", maxHeight: "80px", borderRadius: "4px" }} alt="Thumbnail" src={embed.thumbnail}></img>
           </Box>
         )}
       </Box>
