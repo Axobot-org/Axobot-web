@@ -41,13 +41,13 @@ export default function FeedEmbedSettings({ feed, editFeed }: FeedEmbedSettingsP
 }
 
 function ShowDateInFooterToggle({ feed, editFeed }: FeedEmbedSettingsProps) {
-  const currentValue = feed.embed.showDateInFooter ?? true;
+  const currentValue = feed.embed.show_date_in_footer ?? true;
   function onChange() {
     editFeed({
       ...feed,
       embed: {
         ...feed.embed,
-        showDateInFooter: !currentValue,
+        "show_date_in_footer": !currentValue,
       },
     });
   }
@@ -61,13 +61,13 @@ function ShowDateInFooterToggle({ feed, editFeed }: FeedEmbedSettingsProps) {
 }
 
 function EnableLinkInTitleToggle({ feed, editFeed }: FeedEmbedSettingsProps) {
-  const currentValue = feed.embed.enableLinkInTitle ?? false;
+  const currentValue = feed.embed.enable_link_in_title ?? false;
   function onChange() {
     editFeed({
       ...feed,
       embed: {
         ...feed.embed,
-        enableLinkInTitle: !currentValue,
+        "enable_link_in_title": !currentValue,
       },
     });
   }
@@ -82,7 +82,7 @@ function EnableLinkInTitleToggle({ feed, editFeed }: FeedEmbedSettingsProps) {
 
 function ImageLocationSelector({ feed, editFeed }: FeedEmbedSettingsProps) {
   const possibleValues = ["thumbnail", "banner", "none"] as const;
-  const currentValue = feed.embed.imageLocation ?? possibleValues[0];
+  const currentValue = feed.embed.image_location ?? possibleValues[0];
 
   function valueIsValid(value: string): value is typeof possibleValues[number] {
     return possibleValues.includes(value as never);
@@ -94,7 +94,7 @@ function ImageLocationSelector({ feed, editFeed }: FeedEmbedSettingsProps) {
         ...feed,
         embed: {
           ...feed.embed,
-          imageLocation: value,
+          "image_location": value,
         },
       });
     }
@@ -146,14 +146,14 @@ function EmbedAuthorTextEditor({ feed, editFeed }: FeedEmbedSettingsProps) {
       ...feed,
       embed: {
         ...feed.embed,
-        authorText: value || undefined,
+        "author_text": value || undefined,
       },
     });
   }
 
   return (
     <TextField
-      value={feed.embed.authorText ?? ""}
+      value={feed.embed.author_text ?? ""}
       onChange={(e) => onChange(e.target.value)}
       variant="standard"
       style={{ marginTop: 0 }}
@@ -170,14 +170,14 @@ function EmbedFooterTextEditor({ feed, editFeed }: FeedEmbedSettingsProps) {
       ...feed,
       embed: {
         ...feed.embed,
-        footerText: value || undefined,
+        "footer_text": value || undefined,
       },
     });
   }
 
   return (
     <TextField
-      value={feed.embed.footerText ?? ""}
+      value={feed.embed.footer_text ?? ""}
       onChange={(e) => onChange(e.target.value)}
       variant="standard"
       style={{ marginTop: 0 }}

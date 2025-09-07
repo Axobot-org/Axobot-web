@@ -65,17 +65,17 @@ function useBuildDiscordMessageFromFeed({ feed, feedData }: { feed: RssFeed; fee
     color: feed.embed.color || 0x979C9F,
   };
 
-  if (feed.embed.authorText) {
+  if (feed.embed.author_text) {
     embed.author = {
-      name: formatStringPythonLike(feed.embed.authorText, variables, 256),
+      name: formatStringPythonLike(feed.embed.author_text, variables, 256),
     };
   }
-  if (feed.embed.footerText) {
+  if (feed.embed.footer_text) {
     embed.footer = {
-      text: formatStringPythonLike(feed.embed.footerText, variables, 2048),
+      text: formatStringPythonLike(feed.embed.footer_text, variables, 2048),
     };
   }
-  if (feed.embed.showDateInFooter !== false) {
+  if (feed.embed.show_date_in_footer !== false) {
     const parsedDate = parseDate(feedData.pubDate);
     if (parsedDate !== null) {
       embed.timestamp = parsedDate.getTime();
@@ -87,13 +87,13 @@ function useBuildDiscordMessageFromFeed({ feed, feedData }: { feed: RssFeed; fee
     embed.title = feedData.title.substring(0, 256);
   }
   if (feedData.image) {
-    if (feed.embed.imageLocation === undefined || feed.embed.imageLocation === "thumbnail") {
+    if (feed.embed.image_location === undefined || feed.embed.image_location === "thumbnail") {
       embed.thumbnail = feedData.image;
-    } else if (feed.embed.imageLocation === "banner") {
+    } else if (feed.embed.image_location === "banner") {
       embed.image = feedData.image;
     }
   }
-  if (feed.embed.enableLinkInTitle) {
+  if (feed.embed.enable_link_in_title) {
     embed.url = feedData.url;
   }
 
@@ -110,6 +110,7 @@ function useVariablesDict(feed: RssFeed, feedData: RssFeedParsedEntry): Record<s
     "logo": "📰",
     "full_text": feedData.postText || "",
     "description": feedData.postDescription || "",
+    "image_alt": feedData.imageAlt || "",
   };
   const parsedDate = parseDate(feedData.pubDate);
   if (parsedDate !== null) {
