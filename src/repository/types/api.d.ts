@@ -66,13 +66,13 @@ export interface RssFeed {
   roles: string[];
   useEmbed: boolean;
   embed: {
-    authorText?: string;
+    author_text?: string;
     title?: string;
-    footerText?: string;
+    footer_text?: string;
     color?: number;
-    showDateInFooter?: boolean;
-    enableLinkInTitle?: boolean;
-    imageLocation?: "thumbnail" | "banner" | "none";
+    show_date_in_footer?: boolean;
+    enable_link_in_title?: boolean;
+    image_location?: "thumbnail" | "banner" | "none";
   };
   silentMention: boolean;
   recentErrors: number;
@@ -81,37 +81,23 @@ export interface RssFeed {
 }
 
 
-interface __RssFeedPUT_Common {
+interface RssFeedPUTData {
+  id: string;
   channelId: string;
   structure: string;
   roles: string[];
   useEmbed: boolean;
   embed: {
-    authorText?: string;
+    author_text?: string;
     title?: string;
-    footerText?: string;
+    footer_text?: string;
     color?: number;
-    showDateInFooter?: boolean;
-    enableLinkInTitle?: boolean;
-    imageLocation?: "thumbnail" | "banner" | "none";
+    show_date_in_footer?: boolean;
+    enable_link_in_title?: boolean;
+    image_location?: "thumbnail" | "banner" | "none";
   };
   silentMention: boolean;
   enabled: boolean;
-}
-
-export interface RssFeedPUTData extends __RssFeedPUT_Common {
-  id: string;
-}
-
-interface RssFeedsPATCHData {
-  add?: (__RssFeedPUT_Common & {
-    link: string;
-    type: Exclude<VALID_RSS_FEED_TYPES, "tw">;
-  })[];
-  edit?: (__RssFeedPUT_Common & {
-    id: string;
-  })[];
-  remove?: string[];
 }
 
 export interface RssFeedParsedEntry {
@@ -122,6 +108,7 @@ export interface RssFeedParsedEntry {
   author: string | null;
   channel: string | null;
   image: string | null;
+  imageAlt: string | null;
   postText: string | null;
   postDescription: string | null;
 }
