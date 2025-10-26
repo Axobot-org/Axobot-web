@@ -1,5 +1,5 @@
 import { Stack, Typography } from "@mui/material";
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router";
 
 import { GuildConfigEditionProvider } from "../../repository/context/GuildConfigEditionContext";
 import { useFetchGuildQuery } from "../../repository/redux/api/api";
@@ -46,7 +46,7 @@ export default function GuildDashboardNavigation({ guildId }: GuildDashboardNavi
             <Route path="/" element={<Navigate to={GuildConfigOptionCategoryNames[0]} replace />} />
             {
               GuildConfigOptionCategoryNames.map((category) => (
-                <Route key={category} path={`/${category}`} element={<ConfigurationCategoryPage guildId={guildId} activePage={category} />} />
+                <Route key={category} path={category} element={<ConfigurationCategoryPage guildId={guildId} activePage={category} />} />
               ))
             }
           </Routes>

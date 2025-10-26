@@ -1,6 +1,6 @@
 import { Link as MUILink, Stack } from "@mui/material";
 import { PropsWithChildren } from "react";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink } from "react-router";
 
 import { ExternalRoutesURLs } from "../../router/router";
 

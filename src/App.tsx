@@ -1,7 +1,6 @@
 import { useEffect } from "react";
-import { HelmetProvider } from "react-helmet-async";
 import { Provider } from "react-redux";
-import { RouterProvider } from "react-router-dom";
+import { RouterProvider } from "react-router";
 
 import store from "./repository/redux/store";
 import router from "./router/router";
@@ -31,13 +30,11 @@ function App() {
   }, []);
 
   return (
-    <HelmetProvider>
-      <Provider store={store}>
-        <AppTheme>
-          <RouterProvider router={router} />
-        </AppTheme>
-      </Provider>
-    </HelmetProvider>
+    <Provider store={store}>
+      <AppTheme>
+        <RouterProvider router={router} />
+      </AppTheme>
+    </Provider>
   );
 }
 

@@ -6,7 +6,7 @@ import { Badge, Box, CSSObject, Divider, IconButton, List, ListItem, ListItemBut
 import MuiDrawer from "@mui/material/Drawer";
 import { Fragment, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router";
 
 import { getGuildDashboardTranslations } from "../../i18n/i18n";
 import { useGuildConfigEditionContext } from "../../repository/context/GuildConfigEditionContext";
@@ -171,7 +171,7 @@ function NavigationDrawerContent({ open, activePage, toggleOpen }: NavigationDra
         setIsUnsavedFeedsDialogOpen(true);
         return;
       }
-      navigate(page);
+      navigate("../" + page, { relative: "path" });
       if (isOnMobile) {
         toggleOpen();
       }

@@ -1,5 +1,5 @@
 import { Typography } from "@mui/material";
-import { isRouteErrorResponse, useRouteError } from "react-router-dom";
+import { isRouteErrorResponse, useRouteError } from "react-router";
 
 import { PublicLayout } from "../layouts/PublicLayout";
 

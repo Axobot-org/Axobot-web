@@ -1,6 +1,6 @@
 import { Box, Button, Stack, Typography } from "@mui/material";
 import { Fragment } from "react";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 import BotGuildCounter from "../components/Home/BotGuildCounter";
 import { ExternalRoutesURLs } from "../router/router";

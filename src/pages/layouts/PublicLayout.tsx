@@ -1,7 +1,6 @@
 import { Stack, Toolbar } from "@mui/material";
 import { PropsWithChildren } from "react";
-import { Helmet } from "react-helmet-async";
-import { Outlet, useLocation } from "react-router-dom";
+import { Outlet, useLocation } from "react-router";
 
 import Appbar from "../../components/common/Appbar/Appbar";
 import Footer from "../../components/common/Footer";
@@ -10,7 +9,7 @@ import { getMetaTagsFromURL } from "../../router/getMetaTags";
 function DynamicHelmet() {
   const location = useLocation();
   const strippedPathName = location.pathname.replace(/^\/|\/$/, "");
-  return <Helmet prioritizeSeoTags>{getMetaTagsFromURL(strippedPathName)}</Helmet>;
+  return getMetaTagsFromURL(strippedPathName);
 }
 
 export function PublicLayout({ children }: PropsWithChildren) {

@@ -1,4 +1,5 @@
-import { Navigate } from "react-router-dom";
+import type { JSX } from "react";
+import { Navigate } from "react-router";
 
 import LoadingPage from "../../pages/genericPages/LoadingPage";
 import { useIsAuthenticated } from "../../repository/commands/useIsAuthenticated";

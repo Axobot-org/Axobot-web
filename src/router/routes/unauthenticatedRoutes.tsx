@@ -1,4 +1,4 @@
-import { Outlet, RouteObject } from "react-router-dom";
+import { Outlet, RouteObject } from "react-router";
 
 import DiscordLoginCallback from "../../pages/DiscordLoginCallback";
 import UnAuthGuard from "../guards/UnAuthGuard";

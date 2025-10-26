@@ -1,3 +1,5 @@
+import type { JSX } from "react";
+
 import LoadingPage from "../../pages/genericPages/LoadingPage";
 import NeedsLoginErrorPage from "../../pages/genericPages/NeedsLoginErrorPage";
 import { useIsAuthenticated } from "../../repository/commands/useIsAuthenticated";

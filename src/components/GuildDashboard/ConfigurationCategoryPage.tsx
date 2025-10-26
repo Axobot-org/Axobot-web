@@ -1,7 +1,7 @@
 import { Stack, styled } from "@mui/material";
 
 import { useFetchGuildConfigCategory } from "../../repository/commands/useFetchGuildConfigCategory";
-import { ConfigComponentContextProvider, getMissingOptionRequirement } from "../../repository/context/ConfigComponentContext";
+import { ConfigComponentContext, getMissingOptionRequirement } from "../../repository/context/ConfigComponentContext";
 import { PopulatedGuildConfig } from "../../repository/types/guild";
 import { AllRepresentation, EmptyCategories, GuildConfigOptionCategory } from "../../repository/types/guild-config-types";
 import BooleanConfigComponent from "./ConfigComponents/BooleanConfigComponent";
@@ -54,7 +54,7 @@ export default function ConfigurationCategoryPage({ guildId, activePage }: Confi
     <PageContainer>
       <ComponentsContainer>
         {Object.entries(optionsMap).map(([optionName, option]) => (
-          <ConfigComponentContextProvider
+          <ConfigComponentContext
             key={optionName}
             value={{
               option: option,
@@ -66,7 +66,7 @@ export default function ConfigurationCategoryPage({ guildId, activePage }: Confi
               optionId={optionName}
               option={option}
             />
-          </ConfigComponentContextProvider>
+          </ConfigComponentContext>
         ))}
 
       </ComponentsContainer>

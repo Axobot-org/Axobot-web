@@ -47,6 +47,7 @@ app.use(morgan("\x1b[94m[:date]\x1b[0m \x1b[93m:remote-addr\x1b[0m :method :stat
 
 
 // Add Vite or respective production middlewares
+/** @type {import('vite').ViteDevServer | undefined} */
 let vite;
 if (!isProduction) {
   const { createServer } = await import("vite");
@@ -89,7 +90,9 @@ app.use("*", async (req, res) => {
   try {
     const url = req.originalUrl.replace(base, "");
 
+    /** @type {string} */
     let template;
+    /** @type {import('./src/entry-server.tsx').render} */
     let render;
     if (!isProduction) {
       // Always read fresh template in development

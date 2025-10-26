@@ -1,5 +1,5 @@
 import { Fragment, useEffect, useMemo } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 
 import PageTitle from "../components/common/PageTitle";
 import { useLogin } from "../repository/redux/dispatchs/useLogin";
