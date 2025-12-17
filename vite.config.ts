@@ -6,8 +6,10 @@ import svgr from "vite-plugin-svgr";
 export default defineConfig(({ mode, isSsrBuild }) => {
   const env = loadEnv(mode, process.cwd(), "");
 
+  const publicUrl = env.PUBLIC_URL.endsWith("/") ? env.PUBLIC_URL : env.PUBLIC_URL + "/";
+
   return {
-    base: env.PUBLIC_URL,
+    base: publicUrl,
     server: {
       port: env.PORT ? Number(env.PORT) : undefined,
     },
