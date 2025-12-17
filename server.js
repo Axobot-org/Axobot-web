@@ -279,7 +279,7 @@ async function loadPrerenderedRoutes() {
       return prerender;
     }
   } catch (err) {
-    console.warn("[server] Failed to load react-router.config.ts prerender list");
+    console.warn("[server] Failed to load react-router.config.ts prerender list", err);
   }
 
   return [];
