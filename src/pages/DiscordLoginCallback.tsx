@@ -3,8 +3,8 @@ import { useNavigate } from "react-router";
 
 import PageTitle from "../components/common/PageTitle";
 import { useLogin } from "../repository/redux/dispatchs/useLogin";
-import { ExternalRoutesURLs } from "../router/router";
 import useQuery from "../router/useQuery";
+import { ExternalRoutesURLs } from "../routes";
 
 export default function DiscordLoginCallback() {
   const code = useQuery().get("code");

@@ -3,6 +3,9 @@ import { createListenerMiddleware, createSlice, isAnyOf, PayloadAction } from "@
 import { AppStartListening } from "../store";
 
 function getTokenFromStorage(): string | null {
+  if (typeof localStorage === "undefined" || typeof window === "undefined") {
+    return null;
+  }
   const token = localStorage.getItem("token");
   if (token) {
     try {

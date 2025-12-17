@@ -1,7 +1,7 @@
 import { Button, Typography } from "@mui/material";
 import { Fragment } from "react";
 
-import { ExternalRoutesURLs } from "../../router/router";
+import { ExternalRoutesURLs } from "../../routes";
 import DiscordMarkWhite from "../../svg/discord-mark.svg?react";
 
 export default function NeedsLoginErrorPage() {

@@ -2,7 +2,7 @@ import { InfoOutlined } from "@mui/icons-material";
 import { Link, Stack, Typography } from "@mui/material";
 import { PropsWithChildren } from "react";
 
-import { ExternalRoutesURLs } from "../../../../router/router";
+import { ExternalRoutesURLs } from "../../../../routes";
 
 export function SimpleParameterRow({ label, children }: PropsWithChildren<{ label: string }>) {
   return (

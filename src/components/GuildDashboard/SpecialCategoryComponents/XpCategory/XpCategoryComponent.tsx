@@ -6,7 +6,7 @@ import { Fragment } from "react/jsx-runtime";
 import { useFetchGuildConfigCategory } from "../../../../repository/commands/useFetchGuildConfigCategory";
 import { useGuildConfigEditionContext, useGuildConfigRoleRewardsEditionContext } from "../../../../repository/context/GuildConfigEditionContext";
 import { useFetchGuildConfigQuery, useFetchGuildRoleRewardsQuery } from "../../../../repository/redux/api/api";
-import { ExternalRoutesURLs } from "../../../../router/router";
+import { ExternalRoutesURLs } from "../../../../routes";
 import AddRoleRewardButton from "./AddRoleRewardButton";
 import DownloadLeaderboardButton from "./DownloadLeaderboardButton";
 import RoleRewardsList from "./RoleRewardsList";

@@ -2,7 +2,7 @@
 import { Box, Link, Typography } from "@mui/material";
 import { Fragment } from "react/jsx-runtime";
 
-import { ExternalRoutesURLs } from "../../router/router";
+import { ExternalRoutesURLs } from "../../routes";
 import { ExternalLink, SubtitleSection, TitleSection } from "./shared";
 
 export default function PrivacyPolicy() {
@@ -206,5 +206,3 @@ export default function PrivacyPolicy() {
     </Fragment>
   );
 }
-
-export const Component = PrivacyPolicy;

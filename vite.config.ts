@@ -1,11 +1,11 @@
-import react from "@vitejs/plugin-react-swc";
+import { reactRouter } from "@react-router/dev/vite";
 import { defineConfig, loadEnv } from "vite";
 import svgr from "vite-plugin-svgr";
 
 // https://vitejs.dev/config/
-// eslint-disable-next-line unused-imports/no-unused-vars
-export default defineConfig(({ command, mode }) => {
+export default defineConfig(({ mode, isSsrBuild }) => {
   const env = loadEnv(mode, process.cwd(), "");
+
   return {
     base: env.PUBLIC_URL,
     server: {
@@ -13,9 +13,14 @@ export default defineConfig(({ command, mode }) => {
     },
     build: {
       outDir: "build",
+      rollupOptions: isSsrBuild
+        ? {
+          input: ["virtual:react-router/server-build"],
+        }
+        : undefined,
     },
     plugins: [
-      react(),
+      reactRouter(),
       svgr(),
     ],
   };
