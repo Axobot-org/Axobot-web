@@ -10,6 +10,7 @@ import {
 
 import store from "./repository/redux/store";
 import { AppTheme } from "./styles/AppTheme";
+import { PublicLayout } from "./pages/layouts/PublicLayout";
 
 export function Layout({
   children,
@@ -51,6 +52,16 @@ export function Layout({
         <Scripts />
       </body>
     </html>
+  );
+}
+
+export function HydrateFallback() {
+  return (
+    <Provider store={store}>
+      <AppTheme>
+        <PublicLayout />
+      </AppTheme>
+    </Provider>
   );
 }
 
