@@ -11,6 +11,7 @@ import {
 import store from "./repository/redux/store";
 import { AppTheme } from "./styles/AppTheme";
 import { PublicLayout } from "./pages/layouts/PublicLayout";
+import LoadingPage from "./pages/genericPages/LoadingPage";
 
 export function Layout({
   children,
@@ -59,7 +60,9 @@ export function HydrateFallback() {
   return (
     <Provider store={store}>
       <AppTheme>
-        <PublicLayout />
+        <PublicLayout>
+          <LoadingPage />
+        </PublicLayout>
       </AppTheme>
     </Provider>
   );
