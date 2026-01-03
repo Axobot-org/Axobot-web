@@ -1,11 +1,10 @@
-import type { JSX } from "react";
-import { Navigate } from "react-router";
+import { Navigate, Outlet } from "react-router";
 
 import LoadingPage from "../../pages/genericPages/LoadingPage";
 import { useIsAuthenticated } from "../../repository/commands/useIsAuthenticated";
 
 
-export default function UnAuthGuard({ children }: { children: JSX.Element }) {
+export default function UnAuthGuard() {
   const { isAuthenticated, loading } = useIsAuthenticated();
 
   if (loading) {
@@ -16,5 +15,5 @@ export default function UnAuthGuard({ children }: { children: JSX.Element }) {
     console.log("UnAuthGuard: user is authenticated, redirecting to home");
     return <Navigate to="/" />;
   }
-  return children;
+  return <Outlet />;
 }

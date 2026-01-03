@@ -225,7 +225,7 @@ function ChannelSelection({ feed, editFeed }: Pick<InnerComponentsProps, "feed" 
 
   if (error) return null;
 
-  const channels = data?.filter((channel) => channel.isThread || channel.type === ChannelType.GuildText) ?? [];
+  const channels = data?.filter((channel) => channel.isThread || channel.type === ChannelType.GuildText || channel.type === ChannelType.GuildAnnouncement) ?? [];
   function isOptionDisabled(channel: GuildChannel) {
     return channel.type === ChannelType.GuildCategory || channel.type === ChannelType.GuildForum || channel.type === ChannelType.GuildMedia;
   }

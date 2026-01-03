@@ -123,5 +123,3 @@ export default function Leaderboard() {
     </Fragment>
   );
 }
-
-export const Component = Leaderboard;

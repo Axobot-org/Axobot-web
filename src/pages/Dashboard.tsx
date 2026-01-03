@@ -59,7 +59,7 @@ function GuildsGrid() {
 }
 
 
-export default function GuildSelection() {
+export default function Dashboard() {
   return (
     <Fragment>
       <PageTitle text="Select your server" />
@@ -67,5 +67,3 @@ export default function GuildSelection() {
     </Fragment>
   );
 }
-
-export const Component = GuildSelection;

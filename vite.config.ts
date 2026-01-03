@@ -1,13 +1,18 @@
-import react from "@vitejs/plugin-react-swc";
+import { reactRouter } from "@react-router/dev/vite";
+import assert from "assert";
 import { defineConfig, loadEnv } from "vite";
 import svgr from "vite-plugin-svgr";
 
 // https://vitejs.dev/config/
-// eslint-disable-next-line unused-imports/no-unused-vars
-export default defineConfig(({ command, mode }) => {
+export default defineConfig(({ mode, isSsrBuild }) => {
   const env = loadEnv(mode, process.cwd(), "");
+
+  assert(!!env.PUBLIC_URL, "PUBLIC_URL must be defined in the environment variables.");
+
+  const publicUrl = env.PUBLIC_URL.endsWith("/") ? env.PUBLIC_URL : env.PUBLIC_URL + "/";
+
   return {
-    base: env.PUBLIC_URL,
+    base: publicUrl,
     server: {
       port: env.PORT ? Number(env.PORT) : undefined,
     },
@@ -15,7 +20,7 @@ export default defineConfig(({ command, mode }) => {
       outDir: "build",
     },
     plugins: [
-      react(),
+      reactRouter(),
       svgr(),
     ],
   };

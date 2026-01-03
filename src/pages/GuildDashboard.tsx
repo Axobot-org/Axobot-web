@@ -11,5 +11,3 @@ export default function GuildDashboard() {
 
   return <GuildDashboardNavigation guildId={id} />;
 }
-
-export const Component = GuildDashboard;

@@ -3,7 +3,7 @@ import { Fragment } from "react";
 import { Link } from "react-router";
 
 import BotGuildCounter from "../components/Home/BotGuildCounter";
-import { ExternalRoutesURLs } from "../router/router";
+import { ExternalRoutesURLs } from "../routes";
 
 export default function Home() {
   return (
@@ -43,5 +43,3 @@ export default function Home() {
     </Fragment>
   );
 }
-
-export const Component = Home;
