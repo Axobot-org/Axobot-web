@@ -1,9 +1,10 @@
 import { createListenerMiddleware, createSlice, isAnyOf, PayloadAction } from "@reduxjs/toolkit";
 
 import { AppStartListening } from "../store";
+import { isBuildingServerPage } from "../../typesGuards";
 
 function getTokenFromStorage(): string | null {
-  if (typeof localStorage === "undefined" || typeof window === "undefined") {
+  if (isBuildingServerPage()) {
     return null;
   }
   const token = localStorage.getItem("token");
