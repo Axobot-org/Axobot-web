@@ -26,6 +26,8 @@ import morgan from "morgan";
 import fs from "fs/promises";
 import { loadEnv } from "vite";
 
+import cspHashes from './build/csp-hashes.json' with { type: "json" };
+
 /** Load environment via Vite's loadEnv so .env, .env.production etc. are picked up */
 const mode = process.env.NODE_ENV || "production";
 const env = loadEnv(mode, process.cwd(), ""); // returns map of strings
@@ -78,39 +80,64 @@ const limiter = rateLimit({
 });
 app.use(limiter);
 
-/** Helmet for common security headers, then explicit additional headers */
+const MATOMO_DOMAIN = new URL(env.VITE_MATOMO_URL).origin;
+
+/** Helmet for common security headers */
 app.use(
   helmet({
-    // allow us to manually set some COOP/CORP headers below
-    contentSecurityPolicy: false,
-    crossOriginEmbedderPolicy: false,
-    // we still get defaults for other helpful headers
+    // Content-Security-Policy (CSP) configuration
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        baseUri: ["'self'"],
+        connectSrc: ["'self'", env.PUBLIC_URL, env.VITE_API_URL, "https://static.cloudflareinsights.com", MATOMO_DOMAIN],
+        frameAncestors: ["'self'"],
+        fontSrc: ["'self'", "https:"],
+        imgSrc: ["'self'", "data:", "https://cdn.discordapp.com"],
+        objectSrc: ["'none'"],
+        scriptSrc: [
+          "'self'",
+          MATOMO_DOMAIN,
+          ...Object.values(cspHashes).flatMap(hashes => hashes.map(hash => `'${hash}'`)),
+        ],
+        scriptSrcAttr: ["'none'"],
+        styleSrc: ["'self'", "https:", "'unsafe-inline'"],
+        upgradeInsecureRequests: [],
+      },
+    },
+    // Cross-Origin-Embedder-Policy (COEP) - ensures only CORS-safe resources are loaded
+    crossOriginEmbedderPolicy: {
+      policy: "credentialless"
+    },
+    // Cross-Origin-Opener-Policy (COOP) - isolates top-level browsing context
+    crossOriginOpenerPolicy: {
+      policy: "same-origin"
+    },
+    // Cross-Origin-Resource-Policy (CORP) - restricts which origins can load resources
+    crossOriginResourcePolicy: {
+      policy: "same-site"
+    },
+    // Referrer policy
+    referrerPolicy: {
+      policy: ["no-referrer", "strict-origin"]
+    },
+    // Strict-Transport-Security - enforce HTTPS
+    strictTransportSecurity: {
+      maxAge: 63072000,
+      includeSubDomains: true,
+      preload: true
+    },
+    // Prevent MIME sniffing
+    noSniff: true,
+    // Prevent clickjacking
+    xFrameOptions: {
+      action: "deny"
+    }
   })
 );
 
-/** Custom security headers */
-app.use((req, res, next) => {
-  // Cross-Origin-Embedder-Policy (COEP) - ensures only CORS-safe resources are loaded
-  res.setHeader("Cross-Origin-Embedder-Policy", "credentialless");
-
-  // Cross-Origin-Opener-Policy (COOP) - isolates top-level browsing context
-  res.setHeader("Cross-Origin-Opener-Policy", "same-origin");
-
-  // Cross-Origin-Resource-Policy (CORP) - restricts which origins can load resources
-  res.setHeader("Cross-Origin-Resource-Policy", "same-site");
-
-  // Referrer policy
-  res.setHeader("Referrer-Policy", "no-referrer, strict-origin");
-
-  // Strict-Transport-Security - enforce HTTPS
-  res.setHeader("Strict-Transport-Security", "max-age=63072000; includeSubDomains; preload");
-
-  // Prevent MIME sniffing
-  res.setHeader("X-Content-Type-Options", "nosniff");
-
-  // Prevent clickjacking
-  res.setHeader("X-Frame-Options", "DENY");
-
+/** Custom X-Robots-Tag headers */
+app.use((_, res, next) => {
   if (env.NO_INDEX === "true") {
     res.setHeader("X-Robots-Tag", "noindex");
   }
@@ -238,15 +265,15 @@ async function resolveHtmlForRoute(urlPath) {
 
   // if path is root
   if (urlPath === "/" || urlPath === "") {
-    candidatePaths.push(path.join(BUILD_DIR, "client", "index.html"));
+    candidatePaths.push(path.join(CLIENT_PUBLIC_DIR, "index.html"));
   } else {
     const clean = safe(urlPath);
 
     // try /build/client/<clean>/index.html or /build/client/<clean>.html
-    candidatePaths.push(path.join(BUILD_DIR, "client", clean, "index.html"));
-    candidatePaths.push(path.join(BUILD_DIR, "client", `${clean}.html`));
+    candidatePaths.push(path.join(CLIENT_PUBLIC_DIR, clean, "index.html"));
+    candidatePaths.push(path.join(CLIENT_PUBLIC_DIR, `${clean}.html`));
     // fallback to build/__spa-fallback.html
-    candidatePaths.push(path.join(BUILD_DIR, "client", "__spa-fallback.html"));
+    candidatePaths.push(path.join(CLIENT_PUBLIC_DIR, "__spa-fallback.html"));
   }
 
   for (const p of candidatePaths) {

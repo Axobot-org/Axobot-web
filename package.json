@@ -6,7 +6,7 @@
   "scripts": {
     "start": "NODE_ENV=production node server",
     "dev": "react-router dev",
-    "build": "react-router build",
+    "build": "react-router build && node compute-hashes.js",
     "build-checks": "npx typia generate --input src/repository/types/checks/templates --output src/repository/types/checks/generated --project tsconfig.json",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
@@ -74,6 +74,7 @@
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-simple-import-sort": "^12.1.1",
     "eslint-plugin-unused-imports": "^4.3.0",
+    "node-html-parser": "^7.0.1",
     "typescript-eslint": "^8.11.0"
   }
 }
