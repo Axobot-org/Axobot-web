@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import MarkdownIt, { Token } from "markdown-it";
-import { FunctionComponent, PropsWithChildren, ReactNode, useMemo } from "react";
+import { FunctionComponent, PropsWithChildren, ReactNode } from "react";
 
 import { ChannelMentionFromId } from "./ChannelMention";
 import Timestamp from "./DiscordTimestamp";
@@ -10,8 +10,8 @@ import { RoleMentionFromId } from "./RoleMention";
 interface DiscordMarkdownProps {
   text: string | undefined;
 }
+const Renderer = getRenderer();
 export default function DiscordMarkdown({ text }: DiscordMarkdownProps) {
-  const Renderer = useMemo(() => getRenderer(), []);
   if (!text) {
     return null;
   }
@@ -226,7 +226,7 @@ function getRenderer() {
       }
 
       const tokenType = token.tag || token.type;
-      const Renderer = renderers[tokenType] || renderers.text;
+      const TokenRenderer = renderers[tokenType] || renderers.text;
       if (renderers[tokenType] === undefined) {
         console.info(`No renderer for token type ${tokenType}`, token);
       }
@@ -243,16 +243,16 @@ function getRenderer() {
           children.push(childToken);
           i++;
         }
-        return <Renderer key={idx} token={token}>{renderTokens(children, token.level + 1)}</Renderer>;
+        return <TokenRenderer key={idx} token={token}>{renderTokens(children, token.level + 1)}</TokenRenderer>;
       }
 
-      return <Renderer key={idx} token={token}>{token.content}</Renderer>;
+      return <TokenRenderer key={idx} token={token}>{token.content}</TokenRenderer>;
     });
 
-  const MarkdownRenderer = ({ markdown }: { markdown: string }) => {
+  function MarkdownRenderer({ markdown }: { markdown: string }) {
     const tokens = md.parse(markdown, {});
     return <div>{renderTokens(tokens, 0)}</div>;
-  };
+  }
 
   return MarkdownRenderer;
 }

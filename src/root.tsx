@@ -8,10 +8,10 @@ import {
   ScrollRestoration,
 } from "react-router";
 
+import LoadingPage from "./pages/genericPages/LoadingPage";
+import { PublicLayout } from "./pages/layouts/PublicLayout";
 import store from "./repository/redux/store";
 import { AppTheme } from "./styles/AppTheme";
-import { PublicLayout } from "./pages/layouts/PublicLayout";
-import LoadingPage from "./pages/genericPages/LoadingPage";
 
 export function Layout({
   children,

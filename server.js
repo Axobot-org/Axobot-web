@@ -15,18 +15,18 @@
  * Usage: node server.js
  */
 
-import express from "express";
 import compression from "compression";
-import rateLimit from "express-rate-limit";
-import sirv from "sirv";
 import cors from "cors";
-import helmet from "helmet";
-import path from "path";
-import morgan from "morgan";
+import express from "express";
+import rateLimit from "express-rate-limit";
 import fs from "fs/promises";
+import helmet from "helmet";
+import morgan from "morgan";
+import path from "path";
+import sirv from "sirv";
 import { loadEnv } from "vite";
 
-import cspHashes from './build/csp-hashes.json' with { type: "json" };
+import cspHashes from "./build/csp-hashes.json" with { type: "json" };
 
 /** Load environment via Vite's loadEnv so .env, .env.production etc. are picked up */
 const mode = process.env.NODE_ENV || "production";
@@ -101,7 +101,7 @@ app.use(
           "'self'",
           MATOMO_DOMAIN,
           CLOUDFLARE_DOMAIN,
-          ...Object.values(cspHashes).flatMap(hashes => hashes.map(hash => `'${hash}'`)),
+          ...Object.values(cspHashes).flatMap((hashes) => hashes.map((hash) => `'${hash}'`)),
         ].filter((origin) => typeof origin === "string" && origin.trim().length > 0),
         scriptSrcAttr: ["'none'"],
         styleSrc: ["'self'", "https:", "'unsafe-inline'"],
@@ -110,32 +110,32 @@ app.use(
     },
     // Cross-Origin-Embedder-Policy (COEP) - ensures only CORS-safe resources are loaded
     crossOriginEmbedderPolicy: {
-      policy: "credentialless"
+      policy: "credentialless",
     },
     // Cross-Origin-Opener-Policy (COOP) - isolates top-level browsing context
     crossOriginOpenerPolicy: {
-      policy: "same-origin"
+      policy: "same-origin",
     },
     // Cross-Origin-Resource-Policy (CORP) - restricts which origins can load resources
     crossOriginResourcePolicy: {
-      policy: "same-site"
+      policy: "same-site",
     },
     // Referrer policy
     referrerPolicy: {
-      policy: ["no-referrer", "strict-origin"]
+      policy: ["no-referrer", "strict-origin"],
     },
     // Strict-Transport-Security - enforce HTTPS
     strictTransportSecurity: {
       maxAge: 63072000,
       includeSubDomains: true,
-      preload: true
+      preload: true,
     },
     // Prevent MIME sniffing
     noSniff: true,
     // Prevent clickjacking
     xFrameOptions: {
-      action: "deny"
-    }
+      action: "deny",
+    },
   })
 );
 
@@ -210,7 +210,7 @@ try {
       // sirv's own caching is okay — we've already set our headers where needed
       etag: true,
       maxAge: ONE_HOUR,
-      setHeaders: (res, pathname) => {
+      setHeaders: (res) => {
         // Keep sirv from overwriting headers we've set above for fonts/images
         // Only set a default Cache-Control if none set
         if (!res.getHeader("Cache-Control")) {
@@ -220,7 +220,7 @@ try {
     })
   );
 } catch (err) {
-  console.warn(`[server] assets directory not found at ${ASSETS_DIR} — skipping sirv mount`);
+  console.warn(`[server] assets directory not found at ${ASSETS_DIR} — skipping sirv mount`, err);
 }
 
 
@@ -252,9 +252,9 @@ app.use(
  * - build/client/<route>/index.html
  * - build/client/<route>.html
  * - build/__spa-fallback.html  (fallback)
- * 
+ *
  * Returns absolute path to HTML file.
- * 
+ *
  * @param {string} urlPath
  */
 async function resolveHtmlForRoute(urlPath) {
@@ -284,13 +284,13 @@ async function resolveHtmlForRoute(urlPath) {
   for (const rel of candidatePaths) {
     try {
       const candidate = await fs.realpath(path.resolve(CLIENT_PUBLIC_DIR, rel));
-       // Resolve symlinks and normalize the path, then ensure it stays within CLIENT_PUBLIC_DIR
+      // Resolve symlinks and normalize the path, then ensure it stays within CLIENT_PUBLIC_DIR
       if (!candidate.startsWith(CLIENT_PUBLIC_DIR + path.sep) && candidate !== CLIENT_PUBLIC_DIR) {
         continue;
       }
       await fs.access(candidate);
       return candidate;
-    } catch (e) {
+    } catch {
       // not found — try next
     }
   }
@@ -354,7 +354,7 @@ app.get("/_health", (_, res) => res.json({ ok: true }));
 /** Fallback for anything else to build/spa_fallback.html to let the client SPA handle routing */
 app.get("*", async (_, res) => {
   // serve HTML with conservative caching
-  let data = await fs.readFile(DEFAULT_HTML_INDEX, "utf8");
+  const data = await fs.readFile(DEFAULT_HTML_INDEX, "utf8");
   res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
   res.setHeader("Content-Type", "text/html; charset=utf-8");
   res.send(data);

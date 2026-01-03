@@ -4,7 +4,7 @@ import { defineConfig, loadEnv } from "vite";
 import svgr from "vite-plugin-svgr";
 
 // https://vitejs.dev/config/
-export default defineConfig(({ mode, isSsrBuild }) => {
+export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), "");
 
   assert(!!env.PUBLIC_URL, "PUBLIC_URL must be defined in the environment variables.");

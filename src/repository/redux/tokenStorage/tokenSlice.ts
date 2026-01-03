@@ -1,7 +1,7 @@
 import { createListenerMiddleware, createSlice, isAnyOf, PayloadAction } from "@reduxjs/toolkit";
 
-import { AppStartListening } from "../store";
 import { isBuildingServerPage } from "../../typesGuards";
+import { AppStartListening } from "../store";
 
 function getTokenFromStorage(): string | null {
   if (isBuildingServerPage()) {
