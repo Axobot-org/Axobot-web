@@ -40,6 +40,7 @@ const PORT = Number(env.PORT || process.env.PORT || 3000);
 const BUILD_DIR = path.resolve(process.cwd(), "build");
 const CLIENT_PUBLIC_DIR = path.join(BUILD_DIR, "client");
 const ASSETS_DIR = path.resolve(CLIENT_PUBLIC_DIR, "assets");
+const DEFAULT_HTML_INDEX = path.join(BUILD_DIR, "client", "__spa-fallback.html");
 
 const app = express();
 
@@ -261,32 +262,37 @@ async function resolveHtmlForRoute(urlPath) {
       .replace(/\?.*$/, "")
       .replace(/\/$/, ""); // "terms/sub" etc.
 
+  /** @type {string[]} */
   const candidatePaths = [];
 
   // if path is root
   if (urlPath === "/" || urlPath === "") {
-    candidatePaths.push(path.join(CLIENT_PUBLIC_DIR, "index.html"));
+    candidatePaths.push("index.html");
   } else {
     const clean = safe(urlPath);
 
-    // try /build/client/<clean>/index.html or /build/client/<clean>.html
-    candidatePaths.push(path.join(CLIENT_PUBLIC_DIR, clean, "index.html"));
-    candidatePaths.push(path.join(CLIENT_PUBLIC_DIR, `${clean}.html`));
-    // fallback to build/__spa-fallback.html
-    candidatePaths.push(path.join(CLIENT_PUBLIC_DIR, "__spa-fallback.html"));
+    // try <clean>/index.html or <clean>.html (relative to PRERENDER_ROOT)
+    candidatePaths.push(path.join(clean, "index.html"));
+    candidatePaths.push(`${clean}.html`);
+    // fallback to __spa-fallback.html
+    candidatePaths.push("__spa-fallback.html");
   }
 
-  for (const p of candidatePaths) {
+  for (const rel of candidatePaths) {
     try {
-      await fs.access(p);
-      return p;
+      const candidate = await fs.realpath(path.resolve(CLIENT_PUBLIC_DIR, rel));
+       // Resolve symlinks and normalize the path, then ensure it stays within CLIENT_PUBLIC_DIR
+      if (!candidate.startsWith(CLIENT_PUBLIC_DIR + path.sep) && candidate !== CLIENT_PUBLIC_DIR) {
+        continue;
+      }
+      await fs.access(candidate);
+      return candidate;
     } catch (e) {
       // not found — try next
     }
   }
 
-  // final fallback: return build/index.html even if missing (will error later)
-  return path.join(BUILD_DIR, "client", "__spa-fallback.html");
+  return DEFAULT_HTML_INDEX;
 }
 
 /** -------------------------
@@ -335,25 +341,16 @@ for (const route of PRELOADED_ROUTES) {
   });
 }
 
-/** Fallback for anything else:
- * - Serve prerendered HTML if it exists (resolveHtmlForRoute)
- * - Otherwise fallback to build/index.html to let the client SPA handle routing
- */
-app.get("*", async (req, res) => {
-  const urlPath = req.path;
-  try {
-    const htmlPath = await resolveHtmlForRoute(urlPath);
-    // serve HTML with conservative caching
-    let data = await fs.readFile(htmlPath, "utf8");
-    res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-    res.setHeader("Content-Type", "text/html; charset=utf-8");
-    res.send(data);
-  } catch (err) {
-    // if nothing found, respond 404
-    const errMsg = err instanceof Error ? err.message : String(err);
-    console.error(`[server] Could not resolve HTML for ${urlPath}:`, errMsg);
-    res.status(404).send("Not found");
-  }
+/** Health check */
+app.get("/_health", (_, res) => res.json({ ok: true }));
+
+/** Fallback for anything else to build/spa_fallback.html to let the client SPA handle routing */
+app.get("*", async (_, res) => {
+  // serve HTML with conservative caching
+  let data = await fs.readFile(DEFAULT_HTML_INDEX, "utf8");
+  res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+  res.setHeader("Content-Type", "text/html; charset=utf-8");
+  res.send(data);
 });
 
 /** Health check */
