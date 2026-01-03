@@ -4,7 +4,7 @@ import LoadingPage from "../../pages/genericPages/LoadingPage";
 import { useIsAuthenticated } from "../../repository/commands/useIsAuthenticated";
 
 
-export default function UnAuthGuardS() {
+export default function UnAuthGuard() {
   const { isAuthenticated, loading } = useIsAuthenticated();
 
   if (loading) {
