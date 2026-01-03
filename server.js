@@ -100,7 +100,7 @@ app.use(
           "'self'",
           MATOMO_DOMAIN,
           ...Object.values(cspHashes).flatMap(hashes => hashes.map(hash => `'${hash}'`)),
-        ],
+        ].filter((origin) => typeof origin === "string" && origin.trim().length > 0),
         scriptSrcAttr: ["'none'"],
         styleSrc: ["'self'", "https:", "'unsafe-inline'"],
         upgradeInsecureRequests: [],
@@ -155,7 +155,8 @@ app.use((_, res, next) => {
  */
 app.use(
   cors({
-    origin: [env.PUBLIC_URL, env.VITE_API_URL, "https://static.cloudflareinsights.com", "https://zrunner.me"],
+    origin: [env.PUBLIC_URL, env.VITE_API_URL, "https://static.cloudflareinsights.com", MATOMO_DOMAIN]
+      .filter((origin) => typeof origin === "string" && origin.trim().length > 0),
     credentials: true,
     methods: ["GET", "OPTIONS", "HEAD"],
     allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With", "Accept", "Origin"],
@@ -295,6 +296,10 @@ async function resolveHtmlForRoute(urlPath) {
   return DEFAULT_HTML_INDEX;
 }
 
+// Define URL aliases for the /terms route
+app.get("/tos", (_, res) => res.redirect(301, "/terms"));
+app.get("/legal-notices", (_, res) => res.redirect(301, "/terms"));
+
 /** -------------------------
  *  Explicitly serve prerendered pages for your preloaded list
  *  ------------------------- */
@@ -352,9 +357,6 @@ app.get("*", async (_, res) => {
   res.setHeader("Content-Type", "text/html; charset=utf-8");
   res.send(data);
 });
-
-/** Health check */
-app.get("/_health", (req, res) => res.json({ ok: true }));
 
 /** Start server */
 app.listen(PORT, () => {
