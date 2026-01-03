@@ -1,6 +1,6 @@
 {
   "name": "axobot-web",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "type": "module",
   "private": true,
   "scripts": {
@@ -70,11 +70,11 @@
     "@types/node": "^20.11.25",
     "@types/react": "^19.2.2",
     "@types/react-dom": "^19.2.2",
-    "@typescript-eslint/parser": "8.46",
+    "@typescript-eslint/parser": "8.51",
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-simple-import-sort": "^12.1.1",
     "eslint-plugin-unused-imports": "^4.3.0",
     "node-html-parser": "^7.0.1",
-    "typescript-eslint": "^8.11.0"
+    "typescript-eslint": "^8.51.0"
   }
 }
