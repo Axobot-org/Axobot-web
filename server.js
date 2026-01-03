@@ -82,6 +82,7 @@ const limiter = rateLimit({
 app.use(limiter);
 
 const MATOMO_DOMAIN = new URL(env.VITE_MATOMO_URL).origin;
+const CLOUDFLARE_DOMAIN = "https://static.cloudflareinsights.com";
 
 /** Helmet for common security headers */
 app.use(
@@ -91,7 +92,7 @@ app.use(
       directives: {
         defaultSrc: ["'self'"],
         baseUri: ["'self'"],
-        connectSrc: ["'self'", env.PUBLIC_URL, env.VITE_API_URL, "https://static.cloudflareinsights.com", MATOMO_DOMAIN],
+        connectSrc: ["'self'", env.PUBLIC_URL, env.VITE_API_URL, CLOUDFLARE_DOMAIN, MATOMO_DOMAIN],
         frameAncestors: ["'self'"],
         fontSrc: ["'self'", "https:"],
         imgSrc: ["'self'", "data:", "https://cdn.discordapp.com"],
@@ -99,6 +100,7 @@ app.use(
         scriptSrc: [
           "'self'",
           MATOMO_DOMAIN,
+          CLOUDFLARE_DOMAIN,
           ...Object.values(cspHashes).flatMap(hashes => hashes.map(hash => `'${hash}'`)),
         ].filter((origin) => typeof origin === "string" && origin.trim().length > 0),
         scriptSrcAttr: ["'none'"],
@@ -155,7 +157,7 @@ app.use((_, res, next) => {
  */
 app.use(
   cors({
-    origin: [env.PUBLIC_URL, env.VITE_API_URL, "https://static.cloudflareinsights.com", MATOMO_DOMAIN]
+    origin: [env.PUBLIC_URL, env.VITE_API_URL, CLOUDFLARE_DOMAIN, MATOMO_DOMAIN]
       .filter((origin) => typeof origin === "string" && origin.trim().length > 0),
     credentials: true,
     methods: ["GET", "OPTIONS", "HEAD"],
