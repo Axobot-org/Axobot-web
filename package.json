@@ -14,6 +14,7 @@
     "@emotion/react": "^11.13.0",
     "@emotion/styled": "^11.13.0",
     "@fontsource/roboto": "^5.1.0",
+    "@microsoft/eslint-formatter-sarif": "^2.1.7",
     "@mui/icons-material": "^7.3.4",
     "@mui/material": "^7.3.4",
     "@react-router/node": "^7.12.0",
@@ -60,7 +61,7 @@
   },
   "devDependencies": {
     "@react-router/dev": "^7.12.0",
-    "@stylistic/eslint-plugin": "^2.9.0",
+    "@stylistic/eslint-plugin": "^2.13.0",
     "@types/compression": "^1.8.1",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.4",
