@@ -23,7 +23,7 @@
     "cors": "^2.8.5",
     "discord-api-types": "^0.37.92",
     "express": "^4.22.1",
-    "express-rate-limit": "^8.1.0",
+    "express-rate-limit": "^8.2.2",
     "helmet": "^8.1.0",
     "isbot": "^5",
     "markdown-it": "^14.1.1",
