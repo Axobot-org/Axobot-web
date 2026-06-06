@@ -17,7 +17,7 @@
     "@microsoft/eslint-formatter-sarif": "^2.1.7",
     "@mui/icons-material": "^7.3.4",
     "@mui/material": "^7.3.4",
-    "@react-router/node": "^7.12.0",
+    "@react-router/node": "^7.17.0",
     "@reduxjs/toolkit": "^2.2.3",
     "compression": "^1.8.1",
     "cors": "^2.8.5",
@@ -34,7 +34,7 @@
     "react-infinite-scroll-hook": "^6.0.1",
     "react-number-format": "^5.4.0",
     "react-redux": "9.2",
-    "react-router": "^7.12.0",
+    "react-router": "^7.17.0",
     "sirv": "^3.0.2",
     "typescript": "^5.9.3",
     "typia": "^9.7.2",
@@ -60,7 +60,7 @@
     "semver": "7.5.2"
   },
   "devDependencies": {
-    "@react-router/dev": "^7.12.0",
+    "@react-router/dev": "^7.17.0",
     "@stylistic/eslint-plugin": "^2.13.0",
     "@types/compression": "^1.8.1",
     "@types/cors": "^2.8.19",
@@ -71,13 +71,13 @@
     "@types/node": "^20.11.25",
     "@types/react": "^19.2.2",
     "@types/react-dom": "^19.2.2",
-    "@typescript-eslint/eslint-plugin": "^8.51.0",
-    "@typescript-eslint/parser": "8.51",
+    "@typescript-eslint/eslint-plugin": "^8.60.1",
+    "@typescript-eslint/parser": "^8.60.1",
     "eslint": "^8.57.1",
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-simple-import-sort": "^12.1.1",
     "eslint-plugin-unused-imports": "^4.3.0",
     "node-html-parser": "^7.0.1",
-    "typescript-eslint": "^8.51.0"
+    "typescript-eslint": "^8.60.1"
   }
 }
