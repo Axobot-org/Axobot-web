@@ -26,6 +26,7 @@ import path from "path";
 import sirv from "sirv";
 import { loadEnv } from "vite";
 
+// @ts-ignore
 import cspHashes from "./build/csp-hashes.json" with { type: "json" };
 
 /** Load environment via Vite's loadEnv so .env, .env.production etc. are picked up */
@@ -101,7 +102,7 @@ app.use(
           "'self'",
           MATOMO_DOMAIN,
           CLOUDFLARE_DOMAIN,
-          ...Object.values(cspHashes).flatMap((hashes) => hashes.map((hash) => `'${hash}'`)),
+          ...Object.values(cspHashes).flatMap((hashes) => hashes.map((/** @type {string} */ hash) => `'${hash}'`)),
         ].filter((origin) => typeof origin === "string" && origin.trim().length > 0),
         scriptSrcAttr: ["'none'"],
         styleSrc: ["'self'", "https:", "'unsafe-inline'"],
