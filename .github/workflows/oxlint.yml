@@ -2,12 +2,12 @@ name: Oxlint
 
 on:
   push:
-    branches: [ "main", "beta" ]
+    branches: ["main", "beta"]
   pull_request:
     # The branches below must be a subset of the branches above
-    branches: [ "main", "beta" ]
+    branches: ["main", "beta"]
   schedule:
-    - cron: '20 16 * * 6'
+    - cron: "20 16 * * 6"
 
 jobs:
   oxlint:
