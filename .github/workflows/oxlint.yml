@@ -1,0 +1,22 @@
+name: Oxlint
+
+on:
+  push:
+    branches: [ "main", "beta" ]
+  pull_request:
+    # The branches below must be a subset of the branches above
+    branches: [ "main", "beta" ]
+  schedule:
+    - cron: '20 16 * * 6'
+
+jobs:
+  oxlint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run OXLint
+        run: npx oxlint --format=github
