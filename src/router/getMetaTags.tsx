@@ -58,7 +58,6 @@ export function getMetaTagsFromURL(url: string) {
         </>
       );
   }
-  return;
 }
 
 function getTitleFromURL(url: string) {

@@ -1,5 +1,4 @@
 import { createTheme, LinkProps } from "@mui/material";
-import { TypographyOptions } from "@mui/material/styles/createTypography";
 
 import LinkBehavior from "./LinkBehavior";
 
@@ -32,7 +31,7 @@ declare module "@mui/material/Button" {
   }
 }
 
-const HeaderStyle: TypographyOptions = {
+const HeaderStyle = {
   "fontFamily": [
     "Poppins",
     "Roboto",

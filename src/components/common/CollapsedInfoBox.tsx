@@ -21,9 +21,7 @@ export default function CollapsedInfoBox({ title, children }: PropsWithChildren<
         </Tooltip>
         {isOpen && <Typography variant="h6">{title}</Typography>}
       </Stack>
-      <Collapse in={isOpen}>
-        {children}
-      </Collapse>
+      <Collapse in={isOpen}>{children}</Collapse>
     </Container>
   );
 }

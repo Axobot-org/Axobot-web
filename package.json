@@ -1,14 +1,15 @@
 {
   "name": "axobot-web",
   "version": "1.1.0",
-  "type": "module",
   "private": true,
+  "type": "module",
   "scripts": {
     "start": "NODE_ENV=production node server",
     "dev": "react-router dev",
     "build": "react-router build && node compute-hashes.js",
     "build-checks": "npx typia generate --input src/repository/types/checks/templates --output src/repository/types/checks/generated --project tsconfig.json",
-    "lint": "oxlint"
+    "lint": "oxlint",
+    "fmt": "oxfmt"
   },
   "dependencies": {
     "@emotion/react": "^11.13.0",
@@ -42,22 +43,6 @@
     "vite-tsconfig-paths": "^5.1.4",
     "web-vitals": "^2.1.4"
   },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
-  "overrides": {
-    "nth-check": "2.0.1",
-    "semver": "7.5.2"
-  },
   "devDependencies": {
     "@react-router/dev": "^7.17.0",
     "@types/compression": "^1.8.1",
@@ -70,7 +55,24 @@
     "@types/react": "^19.2.2",
     "@types/react-dom": "^19.2.2",
     "node-html-parser": "^7.1.0",
+    "oxfmt": "^0.53.0",
     "oxlint": "^1.68.0",
     "oxlint-tsgolint": "^0.23.0"
+  },
+  "overrides": {
+    "nth-check": "2.0.1",
+    "semver": "7.5.2"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }

@@ -1,12 +1,6 @@
 {
   "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": [
-    "import",
-    "promise",
-    "react",
-    "react-perf",
-    "typescript",
-  ],
+  "plugins": ["import", "promise", "react", "react-perf", "typescript"],
   "categories": {
     "correctness": "off"
   },
@@ -19,11 +13,7 @@
     "builtin": true,
     "node": true
   },
-  "ignorePatterns": [
-    "src/repository/types/checks/generated/",
-    "**/node_modules",
-    "**/build"
-  ],
+  "ignorePatterns": ["src/repository/types/checks/generated/", "**/node_modules", "**/build"],
   "rules": {
     "constructor-super": "error",
     "for-direction": "error",
@@ -85,11 +75,7 @@
     "no-array-constructor": "error",
     "no-unused-expressions": "error",
     "arrow-body-style": "warn",
-    "curly": [
-      "warn",
-      "multi-line",
-      "consistent"
-    ],
+    "curly": ["warn", "multi-line", "consistent"],
     "default-param-last": "error",
     "eqeqeq": "error",
     "guard-for-in": "error",
@@ -102,9 +88,7 @@
     "no-empty-function": [
       "error",
       {
-        "allow": [
-          "private-constructors"
-        ]
+        "allow": ["private-constructors"]
       }
     ],
     "no-lonely-if": "warn",
@@ -112,11 +96,7 @@
     "no-shadow": [
       "error",
       {
-        "allow": [
-          "err",
-          "resolve",
-          "reject"
-        ]
+        "allow": ["err", "resolve", "reject"]
       }
     ],
     "no-unneeded-ternary": "warn",
