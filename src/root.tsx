@@ -39,8 +39,8 @@ export function Layout({
         <meta name="msapplication-TileColor" content="#da532c" />
 
         <link rel="dns-prefetch" href="https://cdn.discordapp.com" />
-        <link rel="preload" href="/assets/fonts/MPLUS2-VariableFont-latin.woff" as="font" type="font/woff" crossOrigin="anonymous" />
-        <link rel="preload" href="/assets/fonts/Poppins-Regular.ttf" as="font" type="font/ttf" crossOrigin="anonymous" />
+        <link rel="preload" href="/assets/fonts/MPLUS2-VariableFont-latin.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
+        <link rel="preload" href="/assets/fonts/Poppins-Regular.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://zrunner.me" crossOrigin="anonymous" />
         <link rel="preconnect" href={import.meta.env.VITE_API_URL} crossOrigin="anonymous" />
         <link rel="manifest" href="/manifest.json" />
