@@ -225,25 +225,6 @@ try {
 }
 
 
-await fs.access(CLIENT_PUBLIC_DIR);
-app.use(
-  sirv(CLIENT_PUBLIC_DIR, {
-    dev: false,
-    etag: true,
-    single: false,
-    setHeaders: (res, pathname) => {
-      // Long cache for icons, images, fonts, sitemap
-      if (/\.(png|jpe?g|gif|webp|avif|svg|ico|xml|json|woff2?|ttf|otf|eot)$/i.test(pathname)) {
-        res.setHeader("Cache-Control", `public, max-age=${ONE_YEAR}, immutable`);
-      } else {
-        // conservative cache for other root files
-        res.setHeader("Cache-Control", `public, max-age=${ONE_HOUR}, must-revalidate`);
-      }
-    },
-  })
-);
-
-
 /**
  * -------------------------
  * Helper: resolve prerendered HTML for a route
@@ -312,8 +293,7 @@ app.get("/legal-notices", (_, res) => res.redirect(301, "/terms"));
  */
 async function loadPrerenderedRoutes() {
   try {
-    const configPath = path.resolve(process.cwd(), "react-router.config.ts");
-    const configModule = await import(configPath);
+    const configModule = await import("./react-router.config.ts");
     const prerender = configModule?.default?.prerender;
 
     if (Array.isArray(prerender)) {
