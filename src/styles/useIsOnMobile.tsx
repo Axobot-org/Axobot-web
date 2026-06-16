@@ -1,4 +1,5 @@
-import { useMediaQuery, useTheme } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 export const useIsOnMobile = () => {
   const theme = useTheme();

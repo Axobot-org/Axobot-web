@@ -1,10 +1,32 @@
-import { reactRouter } from "@react-router/dev/vite";
 import assert from "assert";
+
+import { reactRouter } from "@react-router/dev/vite";
+import { ManualChunkMeta } from "rollup";
 import { defineConfig, loadEnv } from "vite";
 import svgr from "vite-plugin-svgr";
 
+const CHUNKS = {
+  vendor: [
+    "/node_modules/react-dom/",
+    "/node_modules/@reduxjs/toolkit/",
+    "/src/repository/redux/",
+    "/src/repository/commands/useIsAuthenticated",
+  ],
+  icons: ["/node_modules/@mui/icons-material/"],
+  guards: ["/src/router/guards/"],
+};
+
+function manualChunk(id: string, meta: ManualChunkMeta): string | null {
+  for (const [chunkName, chunkModules] of Object.entries(CHUNKS)) {
+    if (chunkModules.some((module) => id.includes(module))) {
+      return chunkName;
+    }
+  }
+  return null;
+}
+
 // https://vitejs.dev/config/
-export default defineConfig(({ mode }) => {
+export default defineConfig(({ mode, isSsrBuild }) => {
   const env = loadEnv(mode, process.cwd(), "");
 
   assert(!!env.PUBLIC_URL, "PUBLIC_URL must be defined in the environment variables.");
@@ -18,10 +40,12 @@ export default defineConfig(({ mode }) => {
     },
     build: {
       outDir: "build",
+      rollupOptions: {
+        output: {
+          manualChunks: isSsrBuild ? undefined : manualChunk,
+        },
+      },
     },
-    plugins: [
-      reactRouter(),
-      svgr(),
-    ],
+    plugins: [reactRouter(), svgr()],
   };
 });
