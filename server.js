@@ -342,7 +342,7 @@ app.get("*", async (_, res) => {
 });
 
 /** Start server */
-app.listen(PORT, () => {
+app.listen(PORT, "localhost", () => {
   console.log(`Server listening on port ${PORT}`);
   console.log(`Mode: ${mode}`);
   console.log(`Serving build dir: ${BUILD_DIR}`);
