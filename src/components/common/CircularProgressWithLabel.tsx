@@ -1,5 +1,5 @@
 import { Box, CircularProgress, circularProgressClasses, CircularProgressProps, Typography } from "@mui/material";
-import { useMemo } from "react";
+import { type JSX, useMemo } from "react";
 
 interface CircularProgressWithLabelProps extends CircularProgressProps {
   label?: JSX.Element | string;

@@ -1,15 +1,19 @@
 import React from "react";
-import ReactDOM from "react-dom/client";
+import { hydrateRoot } from "react-dom/client";
+import { HydratedRouter } from "react-router/dom";
 
-import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 
-const root = ReactDOM.createRoot(
-  document.getElementById("root") as HTMLElement,
-);
-root.render(
+declare global {
+  interface Window {
+    _mtm?: Record<string, string | number | boolean | null | undefined>[];
+  }
+}
+
+hydrateRoot(
+  document,
   <React.StrictMode>
-    <App />
+    <HydratedRouter />
   </React.StrictMode>,
 );
 

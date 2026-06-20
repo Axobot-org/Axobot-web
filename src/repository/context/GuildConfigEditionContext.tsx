@@ -150,7 +150,7 @@ export function GuildConfigEditionProvider({ guildId, children }: PropsWithChild
   );
 
   return (
-    <GuildConfigEditionContext.Provider value={{
+    <GuildConfigEditionContext value={{
       guildId,
       state,
       hasAnyUnsavedChange,
@@ -165,7 +165,7 @@ export function GuildConfigEditionProvider({ guildId, children }: PropsWithChild
     }}
     >
       {children}
-    </GuildConfigEditionContext.Provider>
+    </GuildConfigEditionContext>
   );
 }
 

@@ -8,13 +8,11 @@ interface ConfigComponentContextType {
   isDisabled: boolean;
 }
 
-const ConfigComponentContext = createContext<ConfigComponentContextType>({
+export const ConfigComponentContext = createContext<ConfigComponentContextType>({
   option: {} as PopulatedGuildConfig[string],
   config: {},
   isDisabled: false,
 });
-
-export const ConfigComponentContextProvider = ConfigComponentContext.Provider;
 
 export function useConfigComponentContext() {
   return useContext(ConfigComponentContext);

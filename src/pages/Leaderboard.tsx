@@ -1,6 +1,6 @@
 import { Typography } from "@mui/material";
 import { Fragment, useMemo, useState } from "react";
-import { Navigate, useParams } from "react-router-dom";
+import { Navigate, useParams } from "react-router";
 
 import GlobalHeader from "../components/Leaderboard/GlobalHeader";
 import GuildHeader from "../components/Leaderboard/GuildHeader";
@@ -52,19 +52,20 @@ const LeaderboardPage = ({ guildId }: { guildId: string }) => {
       .map(([_id, points]) => points);
   }, [leaderboard]);
 
+  const leaderboardGuild = leaderboard?.guild;
   const guildData = useMemo(() => {
     if (guildId === "global") {
       return null;
     }
-    if (leaderboard?.guild) {
-      return leaderboard.guild;
+    if (leaderboardGuild) {
+      return leaderboardGuild;
     }
     return {
       id: guildId,
       name: "Loading...",
       icon: null,
     };
-  }, [guildId, leaderboard?.guild]);
+  }, [guildId, leaderboardGuild]);
 
   const hasNextPage = leaderboard?.totalCount ? leaderboard.totalCount > (requestedPage + 1) * PLAYERS_PER_PAGE : false;
 
@@ -122,5 +123,3 @@ export default function Leaderboard() {
     </Fragment>
   );
 }
-
-export const Component = Leaderboard;

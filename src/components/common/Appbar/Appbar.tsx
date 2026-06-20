@@ -1,9 +1,9 @@
 import { AppBar, Box, Button, Container, Stack, Toolbar } from "@mui/material";
 import { lazy, useMemo } from "react";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink } from "react-router";
 
 import { useGetorFetchMe } from "../../../repository/commands/useGetOrFetchMe";
-import { ExternalRoutesURLs } from "../../../router/router";
+import { ExternalRoutesURLs } from "../../../routes";
 import LogoAndTitle from "../LogoAndTitle";
 const UserMenu = lazy(() => import("./UserMenu"));
 

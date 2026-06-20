@@ -1,32 +1,30 @@
 import styled from "@emotion/styled";
-import MarkdownIt, { Token } from "markdown-it";
-import { FunctionComponent, PropsWithChildren, ReactNode, useMemo } from "react";
+import MarkdownIt from "markdown-it";
+import Token from "markdown-it/lib/token.mjs";
+import { FunctionComponent, PropsWithChildren, ReactNode } from "react";
 
 import { ChannelMentionFromId } from "./ChannelMention";
 import Timestamp from "./DiscordTimestamp";
 import { RoleMentionFromId } from "./RoleMention";
 
-
 interface DiscordMarkdownProps {
   text: string | undefined;
 }
+const Renderer = getRenderer();
 export default function DiscordMarkdown({ text }: DiscordMarkdownProps) {
-  const Renderer = useMemo(() => getRenderer(), []);
   if (!text) {
     return null;
   }
-  return (
-    <Renderer markdown={text} />
-  );
+  return <Renderer markdown={text} />;
 }
 
 function getRenderer() {
   const md = new MarkdownIt({
     linkify: true,
-  })
-    .disable(["hr", "table", "image", "lheading", "reference"]);
+  }).disable(["hr", "table", "image", "lheading", "reference"]);
 
-  md.block.ruler.before("paragraph", "subtext", (state, startLine, endLine, silent) => { // Ex: -# smaller text here
+  md.block.ruler.before("paragraph", "subtext", (state, startLine, endLine, silent) => {
+    // Ex: -# smaller text here
     const pos = state.bMarks[startLine] + state.tShift[startLine];
     if (state.src.charCodeAt(pos) !== 45) return false;
 
@@ -149,18 +147,19 @@ function getRenderer() {
 
       // Count how many empty lines follow
       let emptyLines = 0;
-      while (
-        lastLineIndex + 1 < lines.length
-        && lines[lastLineIndex + 1].trim() === ""
-      ) {
+      while (lastLineIndex + 1 < lines.length && lines[lastLineIndex + 1].trim() === "") {
         emptyLines++;
         lastLineIndex++;
       }
 
       // Ensure <br /> is inserted correctly:
       if (
-        emptyLines > 0
-        && !(token.type.startsWith("heading") && i < tokens.length - 1 && tokens[i + 1].type.startsWith("heading"))
+        emptyLines > 0 &&
+        !(
+          token.type.startsWith("heading") &&
+          i < tokens.length - 1 &&
+          tokens[i + 1].type.startsWith("heading")
+        )
       ) {
         for (let j = 0; j < emptyLines; j++) {
           const brToken = new state.Token("br", "", 0);
@@ -172,46 +171,38 @@ function getRenderer() {
     state.tokens = newTokens;
   });
 
-
   const renderers: Record<string, FunctionComponent<PropsWithChildren<{ token: Token }>>> = {
     text: ({ children }) => (typeof children === "string" ? <span>{children}</span> : children),
-    "p": ({ children }) => <DiscordP>{children}</DiscordP>,
-    "br": () => <br />,
-    "em": ({ children }) => <em>{children}</em>,
-    "strong": ({ children }) => <strong>{children}</strong>,
-    "s": ({ children }) => <span style={{ textDecoration: "line-through" }}>{children}</span>,
-    "a": ({ children, token }) => <FakeLink title={token.attrGet("href") ?? "#"}>{children}</FakeLink>,
-    "code": ({ children, token }) => (
-      (token.type === "code_inline")
-        ? <InlineCode>{children}</InlineCode>
-        : (
-          <CodeBlock>
-            <code>{children}</code>
-          </CodeBlock>
-        )
-    ),
-    "h1": ({ children }) => <DiscordH1>{children}</DiscordH1>,
-    "h2": ({ children }) => <DiscordH2>{children}</DiscordH2>,
-    "h3": ({ children }) => <DiscordH3>{children}</DiscordH3>,
-    "h4": ({ children }) => <DiscordP>#### {children}</DiscordP>,
-    "h5": ({ children }) => <DiscordP>##### {children}</DiscordP>,
-    "h6": ({ children }) => <DiscordP>###### {children}</DiscordP>,
-    "subtext": ({ children }) => <DiscordSubtext>{children}</DiscordSubtext>,
-    "ol": ({ children }) => <DiscordOl>{children}</DiscordOl>,
-    "ul": ({ children }) => <DiscordUl>{children}</DiscordUl>,
-    "li": ({ children }) => <DiscordLi>{children}</DiscordLi>,
-    "user_mention": ({ token }) => (
-      <BlueMention>@{token.meta.userId}</BlueMention>
-    ),
-    "role_mention": ({ token }) => (
-      <RoleMentionFromId id={token.meta.roleId} />
-    ),
-    "channel_mention": ({ token }) => <ChannelMentionFromId id={token.meta.channel.id} inline />,
-    "command_mention": ({ token }) => (
-      <BlueMention>/{token.meta.command.name}</BlueMention>
-    ),
-    "discord_emoji": ({ token }) => <span>:{token.meta.emoji.name}:</span>,
-    "timestamp": ({ token }) => (
+    p: ({ children }) => <DiscordP>{children}</DiscordP>,
+    br: () => <br />,
+    em: ({ children }) => <em>{children}</em>,
+    strong: ({ children }) => <strong>{children}</strong>,
+    s: ({ children }) => <span style={{ textDecoration: "line-through" }}>{children}</span>,
+    a: ({ children, token }) => <FakeLink title={token.attrGet("href") ?? "#"}>{children}</FakeLink>,
+    code: ({ children, token }) =>
+      token.type === "code_inline" ? (
+        <InlineCode>{children}</InlineCode>
+      ) : (
+        <CodeBlock>
+          <code>{children}</code>
+        </CodeBlock>
+      ),
+    h1: ({ children }) => <DiscordH1>{children}</DiscordH1>,
+    h2: ({ children }) => <DiscordH2>{children}</DiscordH2>,
+    h3: ({ children }) => <DiscordH3>{children}</DiscordH3>,
+    h4: ({ children }) => <DiscordP>#### {children}</DiscordP>,
+    h5: ({ children }) => <DiscordP>##### {children}</DiscordP>,
+    h6: ({ children }) => <DiscordP>###### {children}</DiscordP>,
+    subtext: ({ children }) => <DiscordSubtext>{children}</DiscordSubtext>,
+    ol: ({ children }) => <DiscordOl>{children}</DiscordOl>,
+    ul: ({ children }) => <DiscordUl>{children}</DiscordUl>,
+    li: ({ children }) => <DiscordLi>{children}</DiscordLi>,
+    user_mention: ({ token }) => <BlueMention>@{token.meta.userId}</BlueMention>,
+    role_mention: ({ token }) => <RoleMentionFromId id={token.meta.roleId} />,
+    channel_mention: ({ token }) => <ChannelMentionFromId id={token.meta.channel.id} inline />,
+    command_mention: ({ token }) => <BlueMention>/{token.meta.command.name}</BlueMention>,
+    discord_emoji: ({ token }) => <span>:{token.meta.emoji.name}:</span>,
+    timestamp: ({ token }) => (
       <Timestamp timestamp={token.meta.timestamp.toString()} format={token.meta.format} />
     ),
   };
@@ -226,7 +217,7 @@ function getRenderer() {
       }
 
       const tokenType = token.tag || token.type;
-      const Renderer = renderers[tokenType] || renderers.text;
+      const TokenRenderer = renderers[tokenType] || renderers.text;
       if (renderers[tokenType] === undefined) {
         console.info(`No renderer for token type ${tokenType}`, token);
       }
@@ -243,16 +234,24 @@ function getRenderer() {
           children.push(childToken);
           i++;
         }
-        return <Renderer key={idx} token={token}>{renderTokens(children, token.level + 1)}</Renderer>;
+        return (
+          <TokenRenderer key={idx} token={token}>
+            {renderTokens(children, token.level + 1)}
+          </TokenRenderer>
+        );
       }
 
-      return <Renderer key={idx} token={token}>{token.content}</Renderer>;
+      return (
+        <TokenRenderer key={idx} token={token}>
+          {token.content}
+        </TokenRenderer>
+      );
     });
 
-  const MarkdownRenderer = ({ markdown }: { markdown: string }) => {
+  function MarkdownRenderer({ markdown }: { markdown: string }) {
     const tokens = md.parse(markdown, {});
     return <div>{renderTokens(tokens, 0)}</div>;
-  };
+  }
 
   return MarkdownRenderer;
 }
@@ -346,4 +345,3 @@ const DiscordLi = styled.li({
     margin: 0,
   },
 });
-

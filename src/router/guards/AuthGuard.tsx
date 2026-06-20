@@ -1,9 +1,11 @@
+import { Outlet } from "react-router";
+
 import LoadingPage from "../../pages/genericPages/LoadingPage";
 import NeedsLoginErrorPage from "../../pages/genericPages/NeedsLoginErrorPage";
 import { useIsAuthenticated } from "../../repository/commands/useIsAuthenticated";
 
 
-export default function AuthGuard({ children }: { children: JSX.Element }) {
+export default function AuthGuard() {
   const { isAuthenticated, loading } = useIsAuthenticated();
 
   if (loading) {
@@ -14,5 +16,5 @@ export default function AuthGuard({ children }: { children: JSX.Element }) {
     return <NeedsLoginErrorPage />;
   }
 
-  return children;
+  return <Outlet />;
 }

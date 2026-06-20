@@ -1,11 +1,11 @@
 import { Divider, IconButton, Menu, MenuItem, Tooltip, Typography } from "@mui/material";
 import { MouseEvent, useMemo, useState } from "react";
 import { Fragment } from "react/jsx-runtime";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink } from "react-router";
 
 import { useGetorFetchMe } from "../../../repository/commands/useGetOrFetchMe";
 import useLogout from "../../../repository/redux/dispatchs/useLogout";
-import { ExternalRoutesURLs } from "../../../router/router";
+import { ExternalRoutesURLs } from "../../../routes";
 import UserAvatar from "../UserAvatar";
 
 interface UserMenuProps {

@@ -1,4 +1,4 @@
-import EnTranslations from "./translations/GuildDashboard/en.json" assert { type: "json" };
+import EnTranslations from "./translations/GuildDashboard/en.json" with { type: "json" };
 
 type TranslationRecord = { [key: string]: string | TranslationRecord };
 

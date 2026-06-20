@@ -1,5 +1,4 @@
 import { createTheme, LinkProps } from "@mui/material";
-import { TypographyOptions } from "@mui/material/styles/createTypography";
 
 import LinkBehavior from "./LinkBehavior";
 
@@ -32,7 +31,7 @@ declare module "@mui/material/Button" {
   }
 }
 
-const HeaderStyle: TypographyOptions = {
+const HeaderStyle = {
   "fontFamily": [
     "Poppins",
     "Roboto",
@@ -47,51 +46,51 @@ export const AxoTheme = createTheme({
       styleOverrides: `
         @font-face {
           font-family: 'M PLUS 2';
-          src: local('M PLUS 2'), url(/assets/fonts/MPLUS2-VariableFont-latin.woff) format('woff');
+          src: local('M PLUS 2'), url(/assets/fonts/MPLUS2-VariableFont-latin.woff2) format('woff2'), url(/assets/fonts/MPLUS2-VariableFont-latin.woff) format('woff');
           font-display: swap;
         }
         @font-face {
           font-family: 'M PLUS 2 ext';
-          src: local('M PLUS 2'), url(/assets/fonts/MPLUS2-VariableFont-extended.woff) format('woff');
+          src: local('M PLUS 2'), url(/assets/fonts/MPLUS2-VariableFont-extended.woff2) format('woff2');
           font-display: swap;
         }
         @font-face {
           font-family: 'Poppins';
           font-weight: 500;
-          src: local('Poppins'), local('Poppins-bold'), url(/assets/fonts/Poppins-Bold.ttf) format('truetype');
+          src: local('Poppins'), local('Poppins-bold'), url(/assets/fonts/Poppins-Bold.woff2) format('woff2');
           font-display: swap;
         }
         @font-face {
           font-family: 'Poppins';
           font-weight: 500;
           font-style: italic;
-          src: local('Poppins'), local('Poppins-bold-italic'), url(/assets/fonts/Poppins-BoldItalic.ttf) format('truetype');
+          src: local('Poppins'), local('Poppins-bold-italic'), url(/assets/fonts/Poppins-BoldItalic.woff2) format('woff2');
           font-display: swap;
         }
         @font-face {
           font-family: 'Poppins';
           font-weight: 300;
-          src: local('Poppins'), local('Poppins-regular'), url(/assets/fonts/Poppins-Regular.ttf) format('truetype');
+          src: local('Poppins'), local('Poppins-regular'), url(/assets/fonts/Poppins-Regular.woff2) format('woff2');
           font-display: swap;
         }
         @font-face {
           font-family: 'Poppins';
           font-weight: 300;
           font-style: italic;
-          src: local('Poppins'), local('Poppins-regular'), url(/assets/fonts/Poppins-Italic.ttf) format('truetype');
+          src: local('Poppins'), local('Poppins-regular'), url(/assets/fonts/Poppins-Italic.woff2) format('woff2');
           font-display: swap;
         }
         @font-face {
           font-family: 'Poppins';
           font-weight: 200;
-          src: local('Poppins'), local('Poppins-thin'), url(/assets/fonts/Poppins-Thin.ttf) format('truetype');
+          src: local('Poppins'), local('Poppins-thin'), url(/assets/fonts/Poppins-Thin.woff2) format('woff2');
           font-display: swap;
         }
         @font-face {
           font-family: 'Poppins';
           font-weight: 200;
           font-style: italic;
-          src: local('Poppins'), local('Poppins-thin'), url(/assets/fonts/Poppins-ThinItalic.ttf) format('truetype');
+          src: local('Poppins'), local('Poppins-thin'), url(/assets/fonts/Poppins-ThinItalic.woff2) format('woff2');
           font-display: swap;
         }
       `,

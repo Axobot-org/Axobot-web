@@ -1,6 +1,6 @@
 import { Avatar, Box, Button, Card, CardActionArea, CardContent, CardMedia, styled, Typography } from "@mui/material";
 import { useMemo } from "react";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 import getBotInviteUrl from "../../repository/getBotInviteUrl";
 import { GuildData } from "../../repository/types/guild";

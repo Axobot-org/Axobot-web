@@ -1,4 +1,4 @@
-import { Navigate, useParams } from "react-router-dom";
+import { Navigate, useParams } from "react-router";
 
 import GuildDashboardNavigation from "../components/GuildDashboard/GuildDashboardNavigation";
 
@@ -11,5 +11,3 @@ export default function GuildDashboard() {
 
   return <GuildDashboardNavigation guildId={id} />;
 }
-
-export const Component = GuildDashboard;

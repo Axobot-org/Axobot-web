@@ -4,7 +4,7 @@ import { Box, Collapse, IconButton, Link, Paper, Stack, Typography } from "@mui/
 import { useState } from "react";
 import { Fragment } from "react/jsx-runtime";
 
-import { ExternalRoutesURLs } from "../../router/router";
+import { ExternalRoutesURLs } from "../../routes";
 import { useIsOnMobile } from "../../styles/useIsOnMobile";
 import { ExternalLink, Subtitle2Section, SubtitleSection, TitleSection } from "./shared";
 
@@ -248,6 +248,4 @@ export default function TOS() {
     </Fragment>
   );
 }
-
-export const Component = TOS;
 

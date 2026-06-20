@@ -1,14 +1,15 @@
-import { Fragment, useEffect, useMemo } from "react";
-import { useNavigate } from "react-router-dom";
+import { Fragment, useEffect, useMemo, useRef } from "react";
+import { useNavigate } from "react-router";
 
 import PageTitle from "../components/common/PageTitle";
 import { useLogin } from "../repository/redux/dispatchs/useLogin";
-import { ExternalRoutesURLs } from "../router/router";
 import useQuery from "../router/useQuery";
+import { ExternalRoutesURLs } from "../routes";
 
 export default function DiscordLoginCallback() {
   const code = useQuery().get("code");
   const navigate = useNavigate();
+  const usedCode = useRef<string | null>(null);
 
   const { loginCommand, error, loading, data } = useLogin();
 
@@ -24,14 +25,12 @@ export default function DiscordLoginCallback() {
     }
   }, [error, loading, data]);
 
-  let usedCode: string | null = null;
   useEffect(() => {
-    if (data || loading || error || usedCode === code) {
+    if (data || loading || error || usedCode.current === code) {
       return;
     }
     if (code) {
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      usedCode = code;
+      usedCode.current = code;
       loginCommand(code);
     } else {
       window.location.href = ExternalRoutesURLs.discordAuth;

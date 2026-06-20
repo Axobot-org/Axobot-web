@@ -1,4 +1,5 @@
 import { CssBaseline, ThemeProvider } from "@mui/material";
+import type { JSX } from "react";
 
 import { AxoTheme } from "./theme";
 
