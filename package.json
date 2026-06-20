@@ -38,13 +38,13 @@
     "sirv": "^3.0.2",
     "typescript": "^5.9.3",
     "typia": "^9.7.2",
-    "vite": "^7.3.2",
+    "vite": "^8.0.16",
     "vite-plugin-svgr": "^5.2.0",
     "vite-tsconfig-paths": "^5.1.4",
     "web-vitals": "^2.1.4"
   },
   "devDependencies": {
-    "@react-router/dev": "^7.17.0",
+    "@react-router/dev": "^8.0.1",
     "@types/compression": "^1.8.1",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.4",
