@@ -39,7 +39,7 @@
     "typescript": "^5.9.3",
     "typia": "^9.7.2",
     "vite": "^7.3.2",
-    "vite-plugin-svgr": "4.5",
+    "vite-plugin-svgr": "^5.2.0",
     "vite-tsconfig-paths": "^5.1.4",
     "web-vitals": "^2.1.4"
   },
