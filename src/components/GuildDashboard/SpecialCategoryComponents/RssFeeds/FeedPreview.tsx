@@ -86,6 +86,12 @@ function useBuildDiscordMessageFromFeed({ feed, feedData }: { feed: RssFeed; fee
   } else {
     embed.title = feedData.title.substring(0, 256);
   }
+  if (!msgFormat.includes("{url}") && !msgFormat.includes("{link}") && !feed.embed.enable_link_in_title) {
+    embed.fields = [{
+      name: "URL",
+      value: feedData.url.slice(0, 1024),
+    }]
+  }
   if (feedData.image) {
     if (feed.embed.image_location === undefined || feed.embed.image_location === "thumbnail") {
       embed.thumbnail = feedData.image;
