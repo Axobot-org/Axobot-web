@@ -2,7 +2,7 @@ import assert from "assert";
 
 import { reactRouter } from "@react-router/dev/vite";
 import { ManualChunkMeta } from "rollup";
-import { defineConfig, loadEnv } from "vite";
+import { defineConfig, loadEnv, UserConfig } from "vite";
 import svgr from "vite-plugin-svgr";
 
 const CHUNKS = {
@@ -16,7 +16,7 @@ const CHUNKS = {
   guards: ["/src/router/guards/"],
 };
 
-function manualChunk(id: string, meta: ManualChunkMeta): string | null {
+function manualChunks(id: string): string | null {
   for (const [chunkName, chunkModules] of Object.entries(CHUNKS)) {
     if (chunkModules.some((module) => id.includes(module))) {
       return chunkName;
@@ -26,7 +26,7 @@ function manualChunk(id: string, meta: ManualChunkMeta): string | null {
 }
 
 // https://vitejs.dev/config/
-export default defineConfig(({ mode, isSsrBuild }) => {
+export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), "");
 
   assert(!!env.PUBLIC_URL, "PUBLIC_URL must be defined in the environment variables.");
@@ -42,10 +42,11 @@ export default defineConfig(({ mode, isSsrBuild }) => {
       outDir: "build",
       rollupOptions: {
         output: {
-          manualChunks: isSsrBuild ? undefined : manualChunk,
+          manualChunks,
         },
       },
     },
     plugins: [reactRouter(), svgr()],
-  };
+  } satisfies UserConfig;
 });
+  
