@@ -1,7 +1,6 @@
 import assert from "assert";
 
 import { reactRouter } from "@react-router/dev/vite";
-import { ManualChunkMeta } from "rollup";
 import { defineConfig, loadEnv, UserConfig } from "vite";
 import svgr from "vite-plugin-svgr";
 
