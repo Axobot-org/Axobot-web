@@ -24,6 +24,10 @@ interface DiscordMessagePreviewProps {
       url?: string;
       iconUrl?: string;
     };
+    fields?: {
+      name: string;
+      value: string;
+    }[];
   };
 }
 
@@ -154,6 +158,20 @@ function MessageEmbed({ embed }: { embed: Exclude<DiscordMessagePreviewProps["em
           <Typography component="div" mt="8px" fontSize="0.875rem" lineHeight="1.125rem" fontWeight={400} color="#efeff0" whiteSpace="pre-wrap" gridColumn="1 / 1">
             <DiscordMarkdown text={embed.description?.trim()} />
           </Typography>
+        )}
+        {embed.fields?.length && (
+          <Box display="grid" gridColumn="1 / 1" mt="8px" gap="8px">
+            {embed.fields.map((field, index) => (
+              <Box key={index} gridColumn="1 / 13" fontSize="0.875rem" lineHeight="1.125rem">
+                <Typography fontSize="inherit" lineHeight="inherit" fontWeight={600} color="#fbfbfb" mb="2px">
+                  {field.name}
+                </Typography>
+                <Typography fontSize="inherit" lineHeight="inherit" color="#efeff0">
+                  <DiscordMarkdown text={field.value?.trim()} />
+                </Typography>
+              </Box>
+            ))}
+          </Box>
         )}
         {embed.image && (
           <Box mt="16px" maxWidth="400px" maxHeight="225px">
