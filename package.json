@@ -34,7 +34,7 @@
     "react-infinite-scroll-hook": "^6.0.1",
     "react-number-format": "^5.4.0",
     "react-redux": "9.2",
-    "react-router": "^8.1.0",
+    "react-router": "^8.3.0",
     "sirv": "^3.0.2",
     "typescript": "^5.9.3",
     "typia": "^9.7.2",
