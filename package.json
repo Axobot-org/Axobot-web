@@ -27,7 +27,7 @@
     "helmet": "^8.1.0",
     "isbot": "^5",
     "markdown-it": "^14.1.1",
-    "morgan": "^1.10.1",
+    "morgan": "^1.12.0",
     "mui-color-input": "^7.0.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
