@@ -333,7 +333,7 @@ for (const route of PRELOADED_ROUTES) {
 app.get("/_health", (_, res) => res.json({ ok: true }));
 
 /** Fallback for anything else to build/spa_fallback.html to let the client SPA handle routing */
-app.get("*", async (_, res) => {
+app.get("*splat", async (_, res) => {
   // serve HTML with conservative caching
   const data = await fs.readFile(DEFAULT_HTML_INDEX, "utf8");
   res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
