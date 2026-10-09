@@ -1,6 +1,6 @@
 {
   "name": "axobot-web",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "private": true,
   "type": "module",
   "scripts": {
@@ -54,7 +54,7 @@
     "@types/react": "^19.2.2",
     "@types/react-dom": "^19.2.2",
     "node-html-parser": "^7.1.0",
-    "oxfmt": "^0.53.0",
+    "oxfmt": "^0.72.0",
     "oxlint": "^1.82.0",
     "oxlint-tsgolint": "^7.0.0"
   },
