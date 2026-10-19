@@ -108,7 +108,14 @@ function XpRateInfo({
       </>
     );
   } else if (xpType === "local") {
-    if (xpRate > 1) {
+    if (xpRate === 1) {
+      return (
+        <>
+          The XP rate is <b>x{formatedRate}</b>: each message will reward the default amount of XP, based on
+          its length.
+        </>
+      );
+    } else if (xpRate > 1) {
       return (
         <>
           The XP rate is <b>x{formatedRate}</b>: each message will reward more XP than the default value,
